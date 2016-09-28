@@ -6,6 +6,12 @@ A gui tool for dva.
 
 ```bash
 $ npm install
+$ npm run build -- --watch
+```
+
+Then open another terminal tab and run:
+
+```bash
 $ npm start
 ```
 
