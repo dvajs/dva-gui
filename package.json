@@ -1,0 +1,32 @@
+{
+  "name": "dva-gui",
+  "version": "0.1.0",
+  "description": "A gui tool for dva",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "babel-loader": "^6.2.5",
+    "babel-preset-node": "^5.1.1",
+    "babel-preset-react": "^6.11.1",
+    "babel-register": "^6.14.0",
+    "dva": "^1.0.0",
+    "electron": "^1.4.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "webpack": "^1.13.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dvajs/dva-gui"
+  },
+  "homepage": "https://github.com/dvajs/dva-gui",
+  "keywords": [
+    "dva",
+    "gui"
+  ],
+  "author": "ChenCheng <sorrycc@gmail.com>",
+  "license": "MIT"
+}
