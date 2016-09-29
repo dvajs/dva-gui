@@ -5,6 +5,8 @@ import { parseArgs } from 'electron-window/lib/renderer';
 import App from './routes/App';
 import { message } from 'antd';
 
+const CHANNEL = 'ipc';
+
 parseArgs();
 const { sourcePath } = window.__args__;
 
@@ -18,7 +20,7 @@ function ipcMiddleware({ dispatch, getState }) {
   return next => action => {
     if (action.type === 'ipc') {
       assert(action.method, 'ipcMiddleware: action should have method property');
-      ipc.send('ipc', action.method, { ...action.payload, sourcePath });
+      ipc.send(CHANNEL, action.method, { ...action.payload, sourcePath });
     }
     return next(action);
   };
@@ -40,8 +42,19 @@ const app = dva({
 app.router(_ => <App />);
 app.start('#root');
 
-ipc.on('ipc', (event, type, payload) => {
-  console.log('received', type, payload);
+ipc.on(CHANNEL, (event, type, payload) => {
+  switch (type) {
+    case 'replaceState':
+      app._store.dispatch({ type, payload });
+      console.log(app._store.getState());
+      return;
+    case 'error':
+      message.error(payload);
+      return;
+    default:
+      assert(false, `caught type: ${type}`);
+  }
 });
 
-ipc.send('ipc', 'init', 1);
+// Load project when window is created.
+ipc.send(CHANNEL, 'project.loadAll', { sourcePath });
