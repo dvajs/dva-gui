@@ -19,4 +19,8 @@ export default {
     ],
   },
 
+  externals: {
+    electron: 'require(\'electron\')',
+  },
+
 };

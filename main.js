@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain: ipc } = require('electron');
 
 let mainWindow;
 
@@ -21,4 +21,8 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipc.on('ipc', (event, type, payload) => {
+  event.sender.send('ipc', type + 1, payload + 1);
 });
