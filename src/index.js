@@ -5,15 +5,37 @@ import { parseArgs } from 'electron-window/lib/renderer';
 import App from './routes/App';
 import { message } from 'antd';
 
-const ipcMiddleware = ({ dispatch, getState }) => next => action => {
-  if (action.type === 'ipc') {
-    ipc.send('ipc', 'action', action.payload);
+parseArgs();
+const { sourcePath } = window.__args__;
+
+function assert(check, msg) {
+  if (!check) {
+    message.error(msg);
   }
-  return next(action);
-};
+}
+
+function ipcMiddleware({ dispatch, getState }) {
+  return next => action => {
+    if (action.type === 'ipc') {
+      assert(action.method, 'ipcMiddleware: action should have method property');
+      ipc.send('ipc', action.method, { ...action.payload, sourcePath });
+    }
+    return next(action);
+  };
+}
+
+function repalceStateReducerEnhancer(reducer) {
+  return (state, action) => {
+    if (action.type === 'replaceState') {
+      return action.payload;
+    }
+    return reducer(state, action);
+  };
+}
 
 const app = dva({
-  onAction: [ipcMiddleware],
+  onAction: ipcMiddleware,
+  onReducer: repalceStateReducerEnhancer,
 });
 app.router(_ => <App />);
 app.start('#root');
@@ -23,6 +45,3 @@ ipc.on('ipc', (event, type, payload) => {
 });
 
 ipc.send('ipc', 'init', 1);
-
-parseArgs();
-message.error(window.__args__.sourcePath);
