@@ -1,0 +1,130 @@
+{
+  "models": {
+    "data": [
+      {
+        "reducers": [
+          "Reducer^^models/app.js^^showLoading"
+        ],
+        "effects": [],
+        "subscriptions": [],
+        "namespace": "app",
+        "state": {
+          "loading": false
+        },
+        "id": "Model^^models/app.js^^app",
+        "filePath": "models/app.js"
+      },
+      {
+        "reducers": [
+          "Reducer^^models/count.js^^add"
+        ],
+        "effects": [
+          "Effect^^models/count.js^^addAsync"
+        ],
+        "subscriptions": [
+          "Subscription^^models/count.js^^setup"
+        ],
+        "namespace": "count",
+        "state": 0,
+        "id": "Model^^models/count.js^^count",
+        "filePath": "models/count.js"
+      }
+    ],
+    "reducerByIds": {
+      "Reducer^^models/app.js^^showLoading": {
+        "name": "showLoading",
+        "source": "function(state) {\n  return { ...state, loading: true, };\n}",
+        "id": "Reducer^^models/app.js^^showLoading",
+        "filePath": "models/app.js"
+      },
+      "Reducer^^models/count.js^^add": {
+        "name": "add",
+        "source": "function(state) {\n  return state + 1;\n}",
+        "id": "Reducer^^models/count.js^^add",
+        "filePath": "models/count.js"
+      }
+    },
+    "effectByIds": {
+      "Effect^^models/count.js^^addAsync": {
+        "name": "addAsync",
+        "source": "function*(_, { put, call, select }) {\n  yield put({ type: 'add' });\n}",
+        "dispatches": [
+          "count/add"
+        ],
+        "id": "Effect^^models/count.js^^addAsync",
+        "filePath": "models/count.js"
+      }
+    },
+    "subscriptionByIds": {
+      "Subscription^^models/count.js^^setup": {
+        "name": "setup",
+        "source": "function({ dispatch }) {\n  dispatch({ type: 'app/showLoading' });\n  dispatch({ type: 'addAsync' });\n}",
+        "dispatches": [
+          "app/showLoading",
+          "count/addAsync"
+        ],
+        "id": "Subscription^^models/count.js^^setup",
+        "filePath": "models/count.js"
+      }
+    }
+  },
+  "router": {
+    "type": "Router",
+    "attributes": {
+      "history": "history"
+    },
+    "id": "Router-root",
+    "children": [
+      {
+        "type": "Route",
+        "attributes": {
+          "component": "App"
+        },
+        "id": "Route-parentId_Router-root",
+        "children": []
+      }
+    ],
+    "filePath": "router.js"
+  },
+  "dispatches": {
+    "app/showLoading": {
+      "input": [
+        "Subscription^^models/count.js^^setup",
+        "RouteComponent^^routes/App.js^^App"
+      ],
+      "output": [
+        "Reducer^^models/app.js^^showLoading"
+      ]
+    },
+    "count/add": {
+      "input": [
+        "Effect^^models/count.js^^addAsync",
+        "RouteComponent^^routes/App.js^^App"
+      ],
+      "output": [
+        "Reducer^^models/count.js^^add"
+      ]
+    },
+    "count/addAsync": {
+      "input": [
+        "Subscription^^models/count.js^^setup"
+      ],
+      "output": [
+        "Effect^^models/count.js^^addAsync"
+      ]
+    }
+  },
+  "routeComponents": [
+    {
+      "name": "App",
+      "source": "import React from 'react';\n\nfunction App({ dispatch }) {\n  function handleClick() {\n    dispatch({\n      type: 'count/add',\n    });\n    dispatch({\n      type: 'app/showLoading',\n    });\n  }\n  return (\n    <div>App</div>\n  );\n}\n\nexport default App;\n",
+      "stateMappings": [],
+      "dispatches": [
+        "count/add",
+        "app/showLoading"
+      ],
+      "filePath": "routes/App.js",
+      "id": "RouteComponent^^routes/App.js^^App"
+    }
+  ]
+}

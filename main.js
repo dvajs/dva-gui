@@ -1,17 +1,19 @@
-const { app, BrowserWindow, ipcMain: ipc } = require('electron');
+const { app, ipcMain: ipc } = require('electron');
+const window = require('electron-window');
+const { join, resolve } = require('path');
 
 let mainWindow;
+const windowOptions = {
+  width: 1000,
+  height: 400,
+};
 
-function createWindow() {
-  mainWindow = new BrowserWindow({width: 800, height: 600});
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
-  mainWindow.webContents.openDevTools();
-  mainWindow.on('closed', function () {
-    mainWindow = null;
-  });
+function createProject(sourcePath) {
+  mainWindow = window.createWindow(windowOptions);
+  const filePath = resolve(__dirname, 'index.html');
+  mainWindow.showUrl(filePath, { sourcePath });
 }
 
-app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -19,8 +21,11 @@ app.on('window-all-closed', () => {
 });
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
+    // create main window
   }
+});
+app.on('ready', () => {
+  createProject(join(__dirname, 'examples/count'));
 });
 
 ipc.on('ipc', (event, type, payload) => {

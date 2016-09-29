@@ -1,3 +1,9 @@
 {
-    "presets": ["node", "react"]
+  "presets": ["node", "react"],
+  "plugins": [
+    ["import", {
+      "libraryName": "antd",
+      "style": "css"
+    }]
+  ]
 }
