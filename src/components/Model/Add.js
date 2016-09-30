@@ -1,25 +1,13 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import AddField from './AddField';
 
-function Add({ form, onDispatch, onModelCreate }) {
-  const { getFieldDecorator, getFieldsValue, resetFields } = form;
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onModelCreate(getFieldsValue().namespace);
-    resetFields();
-  }
-
+function Add({ onModelCreate }) {
   return (
-    <Form onSubmit={handleSubmit}>
+    <div>
       <h3>Add</h3>
-      {
-        getFieldDecorator('namespace')(
-          <Input placeholder="model namespace" />
-        )
-      }
-    </Form>
+      <AddField onSubmit={onModelCreate} />
+    </div>
   );
 }
 
-export default Form.create()(Add);
+export default Add;

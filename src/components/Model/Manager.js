@@ -10,6 +10,9 @@ function Manager(props) {
       <List
         models={props.models}
         onModelRemove={props.onModelRemove}
+        onModelAddReducer={props.onModelAddReducer}
+        onModelRemoveReducer={props.onModelRemoveReducer}
+        onModelUpdateReducer={props.onModelUpdateReducer}
       />
       <Add onModelCreate={props.onModelCreate} />
     </div>

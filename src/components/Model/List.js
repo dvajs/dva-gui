@@ -1,15 +1,18 @@
 import React from 'react';
 import Item from './Item';
 
-function List({ models, onModelRemove }) {
+function List(props) {
   return (
     <div>
       {
-        models.map(item =>
+        props.models.map(item =>
           <Item
             key={item.namespace}
             model={item}
-            onModelRemove={onModelRemove}
+            onModelRemove={props.onModelRemove}
+            onModelAddReducer={props.onModelAddReducer}
+            onModelRemoveReducer={props.onModelRemoveReducer}
+            onModelUpdateReducer={props.onModelUpdateReducer}
           />
         )
       }

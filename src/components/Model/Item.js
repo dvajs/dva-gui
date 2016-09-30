@@ -1,8 +1,11 @@
 import React from 'react';
 import { Popconfirm } from 'antd';
+import Reducer from './Reducer';
+import AddField from './AddField';
 import styles from './styles.css';
 
-function Item({ model, onModelRemove }) {
+function Item(props) {
+  const { model } = props;
   const {
     namespace,
     state,
@@ -12,7 +15,15 @@ function Item({ model, onModelRemove }) {
   } = model;
 
   function handleModelRemove() {
-    onModelRemove(model.namespace, model.filePath);
+    props.onModelRemove(model.namespace, model.filePath);
+  }
+
+  function handleModelAddReducer(name) {
+    props.onModelAddReducer(model.namespace, model.filePath, name);
+  }
+
+  function handleModelRemoveReducer(name) {
+    props.onModelRemoveReducer(model.namespace, model.filePath, name);
   }
 
   return (
@@ -20,10 +31,23 @@ function Item({ model, onModelRemove }) {
       <h3 className={styles.title}>{namespace}</h3>
       <div>state: {JSON.stringify(state)}</div>
       <div>
-        effects
+        reducers
+        <div className={styles.itemList}>
+          {
+            reducers.map(reducer =>
+              <Reducer
+                key={reducer.name}
+                reducer={reducer}
+                onModelRemoveReducer={handleModelRemoveReducer}
+                onModelUpdateReducer={props.onModelUpdateReducer}
+              />
+            )
+          }
+          <AddField onSubmit={handleModelAddReducer} />
+        </div>
       </div>
       <div>
-        reducers
+        effects
       </div>
       <div>
         subscriptions
