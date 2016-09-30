@@ -24,6 +24,7 @@ function assert(check, msg) {
 
 function ipcMiddleware({ dispatch, getState }) {
   return next => action => {
+    console.log('[ACTION]', action.type, action);
     if (action.type === 'ipc') {
       assert(action.method, 'ipcMiddleware: action should have method property');
       ipc.send(CHANNEL, action.method, { ...action.payload, sourcePath });

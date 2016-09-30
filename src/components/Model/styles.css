@@ -1,0 +1,13 @@
+
+.layout {
+}
+
+.item {
+  border-bottom: 1px solid #ccc;
+  margin: 20px 0;
+  padding-bottom: 20px;
+}
+
+.title {
+  margin-bottom: 12px;
+}

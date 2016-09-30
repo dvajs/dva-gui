@@ -1,6 +1,8 @@
 import React from 'react';
+import { Popconfirm } from 'antd';
+import styles from './styles.css';
 
-function Item({ model }) {
+function Item({ model, onModelRemove }) {
   const {
     namespace,
     state,
@@ -9,9 +11,13 @@ function Item({ model }) {
     subscriptions,
   } = model;
 
+  function handleModelRemove() {
+    onModelRemove(model.namespace, model.filePath);
+  }
+
   return (
-    <div>
-      <h3>{namespace}</h3>
+    <div className={styles.item}>
+      <h3 className={styles.title}>{namespace}</h3>
       <div>state: {JSON.stringify(state)}</div>
       <div>
         effects
@@ -22,6 +28,9 @@ function Item({ model }) {
       <div>
         subscriptions
       </div>
+      <Popconfirm title="Are you sure delete this model?" onConfirm={handleModelRemove} okText="Yes" cancelText="No">
+        <button>Delete</button>
+      </Popconfirm>
     </div>
   );
 }

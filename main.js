@@ -7,18 +7,27 @@ const CHANNEL = 'ipc';
 
 const projects = {};
 
-function mergeProject(sourcePath, data) {
-  projects[sourcePath] = Object.assign(projects[sourcePath] || {}, data);
+function mergeProject(sourcePath, data, isReplace) {
+  if (isReplace) {
+    projects[sourcePath] = data;
+  } else {
+    projects[sourcePath] = Object.assign(projects[sourcePath] || {}, data);
+  }
+}
+
+function removeAstFromProject(sourcePath, filePath) {
+  delete projects[sourcePath][filePath];
 }
 
 let mainWindow;
 const windowOptions = {
   width: 1000,
-  height: 400,
+  height: 572,
 };
 
 function createProject(sourcePath) {
   mainWindow = window.createWindow(windowOptions);
+  mainWindow.webContents.openDevTools();
   const filePath = resolve(__dirname, 'index.html');
   mainWindow.showUrl(filePath, { sourcePath });
 }
@@ -40,14 +49,21 @@ app.on('ready', () => {
 ipc.on(CHANNEL, (event, type, payload) => {
   console.info(`[INFO][${CHANNEL}] received ${type} ${payload}`);
   try {
-    const { sourcePath } = payload;
+    const { sourcePath, filePath } = payload;
     const result = api.default(type, payload);
 
     switch (type) {
       case 'project.loadAll':
-        mergeProject(sourcePath, result);
-        const newInfo = combine.default(projects[sourcePath]);
-        event.sender.send(CHANNEL, 'replaceState', newInfo);
+        mergeProject(sourcePath, result, /*isReplace*/true);
+        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
+        break;
+      case 'models.create':
+        mergeProject(sourcePath, { [filePath]: result });
+        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
+        break;
+      case 'models.remove':
+        removeAstFromProject(sourcePath, filePath);
+        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
         break;
       default:
         console.error(`[ERROR][${CHANNEL}] uncaught type ${type}`);
@@ -55,6 +71,7 @@ ipc.on(CHANNEL, (event, type, payload) => {
     }
   } catch(e) {
     console.error(`[ERROR] ${e.message}`);
+    console.log(e.stack);
     event.sender.send(CHANNEL, 'error', e.message);
   }
 });
