@@ -5,6 +5,12 @@ import { parseArgs } from 'electron-window/lib/renderer';
 import App from './routes/App';
 import { message } from 'antd';
 
+// models
+import dispatches from './models/dispatches';
+import models from './models/models';
+import routeComponents from './models/routeComponents';
+import router from './models/router';
+
 const CHANNEL = 'ipc';
 
 parseArgs();
@@ -39,6 +45,10 @@ const app = dva({
   onAction: ipcMiddleware,
   onReducer: repalceStateReducerEnhancer,
 });
+app.model(dispatches);
+app.model(models);
+app.model(routeComponents);
+app.model(router);
 app.router(_ => <App />);
 app.start('#root');
 

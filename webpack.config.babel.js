@@ -2,6 +2,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 export default {
 
+  devtool: '#eval',
+
   entry: {
     index: './src/index.js',
   },
