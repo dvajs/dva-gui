@@ -21,7 +21,17 @@ export default {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css-loader'),
+        exclude: /node_modules/,
+        loader: ExtractTextPlugin.extract(
+          'css-loader?sourceMap&modules&localIdentName=[local]___[hash:base64:5]'
+        ),
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loader: ExtractTextPlugin.extract(
+          'css-loader?sourceMap'
+        ),
       },
     ],
   },
