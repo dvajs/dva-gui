@@ -1,0 +1,112 @@
+@import "./theme.less";
+
+/* override */
+.editor-node {
+  color: @graph-font-color;
+  background-color: transparent;
+}
+
+.circle {
+  margin: 10px;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border: 1px solid @graph-border-color;
+}
+
+.node-wrapper.active {
+  .node-component,
+  .node-model {
+    .node-content-wrapper {
+      background: @graph-primary-color;
+    }
+    .node-icons {
+      display: inline-block;
+    }
+  }
+
+  // a bit hacky here
+  .controller-point {
+    display: none;
+  }
+  .bary-center {
+    display: none;
+  }
+}
+
+.node-content-wrapper {
+  padding: 10px;
+}
+
+.node {
+  color: @graph-font-color;
+  font-family: @code-family;
+  border: 1px solid @graph-border-color;
+  background-color: @graph-bg-color;
+
+  &-component,
+  &-model {
+    &:hover {
+      .node-content-wrapper {
+        background: @graph-primary-color;
+      }
+      .node-icons {
+        display: inline-block;
+      }
+    }
+
+    .node-icons {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      transform: translateY(-20%);
+      color: @graph-primary-color;
+      font-size: 16px;
+      display: none;
+
+      > i {
+        padding: 0 2px;
+      }
+    }
+  }
+
+  &-effect, &-reducer, &-action {
+    .node-content-wrapper();
+  }
+  &-action, {
+    position: relative;
+    padding: 0;
+    height: 22px;
+    width: 22px;
+    border: 2px solid @graph-border-color;
+    border-radius: 50%;
+    &-overlay {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      transform: translateY(-50%);
+      margin-left: 5px;
+    }
+  }
+  &-action-wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  &-children-wrapper {
+  }
+  &-action-wrapper~&-children-wrapper {
+    padding-left: 20px;
+  }
+
+  &-router {
+    &-primary {
+      background-color: #077dbb;
+      color: #fff;
+      .node-content-wrapper();
+    }
+    &-normal {
+      .node-content-wrapper();
+    }
+  }
+}
