@@ -3,7 +3,7 @@ const window = require('electron-window');
 const { join, resolve } = require('path');
 const { api, combine } = require('dva-ast');
 
-const CHANNEL = 'ipc';
+const CHANNEL = 'dva-ast-api';
 
 const projects = {};
 
@@ -29,7 +29,7 @@ function createProject(sourcePath) {
   mainWindow = window.createWindow(windowOptions);
   mainWindow.webContents.openDevTools();
   const filePath = resolve(__dirname, 'index.html');
-  mainWindow.showUrl(filePath, { sourcePath });
+  mainWindow.showUrl(filePath);
 }
 
 app.on('window-all-closed', () => {

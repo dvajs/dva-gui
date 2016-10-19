@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Dva GUI</title>
-  <link rel="stylesheet" href="./dist/index.css" />
-</head>
-<body>
-  <div id="root"></div>
-</body>
-<script>
-  require('./dist/index.js');
-</script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <script>
+      (function() {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';         
+        link.href = process.env.env === 'dev' ? 'http://localhost:8000/index.css' : '../dist/index.css';
+        document.write(link.outerHTML);
+      }());
+    </script>
+  </head>
+  
+  <body>
+    <div style="height:100%;" id="__reactComponent"></div>
+  </body>
+
+  <script>
+    (function() {
+      ['common.js', 'index.js'].forEach(file => {
+        const script = document.createElement('script');
+        script.src = (process.env.env === 'dev') ? `http://localhost:8000/${file}` : `../dist/${file}`;
+        document.write(script.outerHTML);
+      })
+    }());
+  </script>
 </html>

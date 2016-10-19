@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env env=pro electron ./",
     "hot:dora": "cross-env env=dev dora --plugins webpack?config=webpack.config.renderer.js,webpack-hmr,livereload",
-    "hot:start": "cross-env HOT=1 env=dev electron -r babel-register -r babel-polyfill ./main.development.js",
+    "hot:start": "cross-env env=dev electron -r babel-register -r babel-polyfill ./main.development.js",
     "dev": "concurrently --kill-others \"npm run hot:dora\" \"npm run hot:start\"",
     "build": "npm run build:renderer && npm run build:main",
     "build:renderer": "cross-env env=dev atool-build --config webpack.config.renderer.js",

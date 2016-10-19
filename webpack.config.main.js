@@ -9,11 +9,13 @@ module.exports = function (webpackConfig) {
 
   return Object.assign({}, webpackConfig, {
     entry: {
-      main: './app/main.development.js',
+      main: './main.development.js',
     },
+    plugins: webpackConfig.plugins.filter(i =>
+      !(i instanceof webpack.optimize.CommonsChunkPlugin)),
     output: {
       path: __dirname,
-      filename: './app/main.js',
+      filename: './main.js',
     },
     target: 'electron-main',
   });
