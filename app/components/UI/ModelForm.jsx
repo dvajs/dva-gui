@@ -178,6 +178,7 @@ class ModelForm extends React.Component {
   }
   render() {
     const { dataflow, model, form, models } = this.props;
+    const stateString = JSON.stringify(model.state);
     const { reducerByIds = {}, effectByIds = {}, subscriptionByIds = {} } = models;
     return (
       <div className="dataflow-form">
@@ -199,8 +200,9 @@ class ModelForm extends React.Component {
           <div className="block">
             <Form.Item label="Initial State">
               <Input
+                key={stateString}
                 type="textarea"
-                defaultValue={JSON.stringify(model.state)}
+                defaultValue={stateString}
                 onBlur={this.updateState}
                 autosize
               />
