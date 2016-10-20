@@ -1,6 +1,9 @@
 export default {
   namespace: 'project',
-  state: {},
+  state: {
+
+
+  },
   subscriptions: {},
   reducers: {
     ['sync'](state, { payload }) {

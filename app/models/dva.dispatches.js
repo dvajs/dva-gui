@@ -1,4 +1,4 @@
 export default {
   namespace: 'dva.dispatches',
-  state: {},
+  state: {"hello":123},
 };

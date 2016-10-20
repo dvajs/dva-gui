@@ -2,11 +2,13 @@ const { app, ipcMain: ipc } = require('electron');
 const window = require('electron-window');
 const { join, resolve } = require('path');
 const { api, combine } = require('dva-ast');
-
+const electronDebug = require('electron-debug');
+const { setupEnviroment, setupApplication, setupCommonder } = require('./main/node-base/enviroment');
+const commonder = require('./main/commond-register');
+const ipcHelper = require('./main/ipc-helper')('node');
+process.env.HOME = __dirname;
 const CHANNEL = 'dva-ast-api';
-
 const projects = {};
-
 function mergeProject(sourcePath, data, isReplace) {
   if (isReplace) {
     projects[sourcePath] = data;
@@ -18,33 +20,39 @@ function mergeProject(sourcePath, data, isReplace) {
 function removeAstFromProject(sourcePath, filePath) {
   delete projects[sourcePath][filePath];
 }
+setupCommonder();
+setupEnviroment();
+setupApplication();
 
-let mainWindow;
-const windowOptions = {
-  width: 1000,
-  height: 572,
-};
-
-function createProject(sourcePath) {
-  mainWindow = window.createWindow(windowOptions);
-  mainWindow.webContents.openDevTools();
-  const filePath = resolve(__dirname, 'index.html');
-  mainWindow.showUrl(filePath);
+if (process.env.env === 'dev') {
+  electronDebug();
 }
+
+function createWindow() {
+  commonder.dispatch('application:new-window', `file://${process.env.HOME}/main/base/index.html`);
+}
+
+app.on('ready', () => {
+  commonder.dispatch('application:update-menu', 'default');
+  createWindow();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    commonder.dispatch('application:quit');
   }
 });
+
+app.on('quit', () => {
+  commonder.dispatch('application:save-config');
+});
+
 app.on('activate', () => {
-  if (mainWindow === null) {
-    // create main window
-  }
+  if (cygnus.application.sizeOfWindows > 0) return;
+  commonder.dispatch('application:new-window', `file://${process.env.HOME}/base/index.html`);
 });
-app.on('ready', () => {
-  createProject(join(__dirname, 'examples/count'));
-});
+
+ipcHelper.onCommonder();
 
 ipc.on(CHANNEL, (event, type, payload) => {
   console.info(`[INFO][${CHANNEL}] received ${type} ${payload}`);

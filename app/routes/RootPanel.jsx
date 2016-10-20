@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
 import Welcome from '../components/UI/Welcome';
+import { Button } from 'antd';
 
 class RootPanel extends React.Component {
   render() {
@@ -9,7 +10,7 @@ class RootPanel extends React.Component {
       <div className="RootPanel" style={{ height: '100%' }}>
         {
           !project.sourcePath ?
-          <Welcome /> :
+          <Welcome dispatch={this.props.dispatch}/> :
           this.props.children
         }
       </div>
@@ -22,5 +23,5 @@ RootPanel.propTypes = {
 };
 
 export default connect(({ project }) => ({
-  project,
+  project
 }))(RootPanel);

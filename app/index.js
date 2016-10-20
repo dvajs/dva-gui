@@ -54,7 +54,6 @@ function repalceStateReducerEnhancer(reducer) {
 }
 
 const app = dva({
-  onAction: ipcMiddleware,
   onReducer: repalceStateReducerEnhancer,
 });
 
