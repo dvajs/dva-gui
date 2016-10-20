@@ -45,7 +45,7 @@ export const actionRelationsSelector = createSelector(
     const map = {};
     const actions = Object.keys(dispatches);
     actions.forEach(action => {
-      const { input, output } = dispatches[action];
+      const { input = [], output = [] } = dispatches[action];
       map[action] = map[action] || { input, output };
 
       output.forEach(id => {
