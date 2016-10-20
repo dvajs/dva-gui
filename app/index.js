@@ -1,8 +1,9 @@
 import { ipcRenderer as ipc } from 'electron';
 import path from 'path';
 
-const CHANNEL = 'dva-ast-api';
+const CHANNEL = 'request';
 const projectInfos = {};
+const ipcHelper = require('../main/ipc-helper')('');
 
 import dva from 'dva';
 import project from './models/project';
@@ -26,11 +27,10 @@ function ipcMiddleware() {
     console.info('[ACTION]: ', action.type, action.payload);
     if (action.type === 'ipc') {
       assert(action.method, 'ipcMiddleware: action should have method property');
-      ipc.send(
-        CHANNEL,
-        action.method,
-        { ...action.payload, sourcePath: projectInfos.sourcePath }
-      );
+      ipcHelper.send(action.method, {
+        sourcePath: projectInfos.sourcePath,
+        ...action.paylaod,
+      })
     }
     return next(action);
   };
@@ -89,5 +89,5 @@ if (process.env.env === 'dev') {
   projectInfos.sourcePath = path.resolve(appLocation);
 
   app._store.dispatch({ type: 'project/sync', payload: projectInfos });
-  app._store.dispatch({ type: 'ipc', method: 'project.loadAll' });
+  app._store.dispatch({ type: 'ipc', method: 'dva:loadAll' });
 }

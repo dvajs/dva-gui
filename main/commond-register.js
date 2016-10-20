@@ -11,9 +11,14 @@ class CommondRegisterMain {
   }
 
   dispatch(commondName, payload) {
-    const action = commondName.split(':');
-    const trigger = this.commondListeners[action[0]];
-    trigger.emit(commondName, payload);
+    try {
+      const action = commondName.split(':');
+      const trigger = this.commondListeners[action[0]];
+      trigger.emit(commondName, payload);
+    } catch(e) {
+      console.error('[Error] from: ', commondName);
+      console.error(e);
+    }
   }
 }
 

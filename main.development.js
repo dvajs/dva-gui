@@ -54,15 +54,17 @@ app.on('activate', () => {
 
 ipcHelper.onCommonder();
 
+/*
 ipc.on(CHANNEL, (event, type, payload) => {
   console.info(`[INFO][${CHANNEL}] received ${type} ${payload}`);
   try {
     const { sourcePath, filePath } = payload;
     const result = api.default(type, payload);
+    console.log(sourcePath, filePath);
 
     switch (type) {
       case 'project.loadAll':
-        mergeProject(sourcePath, result, /*isReplace*/true);
+        mergeProject(sourcePath, result, true);
         event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
         break;
       case 'models.create':
@@ -94,3 +96,4 @@ ipc.on(CHANNEL, (event, type, payload) => {
     event.sender.send(CHANNEL, 'error', e.message);
   }
 });
+*/

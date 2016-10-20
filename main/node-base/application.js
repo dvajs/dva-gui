@@ -8,6 +8,7 @@ const join = require('path').join;
 const workspace = require('../workspace');
 const { api, combine } = require('dva-ast');
 
+const projects = {};
 function mergeProject(sourcePath, data, isReplace) {
   if (isReplace) {
     projects[sourcePath] = data;
@@ -15,7 +16,6 @@ function mergeProject(sourcePath, data, isReplace) {
     projects[sourcePath] = Object.assign(projects[sourcePath] || {}, data);
   }
 }
-
 
 class Application {
   constructor() {
@@ -90,7 +90,9 @@ class Application {
     dialog.showOpenDialog({
       properties: ['openFile', 'openDirectory'],
     }, (dir) => {
-      focusedWindow.webContents.send('dva-ast-api', 'replaceState', { sourcePath: dir });
+      const result = api.default('project.loadAll', { sourcePath: dir[0] });
+      mergeProject(dir[0], result, /*isReplace*/true);
+      focusedWindow.webContents.send('dva-ast-api', 'replaceState', combine.default(projects[dir[0]]));
     });
   }
   saveFile() {
