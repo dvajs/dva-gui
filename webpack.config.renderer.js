@@ -1,4 +1,11 @@
+const webpack = require('atool-build/lib/webpack');
+
 module.exports = function (webpackConfig) {
+  webpackConfig.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      env: JSON.stringify(process.env.env),
+    },
+  }));
   webpackConfig.babel.plugins.push(['antd', {
     style: true,
   }], 'transform-runtime');
