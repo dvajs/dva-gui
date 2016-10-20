@@ -12,6 +12,7 @@ First, clone dva-ast.
 $ git clone github/repo/of/dva-ast
 $ cd dva-ast
 $ npm install
+$ npm run dev
 ```
 
 Then, go to dva-gui, install dependencies, `npm link` dva-ast and run build in watch mode.
@@ -20,14 +21,13 @@ Then, go to dva-gui, install dependencies, `npm link` dva-ast and run build in w
 $ cd path/to/dva-gui
 $ npm install
 $ npm link path/to/dva-ast
-$ npm run build -- --watch
 ```
 
 Finally, open another terminal tab and run:
 
 ```bash
 $ cd path/to/dva-gui
-$ npm start
+$ npm run dev
 ```
 
 ## LICENSE
