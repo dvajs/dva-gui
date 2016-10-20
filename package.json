@@ -61,5 +61,6 @@
     "gui"
   ],
   "author": "ChenCheng <sorrycc@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "theme": "./antd.config.js"
 }

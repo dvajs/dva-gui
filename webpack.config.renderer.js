@@ -1,6 +1,6 @@
 module.exports = function (webpackConfig) {
   webpackConfig.babel.plugins.push(['antd', {
-    style: 'css',
+    style: true,
   }], 'transform-runtime');
   const dev = {
     devtool: '#eval-source-map',

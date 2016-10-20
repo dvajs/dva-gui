@@ -8,9 +8,7 @@ module.exports = function (webpackConfig) {
   }));
 
   return Object.assign({}, webpackConfig, {
-    entry: {
-      main: './main.development.js',
-    },
+    entry: ['babel-polyfill', './main.development.js'],
     plugins: webpackConfig.plugins.filter(i =>
       !(i instanceof webpack.optimize.CommonsChunkPlugin)),
     output: {
