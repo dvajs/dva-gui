@@ -1,0 +1,42 @@
+@import "./theme.less";
+
+.dataflow-sidebar {
+  position: fixed;
+  top: 33px;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  border-left: 1px solid @graph-border-color;
+  background: @graph-bg-color;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.dataflow-form {
+  .block {
+    padding: 10px;
+    border-bottom: 1px solid #26465f;
+    position: relative;
+
+    .title {
+      padding: 0 0 10px 10px;
+      font-weight: bold;
+      display: block;
+    }
+
+    .operation {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: @graph-primary-color;
+      font-weight: normal;
+      z-index: 1;
+    }
+  }
+}
+
+
+.dataflow-action {
+  display: flex;
+  flex-direction: column;
+}

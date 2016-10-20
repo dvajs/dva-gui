@@ -5,3 +5,5 @@ npm-debug.log
 .DS_Stor
 tmp
 dist
+.DS_Store
+app.config.json
