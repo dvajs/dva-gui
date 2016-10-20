@@ -10,7 +10,7 @@ class RootPanel extends React.Component {
       <div className="RootPanel" style={{ height: '100%' }}>
         {
           !project.sourcePath ?
-          <Welcome dispatch={this.props.dispatch}/> :
+          <Welcome dispatch={this.props.dispatch} /> :
           this.props.children
         }
       </div>

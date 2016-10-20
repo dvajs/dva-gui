@@ -17,4 +17,4 @@ class GraphPanel extends React.Component {
   }
 }
 
-export default connect(({ dva }) => ({ dva }))(GraphPanel);
+export default GraphPanel;
