@@ -1,19 +1,8 @@
 const CygnusWindow = require('./window');
-const { app, Menu, BrowserWindow, dialog } = require('electron');
+const { app, Menu, dialog } = require('electron');
 const ApplicationMenu = require('./application-menu');
 const baseMenu = require('../base/base-menu');
 const fs = require('fs');
-const join = require('path').join;
-const { api, combine } = require('dva-ast');
-
-const projects = {};
-function mergeProject(sourcePath, data, isReplace) {
-  if (isReplace) {
-    projects[sourcePath] = data;
-  } else {
-    projects[sourcePath] = Object.assign(projects[sourcePath] || {}, data);
-  }
-}
 
 module.exports = {
   namespace: 'application',
@@ -29,7 +18,7 @@ module.exports = {
     try {
       ctx.config = require('../../app.config.json');
     } catch (err) {
-      ctx.config = {"window": { "width": 800, "height": 600, "x": 0, "y": 0 }};
+      ctx.config = { window: { width: 800, height: 600, x: 0, y: 0 } };
     }
   },
   services: {
@@ -57,12 +46,12 @@ module.exports = {
         fs.writeFile(`${process.env.HOME}/app.config.json`, JSON.stringify(ctx.config));
       }
     },
-    'application:open-file': ({ dispatch }, { event, payload }) => {
+    'application:open-file': ({ dispatch }) => {
       dialog.showOpenDialog({
         properties: ['openFile', 'openDirectory'],
       }, (dir) => {
-        dispatch('project.loadAll', { payload: {sourcePath: dir[0]} });
+        dispatch('project.loadAll', { payload: { sourcePath: dir[0] } });
       });
-    }
-  }
-}
+    },
+  },
+};
