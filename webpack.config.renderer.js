@@ -3,7 +3,7 @@ const webpack = require('atool-build/lib/webpack');
 module.exports = function (webpackConfig) {
   webpackConfig.plugins.push(new webpack.DefinePlugin({
     'process.env': {
-      env: JSON.stringify(process.env.env),
+      env: JSON.stringify(process.env.env || 'dev'),
     },
   }));
   webpackConfig.babel.plugins.push(['antd', {
