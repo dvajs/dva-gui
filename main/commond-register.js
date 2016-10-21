@@ -1,3 +1,5 @@
+const ipcHelper = require('./ipc-helper')('node');
+
 class CommondRegisterMain {
   constructor() {
     this.store = {};
@@ -17,13 +19,12 @@ class CommondRegisterMain {
   dispatch(commondName, payload) {
     try {
       const action = commondName.split(':');
-      if (!action[1]) {
-        const service = this.services[commondName];
-        service(payload);
-        return;
-      }
       const service = this.services[commondName];
-      service(this.store[action[0]], payload);
+      service({
+        ipc: ipcHelper,
+        dispatch: this.dispatch.bind(this),
+        ctx: this.store[action[0]],
+      }, payload);
     } catch(e) {
       console.error('[Error] from: ', commondName);
       console.error(e);
