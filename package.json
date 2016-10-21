@@ -12,6 +12,7 @@
     "build:main": "cross-env env=pro atool-build --config webpack.config.main.js",
     "start": "cross-env env=pro electron ./",
     "lint": "eslint app",
+    "test": "npm run lint",
     "package": "cross-env env=pro node -r babel-register -r babel-polyfill package.js"
   },
   "dependencies": {

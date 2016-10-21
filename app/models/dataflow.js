@@ -56,6 +56,6 @@ export default {
     hideActionFlow: (state) => {
       console.info('=====');
       return { ...state, showActionFlow: false };
-    }
+    },
   },
 };
