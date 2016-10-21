@@ -1,4 +1,5 @@
 const { api, combine } = require('dva-ast');
+
 const projects = {};
 function mergeProject(sourcePath, data, isReplace) {
   if (isReplace) {
@@ -8,17 +9,51 @@ function mergeProject(sourcePath, data, isReplace) {
   }
 }
 
+function removeAstFromProject(sourcePath, filePath) {
+  delete projects[sourcePath][filePath];
+}
+
 module.exports = {
   namespace: '',
   services: {
-    'project.loadAll': ({ ipc }, { event, payload }) => {
-      console.log('[INFO] Start load all');
-      const { sourcePath } = payload;
-      const result = api.default('project.loadAll', { sourcePath });
-      mergeProject(sourcePath, result, /*isReplace*/true);
-      const { BrowserWindow } = require('electron');
-      const focusedWindow = BrowserWindow.getAllWindows()[0];
-      if (focusedWindow) focusedWindow.webContents.send('request', 'replaceState', combine.default(projects[sourcePath]));
-    }
-  }
-}
+    'dva-ast-api': ({ ipc }, { payload }) => {
+      const { method } = payload;
+      console.info(`[INFO][dva-ast-api] received ${method} ${payload}`);
+
+      const { sourcePath, filePath } = payload;
+      console.log(payload);
+      console.log(sourcePath, filePath);
+      const result = api.default(method, payload);
+
+      switch (method) {
+        case 'project.loadAll':
+          mergeProject(sourcePath, result, true);
+          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          break;
+        case 'models.create':
+        case 'models.updateNamespace':
+        case 'models.updateState':
+        case 'models.addReducer':
+        case 'models.updateReducer':
+        case 'models.removeReducer':
+        case 'models.addEffect':
+        case 'models.updateEffect':
+        case 'models.removeEffect':
+        case 'models.addSubscription':
+        case 'models.updateSubscription':
+        case 'models.removeSubscription':
+          mergeProject(sourcePath, { [filePath]: result });
+          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          break;
+        case 'models.remove':
+          removeAstFromProject(sourcePath, filePath);
+          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          break;
+        default:
+          console.error(`[ERROR][dva-ast-api service] uncaught method ${method}`);
+          ipc.push('error', `uncaught method ${method}`);
+          break;
+      }
+    },
+  },
+};
