@@ -89,5 +89,5 @@ if (process.env.env === 'dev') {
   projectInfos.sourcePath = path.resolve(appLocation);
 
   app._store.dispatch({ type: 'project/sync', payload: projectInfos });
-  app._store.dispatch({ type: 'ipc', method: 'dva:loadAll' });
+  app._store.dispatch({ type: 'ipc', method: 'project.loadAll' });
 }

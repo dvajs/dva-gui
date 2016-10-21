@@ -1,20 +1,29 @@
 class CommondRegisterMain {
   constructor() {
-    this.commondListeners = {};
-    this.dispatch = this.dispatch.bind(this);
-    this.attach = this.attach.bind(this);
+    this.store = {};
+    this.services = {};
   }
 
-  attach(targetEmitter, targetName) {
-    const inlineTrigger = targetEmitter;
-    this.commondListeners[targetName] = inlineTrigger;
+  attach(target) {
+    if (!target.namespace) {
+      Object.assign(this.services, target.services);
+      return;
+    }
+    this.store[target.namespace] = target.context;
+    Object.assign(this.services, target.services);
+    target.initialize(target.context);
   }
 
   dispatch(commondName, payload) {
     try {
       const action = commondName.split(':');
-      const trigger = this.commondListeners[action[0]];
-      trigger.emit(commondName, payload);
+      if (!action[1]) {
+        const service = this.services[commondName];
+        service(payload);
+        return;
+      }
+      const service = this.services[commondName];
+      service(this.store[action[0]], payload);
     } catch(e) {
       console.error('[Error] from: ', commondName);
       console.error(e);

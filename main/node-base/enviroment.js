@@ -1,4 +1,3 @@
-const { Emitter } = require('event-kit');
 const application = require('./application');
 const dvaAst = require('./dva-ast-main');
 const commonder = require('../commond-register');
@@ -27,10 +26,9 @@ exports.setupCommonder = () => {
 };
 
 exports.setupApplication = () => {
-  application.initialize();
   enviroment.application = application;
-  commonder.attach(application.emitter, 'application');
-  commonder.attach(dvaAst.emitter, 'dva');
+  commonder.attach(application);
+  commonder.attach(dvaAst);
 };
 
 exports.setupWorkspace = () => {
