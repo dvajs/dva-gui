@@ -1,3 +1,5 @@
+const { BrowserWindow } = require('electron');
+
 class IpcHelper {
   constructor(type) {
     if (type === 'node') {
@@ -25,7 +27,6 @@ class IpcHelper {
   }
 
   push(action, payload) {
-    const { BrowserWindow } = require('electron');
     const focusedWindow = BrowserWindow.getFocusedWindow();
     focusedWindow.webContents.send('request', { action, payload });
   }

@@ -11,11 +11,14 @@ function mergeProject(sourcePath, data, isReplace) {
 module.exports = {
   namespace: '',
   services: {
-    'project.loadAll': ({ event, payload }) => {
+    'project.loadAll': ({ ipc }, { event, payload }) => {
+      console.log('[INFO] Start load all');
       const { sourcePath } = payload;
       const result = api.default('project.loadAll', { sourcePath });
       mergeProject(sourcePath, result, /*isReplace*/true);
-      event.sender.send('request', 'replaceState', combine.default(projects[sourcePath]));
+      const { BrowserWindow } = require('electron');
+      const focusedWindow = BrowserWindow.getAllWindows()[0];
+      if (focusedWindow) focusedWindow.webContents.send('request', 'replaceState', combine.default(projects[sourcePath]));
     }
   }
 }

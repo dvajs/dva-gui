@@ -12,7 +12,6 @@ class CygnusWindow extends EventEmitter {
     this.window = new BrowserWindow(options);
     this.send = this.sendMessage.bind(this);
     this.reload = this.window.reload();
-    this.destroy = this.destroy.bind(this);
 
     // Under dev mode, we need to open dev tools.
     if (process.env.env === 'dev') {
@@ -39,11 +38,6 @@ class CygnusWindow extends EventEmitter {
     return this.window.uniqueId;
   }
 
-  destroy() {
-    this.app.delWindow(this.window);
-    this.window = null;
-  }
-
   reload() {
     this.window.reload();
   }
@@ -51,6 +45,12 @@ class CygnusWindow extends EventEmitter {
   sendMessage(message, payload) {
     const { window } = this;
     window.webContents.send('message', message, payload);
+  }
+
+  onClose() {
+    this.ctx.windows.splice(this.window.uniqueId, 1);
+    this.ctx.sizeOfWindows -= 1;
+    this.window = null;
   }
 
   onMove(e) {
@@ -68,7 +68,7 @@ class CygnusWindow extends EventEmitter {
   handleEvent() {
     const { window } = this;
 
-    window.on('closed', (e) => { window.destroy(e); });
+    window.on('close', this.onClose.bind(this));
     window.on('move', this.onMove.bind(this));
     window.on('resize', this.onResize.bind(this));
   }
