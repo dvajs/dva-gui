@@ -1,5 +1,3 @@
-const { Emitter } = require('event-kit');
-
 class IpcHelper {
   constructor(type) {
     if (type === 'node') {

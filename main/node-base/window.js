@@ -2,7 +2,7 @@ const { BrowserWindow } = require('electron');
 const { EventEmitter } = require('events');
 
 class CygnusWindow extends EventEmitter {
-  constructor(app, options) {
+  constructor(ctx, options) {
     super();
 
     // while the initilazation is not finished, so we don't show the wnidow.
@@ -21,10 +21,10 @@ class CygnusWindow extends EventEmitter {
 
     // Dispatch the app to all the windows, so we can handle the whhole application
     // in any windows, and when we create a new window, it will be added to application.
-    this.app = app;
-    app.windows.push(this);
+    this.ctx = ctx;
+    ctx.windows.push(this);
     this.window.loadURL(options.path);
-    this.window.uniqueId = app.sizeOfWindows - 1;
+    this.window.uniqueId = ctx.sizeOfWindows - 1;
 
     this.window.on('ready-to-show', () => {
       this.handleEvent.bind(this)();
@@ -55,14 +55,14 @@ class CygnusWindow extends EventEmitter {
 
   onMove(e) {
     const position = e.sender.getPosition();
-    this.app.config.window.x = position[0];
-    this.app.config.window.y = position[1];
+    this.ctx.config.window.x = position[0];
+    this.ctx.config.window.y = position[1];
   }
 
   onResize(e) {
     const size = e.sender.getSize();
-    this.app.config.window.width = size[0];
-    this.app.config.window.height = size[1];
+    this.ctx.config.window.width = size[0];
+    this.ctx.config.window.height = size[1];
   }
 
   handleEvent() {

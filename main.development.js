@@ -48,7 +48,7 @@ app.on('quit', () => {
 });
 
 app.on('activate', () => {
-  if (cygnus.application.sizeOfWindows > 0) return;
+  if (cygnus.application.context.sizeOfWindows > 0) return;
   commonder.dispatch('application:new-window', `file://${process.env.HOME}/base/index.html`);
 });
 
