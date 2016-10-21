@@ -20,14 +20,19 @@ class CommondRegisterMain {
     try {
       const action = commondName.split(':');
       const service = this.services[commondName];
+      if (!service) {
+        ipcHelper.push('error', `${commondName} is not defined.`);
+        return;
+      }
       service({
         ipc: ipcHelper,
         dispatch: this.dispatch.bind(this),
         ctx: this.store[action[0]],
       }, payload);
-    } catch(e) {
+    } catch (e) {
       console.error('[Error] from: ', commondName);
       console.error(e);
+      ipcHelper.push('error', e.message);
     }
   }
 }
