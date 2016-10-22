@@ -26,6 +26,7 @@ function ipcMiddleware() {
   return next => (action) => {
     console.info('[ACTION]: ', action.type, action.payload);
     if (action.type === 'ipc') {
+      console.info('[IPC]: ', action.method);
       assert(action.method, 'ipcMiddleware: action should have method property');
       ipcHelper.send('dva-ast-api', {
         method: action.method,

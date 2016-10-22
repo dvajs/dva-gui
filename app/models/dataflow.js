@@ -1,8 +1,6 @@
 export default {
   namespace: 'dataflow',
-  state: {
-    hello: 123,
-  },
+  state: {"hello":123, "loading": true},
   subscriptions: {},
   effects: {
     *'showSubscriptionModal'({ payload }, { put }) {
@@ -57,5 +55,11 @@ export default {
       console.info('=====');
       return { ...state, showActionFlow: false };
     },
+
+    showComponentCreateModal: (state) => {
+      return { ...state, showComponentCreateModal: true }
+    },
+
+    hideComponentCreateModal: (state) => ({ ...state, showComponentCreateModal: false })
   },
 };

@@ -1,14 +1,19 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
-import { modelsGroupByComponentsSelector } from '../selectors/dva';
 import { createContainer } from 'rc-fringing';
 import { Modal } from 'antd';
+import {
+  modelsGroupByComponentsSelector,
+  componentByIdsSelector,
+} from '../selectors/dva';
+
 import Paper from '../components/Geometry/Paper';
 import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
 import DataFlowDetailPanel from './DataFlowDetailPanel';
+import ComponentCreateModal from '../components/UI/ComponentCreateModal';
 
 
 class DataFlowPanel extends React.Component {
@@ -86,10 +91,25 @@ class DataFlowPanel extends React.Component {
       payload: {},
     });
   }
+  removeComponent = (id) => {
+    const comp = this.props.componentByIds[id];
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'routeComponents.remove',
+      payload: {
+        filePath: comp.filePath,
+      },
+    });
+  }
+  showComponentCreateModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentCreateModal',
+      payload: {},
+    });
+  }
   render() {
     const { models, routeComponents, dataflow } = this.props;
-    if (!models.data) return null;
-
+    if (!models.data) return null; // TODO: 这段判断不合理
     const coordinates = this.calcCoordinates();
     const connections = this.analyzeConnections();
     const DataFlowPaper = this.drawPaper();
@@ -100,27 +120,20 @@ class DataFlowPanel extends React.Component {
           onActiveNodesChange={this.onActiveNodesChange}
         >
           <StateGroup coordinates={coordinates.state} />
-          <ModelGroup coordinates={coordinates.model} models={models.data} />
-          <ComponentGroup coordinates={coordinates.component} components={routeComponents} />
+          <ModelGroup coordinates={coordinates.model} models={models.data || []} />
+          <ComponentGroup
+            coordinates={coordinates.component}
+            components={routeComponents}
+            removeComponent={this.removeComponent}
+            showComponentCreateModal={this.showComponentCreateModal}
+          />
         </DataFlowPaper>
         <DataFlowSideBar
           activeNodeId={this.state.activeNodeId}
           models={models}
           routeComponents={routeComponents}
         />
-        <Modal
-          title="Data Flow Details"
-          wrapClassName="dataflow-modal"
-          width="90%"
-          visible={dataflow.showActionFlow}
-          okText="Confrim" cancelText="Cancel"
-          onOk={this.handleOk}
-          onCancel={this.hideActionFlow}
-          footer={null}
-          maskClosable={false}
-        >
-          <DataFlowDetailPanel />
-        </Modal>
+        <ComponentCreateModal />
       </div>
     );
   }
@@ -133,14 +146,16 @@ DataFlowPanel.propTypes = {
   models: PropTypes.object.isRequired,
   routeComponents: PropTypes.array.isRequired,
   modelsGroupByComponents: PropTypes.object.isRequired,
+  componentByIds: PropTypes.object.isRequired,
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     dataflow: state.dataflow,
     dispatches: state['dva.dispatches'],
     models: state['dva.models'],
     routeComponents: state['dva.routeComponents'],
     modelsGroupByComponents: modelsGroupByComponentsSelector(state),
+    componentByIds: componentByIdsSelector(state),
   })
 )(DataFlowPanel);

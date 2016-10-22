@@ -10,6 +10,13 @@ body {
   font-family: @code-family;
   color: @graph-font-color;
   background: @graph-bg-color;
+
+  a {
+    color: @graph-primary-color;
+    &:hover {
+      color: #ffbb33;
+    }
+  }
 }
 
 .ant-modal-content {
@@ -39,4 +46,14 @@ body {
 }
 .ant-dropdown-menu-item-divider {
   // background: @graph-border-color;
+}
+
+.ant-notification-notice {
+  background: rgb(12, 126, 187);
+}
+.ant-notification-notice-close {
+  color: #fff;
+}
+.ant-input-group-addon {
+  background: transparent;
 }

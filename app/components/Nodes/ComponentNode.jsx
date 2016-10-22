@@ -1,20 +1,8 @@
 import React, { PropTypes } from 'react';
+import { Icon, Popconfirm } from 'antd';
 import { createNode } from 'rc-fringing';
 import Rect from '../Geometry/Rect';
-import { Icon, Dropdown, Menu } from 'antd';
 
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="http://www.alipay.com/">Dispatch an action</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="http://www.taobao.com/">Show action flows</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">Delete</Menu.Item>
-  </Menu>
-);
 
 class ComponentNode extends React.Component {
   drawNode() {
@@ -42,7 +30,14 @@ class ComponentNode extends React.Component {
           <div className="node-icons">
             <Icon type="right-square-o" />
             <Icon type="folder" onClick={this.showActionFlow} />
-            <Icon type="delete" />
+            <Popconfirm
+              placement="topLeft"
+              title="Are you sure to delete this component?"
+              onConfirm={() => { this.props.removeComponent(this.props.data.id); }}
+              okText="Yes" cancelText="No"
+            >
+              <Icon type="delete" />
+            </Popconfirm>
           </div>
         </CNode>
       </div>
@@ -52,6 +47,7 @@ class ComponentNode extends React.Component {
 
 ComponentNode.propTypes = {
   data: PropTypes.object.isRequired,
+  removeComponent: PropTypes.func,
 };
 ComponentNode.contextTypes = {
   router: PropTypes.object.isRequired,
