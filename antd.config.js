@@ -4,7 +4,7 @@ module.exports = function getConfig() {
   return {
     // Color
     'normal-color': '#fff',
-    // 'primary-color': '#ef8d22',
+    'primary-color': '#ef8d22',
 
     // ------ Base & Require ------
     'body-background': '#0b1d35',
