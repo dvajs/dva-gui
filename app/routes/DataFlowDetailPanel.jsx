@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Button, Icon } from 'antd';
 import { createContainer } from 'rc-fringing';
 import { connect } from 'dva';
 import {
@@ -124,6 +125,14 @@ class DataFlowDetailPanel extends React.Component {
     const connections = this.calcConnections();
     return (
       <div>
+        <Button
+          type="ghost"
+          className="btn-primary-ghost"
+          style={{ position: 'fixed', top: 40, zIndex: 1000 }}
+          onClick={() => { this.context.router.push('/graph/dataflow/'); }}
+        >
+          <Icon type="left" /> Back
+        </Button>
         <DataFlowDetailPaper
           connections={connections}
         >
@@ -152,6 +161,10 @@ DataFlowDetailPanel.propTypes = {
   routeComponents: PropTypes.array,
   actionRelations: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
+};
+
+DataFlowDetailPanel.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 
 export default connect(
