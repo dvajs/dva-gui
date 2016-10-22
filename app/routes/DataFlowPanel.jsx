@@ -1,17 +1,19 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
+import { createContainer } from 'rc-fringing';
+import { Modal } from 'antd';
 import {
   modelsGroupByComponentsSelector,
   componentByIdsSelector,
 } from '../selectors/dva';
-import { createContainer } from 'rc-fringing';
-import { Modal } from 'antd';
+
 import Paper from '../components/Geometry/Paper';
 import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
 import DataFlowDetailPanel from './DataFlowDetailPanel';
+import ComponentCreateModal from '../components/UI/ComponentCreateModal';
 
 
 class DataFlowPanel extends React.Component {
@@ -99,10 +101,15 @@ class DataFlowPanel extends React.Component {
       },
     });
   }
+  showComponentCreateModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentCreateModal',
+      payload: {},
+    });
+  }
   render() {
     const { models, routeComponents, dataflow } = this.props;
-    if (!models.data) return null;
-
+    if (!models.data) return null; // TODO: 这段判断不合理
     const coordinates = this.calcCoordinates();
     const connections = this.analyzeConnections();
     const DataFlowPaper = this.drawPaper();
@@ -113,11 +120,12 @@ class DataFlowPanel extends React.Component {
           onActiveNodesChange={this.onActiveNodesChange}
         >
           <StateGroup coordinates={coordinates.state} />
-          <ModelGroup coordinates={coordinates.model} models={models.data} />
+          <ModelGroup coordinates={coordinates.model} models={models.data || []} />
           <ComponentGroup
             coordinates={coordinates.component}
             components={routeComponents}
             removeComponent={this.removeComponent}
+            showComponentCreateModal={this.showComponentCreateModal}
           />
         </DataFlowPaper>
         <DataFlowSideBar
@@ -125,19 +133,7 @@ class DataFlowPanel extends React.Component {
           models={models}
           routeComponents={routeComponents}
         />
-        <Modal
-          title="Data Flow Details"
-          wrapClassName="dataflow-modal"
-          width="90%"
-          visible={dataflow.showActionFlow}
-          okText="Confrim" cancelText="Cancel"
-          onOk={this.handleOk}
-          onCancel={this.hideActionFlow}
-          footer={null}
-          maskClosable={false}
-        >
-          <DataFlowDetailPanel />
-        </Modal>
+        <ComponentCreateModal />
       </div>
     );
   }
