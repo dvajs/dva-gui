@@ -18,9 +18,8 @@ class ModelNode extends React.Component {
     return this.node;
   }
   showActionFlow = () => {
-    window.__app._store.dispatch({
-      type: 'dataflow/showActionFlow',
-    });
+    const nodeId = encodeURIComponent(this.props.data.id);
+    this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
     const MNode = this.drawNode();
@@ -40,5 +39,9 @@ ModelNode.propTypes = {
   data: PropTypes.object,
   children: PropTypes.any,
   dispatch: PropTypes.func,
+};
+
+ModelNode.contextTypes = {
+  router: PropTypes.object,
 };
 export default connect(({ dataflow }) => ({ dataflow }))(ModelNode);

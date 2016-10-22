@@ -29,6 +29,10 @@ class ComponentNode extends React.Component {
     }
     return this.node;
   }
+  showActionFlow = () => {
+    const nodeId = encodeURIComponent(this.props.data.id);
+    this.context.router.push(`/graph/dataflow/${nodeId}`);
+  }
   render() {
     const CNode = this.drawNode();
     return (
@@ -36,9 +40,9 @@ class ComponentNode extends React.Component {
         <CNode className="node-component">
           { this.props.children }
           <div className="node-icons">
-            <Dropdown overlay={menu} trigger={['click']}>
-              <Icon type="bars" />
-            </Dropdown>
+            <Icon type="right-square-o" />
+            <Icon type="folder" onClick={this.showActionFlow} />
+            <Icon type="delete" />
           </div>
         </CNode>
       </div>
@@ -47,6 +51,9 @@ class ComponentNode extends React.Component {
 }
 
 ComponentNode.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.object.isRequired,
+};
+ComponentNode.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 export default ComponentNode;
