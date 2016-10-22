@@ -60,12 +60,16 @@
       left: 100%;
       top: 0;
       transform: translateY(-20%);
-      color: @graph-primary-color;
+      color: #fff;
+      background: @graph-bg-color;
       font-size: 16px;
       display: none;
 
       > i {
         padding: 0 2px;
+        &:hover {
+          color: @graph-primary-color;
+        }
       }
     }
   }

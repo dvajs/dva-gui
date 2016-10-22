@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
-import { modelsGroupByComponentsSelector } from '../selectors/dva';
+import {
+  modelsGroupByComponentsSelector,
+  componentByIdsSelector,
+} from '../selectors/dva';
 import { createContainer } from 'rc-fringing';
 import { Modal } from 'antd';
 import Paper from '../components/Geometry/Paper';
@@ -86,6 +89,16 @@ class DataFlowPanel extends React.Component {
       payload: {},
     });
   }
+  removeComponent = (id) => {
+    const comp = this.props.componentByIds[id];
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'routeComponents.remove',
+      payload: {
+        filePath: comp.filePath,
+      },
+    });
+  }
   render() {
     const { models, routeComponents, dataflow } = this.props;
     if (!models.data) return null;
@@ -101,7 +114,11 @@ class DataFlowPanel extends React.Component {
         >
           <StateGroup coordinates={coordinates.state} />
           <ModelGroup coordinates={coordinates.model} models={models.data} />
-          <ComponentGroup coordinates={coordinates.component} components={routeComponents} />
+          <ComponentGroup
+            coordinates={coordinates.component}
+            components={routeComponents}
+            removeComponent={this.removeComponent}
+          />
         </DataFlowPaper>
         <DataFlowSideBar
           activeNodeId={this.state.activeNodeId}
@@ -133,14 +150,16 @@ DataFlowPanel.propTypes = {
   models: PropTypes.object.isRequired,
   routeComponents: PropTypes.array.isRequired,
   modelsGroupByComponents: PropTypes.object.isRequired,
+  componentByIds: PropTypes.object.isRequired,
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     dataflow: state.dataflow,
     dispatches: state['dva.dispatches'],
     models: state['dva.models'],
     routeComponents: state['dva.routeComponents'],
     modelsGroupByComponents: modelsGroupByComponentsSelector(state),
+    componentByIds: componentByIdsSelector(state),
   })
 )(DataFlowPanel);

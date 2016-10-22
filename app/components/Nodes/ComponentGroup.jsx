@@ -30,7 +30,7 @@ class ComponentGroup extends React.Component {
         y: coordinates.y + 36 + i * 35,
       };
       return (
-        <ComponentNode key={comp.id} data={data}>
+        <ComponentNode key={comp.id} data={data} removeComponent={this.props.removeComponent} >
           {comp.name}
         </ComponentNode>
       );
@@ -53,5 +53,6 @@ class ComponentGroup extends React.Component {
 ComponentGroup.propTypes = {
   coordinates: PropTypes.object,
   components: PropTypes.array,
+  removeComponent: PropTypes.func,
 };
 export default ComponentGroup;

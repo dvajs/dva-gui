@@ -49,6 +49,10 @@ module.exports = {
           removeAstFromProject(sourcePath, filePath);
           ipc.push('replaceState', combine.default(projects[sourcePath]));
           break;
+        case 'routeComponents.remove':
+          removeAstFromProject(sourcePath, filePath);
+          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          break;
         default:
           console.error(`[ERROR][dva-ast-api service] uncaught method ${method}`);
           ipc.push('error', `uncaught method ${method}`);
