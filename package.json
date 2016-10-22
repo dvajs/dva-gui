@@ -23,8 +23,6 @@
     "dva-ast": "*",
     "electron": "^1.3.4",
     "electron-debug": "^1.0.1",
-    "electron-window": "^0.8.1",
-    "event-kit": "^2.1.0",
     "rc-fringing": "0.x",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",

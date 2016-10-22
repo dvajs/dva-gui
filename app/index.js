@@ -1,8 +1,9 @@
 import { ipcRenderer as ipc } from 'electron';
 import path from 'path';
 
-const CHANNEL = 'dva-ast-api';
+const CHANNEL = 'request';
 const projectInfos = {};
+const ipcHelper = require('../main/ipc-helper')('');
 
 import dva from 'dva';
 import project from './models/project';
@@ -22,15 +23,15 @@ function assert(check, msg) {
 }
 
 function ipcMiddleware() {
-  return next => action => {
+  return next => (action) => {
     console.info('[ACTION]: ', action.type, action.payload);
     if (action.type === 'ipc') {
       assert(action.method, 'ipcMiddleware: action should have method property');
-      ipc.send(
-        CHANNEL,
-        action.method,
-        { ...action.payload, sourcePath: projectInfos.sourcePath }
-      );
+      ipcHelper.send('dva-ast-api', {
+        method: action.method,
+        sourcePath: projectInfos.sourcePath,
+        ...action.payload,
+      });
     }
     return next(action);
   };
@@ -68,10 +69,11 @@ app.router(router);
 app.start(document.getElementById('__reactComponent'));
 window.__app = app;
 
-ipc.on(CHANNEL, (event, type, payload) => {
-  switch (type) {
+ipc.on(CHANNEL, (event, { action, payload }) => {
+  console.info(action)
+  switch (action) {
     case 'replaceState':
-      app._store.dispatch({ type, payload });
+      app._store.dispatch({ type: action, payload });
       return;
     case 'error':
       notification.error({
@@ -80,7 +82,7 @@ ipc.on(CHANNEL, (event, type, payload) => {
       });
       return;
     default:
-      assert(false, `caught type: ${type}`);
+      assert(false, `caught action: ${action}`);
   }
 });
 

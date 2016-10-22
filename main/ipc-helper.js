@@ -1,4 +1,4 @@
-const { Emitter } = require('event-kit');
+const { BrowserWindow } = require('electron');
 
 class IpcHelper {
   constructor(type) {
@@ -17,18 +17,20 @@ class IpcHelper {
     const { commonder } = cygnus;
     this.ipc.on('request', (event, { action, payload }) => {
       commonder.dispatch(action, { event, payload });
-    })
+    });
   }
 
   onRequest(callback) {
     this.ipc.on('request', (event, { action, payload }) => {
       callback({ type: action, event, payload });
-    })
+    });
   }
 
   push(action, payload) {
-    const { BrowserWindow } = require('electron');
-    const focusedWindow = BrowserWindow.getFocusedWindow();
+    let focusedWindow = BrowserWindow.getFocusedWindow();
+    if (!focusedWindow) {
+      focusedWindow = BrowserWindow.getAllWindows()[0];
+    }
     focusedWindow.webContents.send('request', { action, payload });
   }
 
@@ -37,6 +39,4 @@ class IpcHelper {
   }
 }
 
-module.exports = (type) => {
-  return new IpcHelper(type);
-}
+module.exports = type => new IpcHelper(type);
