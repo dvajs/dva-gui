@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Icon, Popconfirm } from 'antd';
+import { Icon, Tooltip, Popconfirm } from 'antd';
 import { createNode } from 'rc-fringing';
 import Rect from '../Geometry/Rect';
 
@@ -28,15 +28,24 @@ class ComponentNode extends React.Component {
         <CNode className="node-component">
           { this.props.children }
           <div className="node-icons">
-            <Icon type="right-square-o" />
-            <Icon type="folder" onClick={this.showActionFlow} />
+            <Tooltip placement="top" title={'dispatch a new action'}>
+              <Icon type="right-square-o" />
+            </Tooltip>
+            <Tooltip placement="top" title={'source code'}>
+              <Icon type="code-o" />
+            </Tooltip>
+            <Tooltip placement="top" title={'show detail action flow'}>
+              <Icon type="folder" onClick={this.showActionFlow} />
+            </Tooltip>
             <Popconfirm
-              placement="topLeft"
+              placement="right"
               title="Are you sure to delete this component?"
               onConfirm={() => { this.props.removeComponent(this.props.data.id); }}
               okText="Yes" cancelText="No"
             >
-              <Icon type="delete" />
+              <Tooltip placement="top" title={'delete'}>
+                <Icon type="delete" />
+              </Tooltip>
             </Popconfirm>
           </div>
         </CNode>

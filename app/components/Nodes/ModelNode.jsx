@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
 import { createNode } from 'rc-fringing';
+import { Icon, Tooltip } from 'antd';
 import Rect from '../Geometry/Rect';
-import { Icon } from 'antd';
+
 
 class ModelNode extends React.Component {
   drawNode() {
@@ -27,8 +28,12 @@ class ModelNode extends React.Component {
       <MNode className="node-model">
         { this.props.children }
         <div className="node-icons">
-          <Icon type="folder" onClick={this.showActionFlow} />
-          <Icon type="delete" />
+          <Tooltip placement="top" title={'show detail action flow'}>
+            <Icon type="folder" onClick={this.showActionFlow} />
+          </Tooltip>
+          <Tooltip placement="top" title={'delete'}>
+            <Icon type="delete" />
+          </Tooltip>
         </div>
       </MNode>
     );
