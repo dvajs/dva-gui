@@ -60,6 +60,9 @@ export default {
       return { ...state, showComponentCreateModal: true }
     },
 
-    hideComponentCreateModal: (state) => ({ ...state, showComponentCreateModal: false })
+    hideComponentCreateModal: (state) => ({ ...state, showComponentCreateModal: false }),
+
+    showModelCreateModal: state => ({ ...state, showModelCreateModal: true }),
+    hideModelCreateModal: state => ({ ...state, showModelCreateModal: false }),
   },
 };

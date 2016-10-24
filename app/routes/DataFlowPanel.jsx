@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
 import { createContainer } from 'rc-fringing';
-import { Modal } from 'antd';
 import {
+  modelByIdsSelector,
   modelsGroupByComponentsSelector,
   componentByIdsSelector,
 } from '../selectors/dva';
@@ -12,8 +12,8 @@ import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
-import DataFlowDetailPanel from './DataFlowDetailPanel';
 import ComponentCreateModal from '../components/UI/ComponentCreateModal';
+import ModelCreateModal from '../components/UI/ModelCreateModal';
 
 
 class DataFlowPanel extends React.Component {
@@ -107,6 +107,22 @@ class DataFlowPanel extends React.Component {
       payload: {},
     });
   }
+  showModelCreateModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showModelCreateModal',
+      payload: {},
+    });
+  }
+  removeModel = (id) => {
+    const m = this.props.modelByIds[id];
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.remove',
+      payload: {
+        filePath: m.filePath,
+      },
+    });
+  }
   render() {
     const { models, routeComponents, dataflow } = this.props;
     if (!models.data) return null; // TODO: 这段判断不合理
@@ -120,7 +136,12 @@ class DataFlowPanel extends React.Component {
           onActiveNodesChange={this.onActiveNodesChange}
         >
           <StateGroup coordinates={coordinates.state} />
-          <ModelGroup coordinates={coordinates.model} models={models.data || []} />
+          <ModelGroup
+            coordinates={coordinates.model}
+            models={models.data || []}
+            removeModel={this.removeModel}
+            showModelCreateModal={this.showModelCreateModal}
+          />
           <ComponentGroup
             coordinates={coordinates.component}
             components={routeComponents}
@@ -134,6 +155,7 @@ class DataFlowPanel extends React.Component {
           routeComponents={routeComponents}
         />
         <ComponentCreateModal />
+        <ModelCreateModal />
       </div>
     );
   }
@@ -142,8 +164,8 @@ class DataFlowPanel extends React.Component {
 DataFlowPanel.propTypes = {
   dispatch: PropTypes.func,
   dataflow: PropTypes.object,
-  dispatches: PropTypes.object.isRequired,
   models: PropTypes.object.isRequired,
+  modelByIds: PropTypes.object,
   routeComponents: PropTypes.array.isRequired,
   modelsGroupByComponents: PropTypes.object.isRequired,
   componentByIds: PropTypes.object.isRequired,
@@ -152,8 +174,8 @@ DataFlowPanel.propTypes = {
 export default connect(
   state => ({
     dataflow: state.dataflow,
-    dispatches: state['dva.dispatches'],
     models: state['dva.models'],
+    modelByIds: modelByIdsSelector(state),
     routeComponents: state['dva.routeComponents'],
     modelsGroupByComponents: modelsGroupByComponentsSelector(state),
     componentByIds: componentByIdsSelector(state),

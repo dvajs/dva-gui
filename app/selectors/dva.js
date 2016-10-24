@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-export const modelsSelector = state => state['dva.models'].data;
+export const modelsSelector = state => (state['dva.models'].data || []);
 export const dispatchesSelector = state => state['dva.dispatches'];
 export const componentsSelector = state => state['dva.routeComponents'];
 export const routerSelector = state => state['dva.router'];

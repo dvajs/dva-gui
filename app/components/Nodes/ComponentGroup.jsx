@@ -11,7 +11,7 @@ class ComponentGroup extends React.Component {
         () => ({
           getNodeData: () => ({
             id: 'ComponentGroup.Label',
-            x: coordinates.x - 10,
+            x: coordinates.x,
             y: coordinates.y,
           }),
           canDrag: () => false,

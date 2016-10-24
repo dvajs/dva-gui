@@ -1,6 +1,9 @@
 {
   "parser": "babel-eslint",
   "extends": "airbnb",
+  "rules": {
+    "react/forbid-prop-types": [0],
+  },
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
