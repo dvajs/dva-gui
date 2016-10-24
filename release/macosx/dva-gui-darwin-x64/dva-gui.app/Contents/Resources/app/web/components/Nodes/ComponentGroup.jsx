@@ -21,16 +21,38 @@ class ComponentGroup extends React.Component {
     }
     return this.label;
   }
+  drawCreateLink() {
+    const { coordinates } = this.props;
+    if (!this.createLink) {
+      this.createLink = createNode(
+        () => ({
+          getNodeData: () => ({
+            id: 'ComponentGroup.createLink',
+            x: coordinates.x + 100,
+            y: coordinates.y,
+          }),
+          canDrag: () => false,
+          canSelect: () => false,
+        })
+      )(Label);
+    }
+    return this.createLink;
+  }
   drawComponentList() {
     const { coordinates, components } = this.props;
     return components.map((comp, i) => {
       const data = {
         id: comp.id,
         x: coordinates.x,
-        y: coordinates.y + 36 + i * 35,
+        y: coordinates.y + 36 + (i * 35),
       };
       return (
-        <ComponentNode key={comp.id} data={data}>
+        <ComponentNode
+          key={comp.id}
+          data={data}
+          removeComponent={this.props.removeComponent}
+          showComponentDispatchModal={this.props.showComponentDispatchModal}
+        >
           {comp.name}
         </ComponentNode>
       );
@@ -41,9 +63,13 @@ class ComponentGroup extends React.Component {
     if (!coordinates) return null;
 
     const ComponentLabel = this.drawLabel();
+    const ComponentCreateLink = this.drawCreateLink();
     return (
       <div>
         <ComponentLabel>COMPONENTS</ComponentLabel>
+        <ComponentCreateLink>
+          <a href={null} onClick={this.props.showComponentCreateModal}>+ Create</a>
+        </ComponentCreateLink>
         { this.drawComponentList() }
       </div>
     );
@@ -53,5 +79,8 @@ class ComponentGroup extends React.Component {
 ComponentGroup.propTypes = {
   coordinates: PropTypes.object,
   components: PropTypes.array,
+  removeComponent: PropTypes.func,
+  showComponentCreateModal: PropTypes.func,
+  showComponentDispatchModal: PropTypes.func,
 };
 export default ComponentGroup;

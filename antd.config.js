@@ -4,7 +4,7 @@ module.exports = function getConfig() {
   return {
     // Color
     'normal-color': '#fff',
-    // 'primary-color': '#ef8d22',
+    'primary-color': '#ef8d22',
 
     // ------ Base & Require ------
     'body-background': '#0b1d35',
@@ -20,6 +20,11 @@ module.exports = function getConfig() {
     // Input
     // ---
     'input-bg': 'rgba(12, 126, 187, 0.2)',
+
+    // Form
+    // ---
+    'legend-color': '#c1c1c1',
+    'label-color': '#c1c1c1',
 
     // Tooltip
     // ---

@@ -1,17 +1,16 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
 import Welcome from '../components/UI/Welcome';
-import { Button } from 'antd';
 
 class RootPanel extends React.Component {
   render() {
-    const { project } = this.props;
+    const { project, dispatch } = this.props;
     return (
       <div className="RootPanel" style={{ height: '100%' }}>
         {
           !project.sourcePath ?
-          <Welcome dispatch={this.props.dispatch} /> :
-          this.props.children
+            <Welcome dispatch={dispatch} /> :
+            this.props.children
         }
       </div>
     );
@@ -20,8 +19,10 @@ class RootPanel extends React.Component {
 
 RootPanel.propTypes = {
   project: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 export default connect(({ project }) => ({
-  project
+  project,
 }))(RootPanel);

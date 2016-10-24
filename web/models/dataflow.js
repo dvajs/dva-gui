@@ -1,8 +1,6 @@
 export default {
   namespace: 'dataflow',
-  state: {
-    hello: 123,
-  },
+  state: {"hello":123, "loading": true},
   subscriptions: {},
   effects: {
     *'showSubscriptionModal'({ payload }, { put }) {
@@ -42,12 +40,10 @@ export default {
     ['hideReducerModal']: (state) => (
       { ...state, showReducerModal: false }
     ),
-
     ['testssss']: (state) => {
       console.log('===');
       return state;
     },
-
     ['showActionFlow']: (state) => {
       console.info('=====');
       return { ...state, showActionFlow: true };

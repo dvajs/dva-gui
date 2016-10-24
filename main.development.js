@@ -1,25 +1,9 @@
-const { app, ipcMain: ipc } = require('electron');
-const { join, resolve } = require('path');
+const { app } = require('electron');
 const electronDebug = require('electron-debug');
-const path = require('path');
-const { api, combine } = require('dva-ast');
-const { setupEnviroment, setupApplication, setupCommonder } = require('./app/node-base/enviroment');
-const commonder = require('./app/commond-register');
-const ipcHelper = require('./app/ipc-helper')('node');
-const CHANNEL = 'dva-ast-api';
-const projects = {};
-const home = path.resolve('.');
-function mergeProject(sourcePath, data, isReplace) {
-  if (isReplace) {
-    projects[sourcePath] = data;
-  } else {
-    projects[sourcePath] = Object.assign(projects[sourcePath] || {}, data);
-  }
-}
+const { setupEnviroment, setupApplication, setupCommonder } = require('./main/node-base/enviroment');
+const commonder = require('./main/commond-register');
+const ipcHelper = require('./main/ipc-helper')('node');
 
-function removeAstFromProject(sourcePath, filePath) {
-  delete projects[sourcePath][filePath];
-}
 setupCommonder();
 setupEnviroment();
 setupApplication();

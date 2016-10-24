@@ -8,8 +8,15 @@ import DataList from './DataList';
 import DataObject from './DataObject';
 
 class ModelForm extends React.Component {
-  onDeleteModel() {
-
+  onDeleteModel = () => {
+    const { filePath } = this.props.model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.remove',
+      payload: {
+        filePath,
+      },
+    });
   }
   updateState = (e) => {
     const _state = e.target.value;
@@ -186,7 +193,7 @@ class ModelForm extends React.Component {
           { model.namespace }
           <Popconfirm
             placement="topLeft"
-            title="Are you sure to delete this component?"
+            title="Are you sure to delete this model?"
             onConfirm={this.onDeleteModel}
             okText="Yes" cancelText="No"
           >

@@ -7,7 +7,7 @@
       (function() {
         const link = document.createElement('link');
         link.rel = 'stylesheet';         
-        link.href = typeof process !== 'undefined' && process.env.env === 'dev' ? 'http://localhost:8000/index.css' : './index.css';
+        link.href = typeof process !== 'undefined' && process.env.env === 'dev' ? 'http://localhost:8000/index.css' : '../dist/index.css';
         document.write(link.outerHTML);
       }());
     </script>
@@ -21,7 +21,7 @@
     (function() {
       ['common.js', 'index.js'].forEach(file => {
         const script = document.createElement('script');
-        script.src = typeof process !== 'undefined' && process.env.env === 'dev' ? `http://localhost:8000/${file}` : `./${file}`;
+        script.src = typeof process !== 'undefined' && process.env.env === 'dev' ? `http://localhost:8000/${file}` : `../dist/${file}`;
         document.write(script.outerHTML);
       })
     }());

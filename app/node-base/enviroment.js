@@ -30,7 +30,7 @@ exports.setupApplication = () => {
   enviroment.application = application;
   commonder.attach(application);
   commonder.attach(dvaAst);
-  commonder.attach(crashHandler);
+  //commonder.attach(crashHandler);
 };
 
 exports.setupWorkspace = () => {

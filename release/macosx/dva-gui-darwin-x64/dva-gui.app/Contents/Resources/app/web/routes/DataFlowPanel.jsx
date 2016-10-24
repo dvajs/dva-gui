@@ -1,14 +1,20 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
-import { modelsGroupByComponentsSelector } from '../selectors/dva';
 import { createContainer } from 'rc-fringing';
-import { Modal } from 'antd';
+import {
+  modelByIdsSelector,
+  modelsGroupByComponentsSelector,
+  componentByIdsSelector,
+} from '../selectors/dva';
+
 import Paper from '../components/Geometry/Paper';
 import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
-import DataFlowDetailPanel from './DataFlowDetailPanel';
+import ComponentCreateModal from '../components/UI/ComponentCreateModal';
+import ComponentDispatchModal from '../components/UI/ComponentDispatchModal';
+import ModelCreateModal from '../components/UI/ModelCreateModal';
 
 
 class DataFlowPanel extends React.Component {
@@ -24,7 +30,7 @@ class DataFlowPanel extends React.Component {
     });
   }
   calcCoordinates() {
-    const width = 1000;
+    const width = 800;
     const stateCoordinates = {
       x: width / 2.5,
       y: 0,
@@ -86,10 +92,47 @@ class DataFlowPanel extends React.Component {
       payload: {},
     });
   }
+  removeComponent = (id) => {
+    const comp = this.props.componentByIds[id];
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'routeComponents.remove',
+      payload: {
+        filePath: comp.filePath,
+      },
+    });
+  }
+  showComponentCreateModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentCreateModal',
+      payload: {},
+    });
+  }
+  showComponentDispatchModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentDispatchModal',
+      payload: {},
+    });
+  }
+  showModelCreateModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showModelCreateModal',
+      payload: {},
+    });
+  }
+  removeModel = (id) => {
+    const m = this.props.modelByIds[id];
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.remove',
+      payload: {
+        filePath: m.filePath,
+      },
+    });
+  }
   render() {
     const { models, routeComponents, dataflow } = this.props;
-    if (!models.data) return null;
-
+    if (!models.data) return null; // TODO: 这段判断不合理
     const coordinates = this.calcCoordinates();
     const connections = this.analyzeConnections();
     const DataFlowPaper = this.drawPaper();
@@ -100,27 +143,28 @@ class DataFlowPanel extends React.Component {
           onActiveNodesChange={this.onActiveNodesChange}
         >
           <StateGroup coordinates={coordinates.state} />
-          <ModelGroup coordinates={coordinates.model} models={models.data} />
-          <ComponentGroup coordinates={coordinates.component} components={routeComponents} />
+          <ModelGroup
+            coordinates={coordinates.model}
+            models={models.data || []}
+            removeModel={this.removeModel}
+            showModelCreateModal={this.showModelCreateModal}
+          />
+          <ComponentGroup
+            coordinates={coordinates.component}
+            components={routeComponents}
+            removeComponent={this.removeComponent}
+            showComponentCreateModal={this.showComponentCreateModal}
+            showComponentDispatchModal={this.showComponentDispatchModal}
+          />
         </DataFlowPaper>
         <DataFlowSideBar
           activeNodeId={this.state.activeNodeId}
           models={models}
           routeComponents={routeComponents}
         />
-        <Modal
-          title="Data Flow Details"
-          wrapClassName="dataflow-modal"
-          width="90%"
-          visible={dataflow.showActionFlow}
-          okText="Confrim" cancelText="Cancel"
-          onOk={this.handleOk}
-          onCancel={this.hideActionFlow}
-          footer={null}
-          maskClosable={false}
-        >
-          <DataFlowDetailPanel />
-        </Modal>
+        <ComponentCreateModal />
+        <ComponentDispatchModal activeNodeId={this.state.activeNodeId} />
+        <ModelCreateModal />
       </div>
     );
   }
@@ -129,18 +173,20 @@ class DataFlowPanel extends React.Component {
 DataFlowPanel.propTypes = {
   dispatch: PropTypes.func,
   dataflow: PropTypes.object,
-  dispatches: PropTypes.object.isRequired,
   models: PropTypes.object.isRequired,
+  modelByIds: PropTypes.object,
   routeComponents: PropTypes.array.isRequired,
   modelsGroupByComponents: PropTypes.object.isRequired,
+  componentByIds: PropTypes.object.isRequired,
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     dataflow: state.dataflow,
-    dispatches: state['dva.dispatches'],
     models: state['dva.models'],
+    modelByIds: modelByIdsSelector(state),
     routeComponents: state['dva.routeComponents'],
     modelsGroupByComponents: modelsGroupByComponentsSelector(state),
+    componentByIds: componentByIdsSelector(state),
   })
 )(DataFlowPanel);

@@ -24,9 +24,10 @@ function assert(check, msg) {
 }
 
 function ipcMiddleware() {
-  return next => action => {
+  return next => (action) => {
     console.info('[ACTION]: ', action.type, action.payload);
     if (action.type === 'ipc') {
+      console.info('[IPC]: ', action.method);
       assert(action.method, 'ipcMiddleware: action should have method property');
       ipcHelper.send(action.method, {
         sourcePath: projectInfos.sourcePath,
@@ -69,10 +70,11 @@ app.router(router);
 app.start(document.getElementById('__reactComponent'));
 window.__app = app;
 
-ipc.on(CHANNEL, (event, type, payload) => {
-  switch (type) {
+ipc.on(CHANNEL, (event, { action, payload }) => {
+  console.info(action)
+  switch (action) {
     case 'replaceState':
-      app._store.dispatch({ type, payload });
+      app._store.dispatch({ type: action, payload });
       return;
     case 'error':
       notification.error({
@@ -81,7 +83,7 @@ ipc.on(CHANNEL, (event, type, payload) => {
       });
       return;
     default:
-      assert(false, `caught type: ${type}`);
+      assert(false, `caught action: ${action}`);
   }
 });
 

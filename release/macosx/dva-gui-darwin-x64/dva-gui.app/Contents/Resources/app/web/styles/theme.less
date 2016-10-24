@@ -10,6 +10,13 @@ body {
   font-family: @code-family;
   color: @graph-font-color;
   background: @graph-bg-color;
+
+  a {
+    color: @graph-primary-color;
+    &:hover {
+      color: #ffbb33;
+    }
+  }
 }
 
 .ant-modal-content {
@@ -22,15 +29,33 @@ body {
   }
 }
 
-.ant-dropdown-menu {
+.ant-dropdown-menu,
+.ant-select-dropdown {
   background-color: rgb(12, 126, 187);
 }
-.ant-dropdown-menu-item {
+.ant-dropdown-menu-item,
+.ant-select-dropdown-menu-item {
   color: #fff;
   &:hover {
+    color: #fff;
     background-color: #2db7f5;
   }
+  &-active {
+    background-color: #2db7f5;
+  }
+  &-selected {
+    background-color: #2db7f5;
+  }
+  &-disabled {
+    color: #ccc;
+    &:hover {
+      color: #ccc;
+      background-color: transparent;
+    }
+  }
 }
+.ant-select-dropdown
+
 .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
   color: #fff;
 }
@@ -39,4 +64,29 @@ body {
 }
 .ant-dropdown-menu-item-divider {
   // background: @graph-border-color;
+}
+
+.ant-notification-notice {
+  background: rgb(12, 126, 187);
+}
+.ant-notification-notice-close {
+  color: #fff;
+}
+.ant-input-group-addon {
+  background: transparent;
+}
+
+.ant-popover-buttons {
+  .ant-btn-ghost {
+    border-color: #fff;
+
+    &:hover {
+      border-color: @graph-primary-color;
+    }
+  }
+}
+
+.ant-select-selection {
+  color: #fff;
+  background-color: rgba(12, 126, 187, 0.2);
 }

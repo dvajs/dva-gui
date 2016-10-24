@@ -1,20 +1,8 @@
 import React, { PropTypes } from 'react';
+import { Icon, Tooltip, Popconfirm } from 'antd';
 import { createNode } from 'rc-fringing';
 import Rect from '../Geometry/Rect';
-import { Icon, Dropdown, Menu } from 'antd';
 
-const menu = (
-  <Menu>
-    <Menu.Item key="0">
-      <a href="http://www.alipay.com/">Dispatch an action</a>
-    </Menu.Item>
-    <Menu.Item key="1">
-      <a href="http://www.taobao.com/">Show action flows</a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="3">Delete</Menu.Item>
-  </Menu>
-);
 
 class ComponentNode extends React.Component {
   drawNode() {
@@ -29,6 +17,10 @@ class ComponentNode extends React.Component {
     }
     return this.node;
   }
+  showActionFlow = () => {
+    const nodeId = encodeURIComponent(this.props.data.id);
+    this.context.router.push(`/graph/dataflow/${nodeId}`);
+  }
   render() {
     const CNode = this.drawNode();
     return (
@@ -36,9 +28,25 @@ class ComponentNode extends React.Component {
         <CNode className="node-component">
           { this.props.children }
           <div className="node-icons">
-            <Dropdown overlay={menu} trigger={['click']}>
-              <Icon type="bars" />
-            </Dropdown>
+            <Tooltip placement="top" title={'dispatch a new action'}>
+              <Icon type="right-square-o" onClick={this.props.showComponentDispatchModal} />
+            </Tooltip>
+            <Tooltip placement="top" title={'source code'}>
+              <Icon type="code-o" />
+            </Tooltip>
+            <Tooltip placement="top" title={'show detail action flow'}>
+              <Icon type="folder" onClick={this.showActionFlow} />
+            </Tooltip>
+            <Popconfirm
+              placement="right"
+              title="Are you sure to delete this component?"
+              onConfirm={() => { this.props.removeComponent(this.props.data.id); }}
+              okText="Yes" cancelText="No"
+            >
+              <Tooltip placement="top" title={'delete'}>
+                <Icon type="delete" />
+              </Tooltip>
+            </Popconfirm>
           </div>
         </CNode>
       </div>
@@ -47,6 +55,11 @@ class ComponentNode extends React.Component {
 }
 
 ComponentNode.propTypes = {
-  data: PropTypes.object,
+  data: PropTypes.object.isRequired,
+  removeComponent: PropTypes.func,
+  showComponentDispatchModal: PropTypes.func,
+};
+ComponentNode.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 export default ComponentNode;
