@@ -4,8 +4,11 @@ import EffectNode from './EffectNode';
 import ReducerNode from './ReducerNode';
 
 // only from effect
-const isOnlyFromEffect = (relation = {}) =>
-  relation.fromEffect && !relation.fromComponent && !relation.fromSubscription;
+const isOnlyFromEffectNotExist = (relation = {}) =>
+  relation.fromEffect
+    && !relation.fromComponent
+    && !relation.fromSubscription
+    && relation.toEffect.ghost;
 
 class ActionFlowGroup extends React.Component {
   getActionNode(action, coordinates) {
@@ -29,6 +32,7 @@ class ActionFlowGroup extends React.Component {
           ...coordinates,
           id: effect.id,
         }}
+        ghost={effect.ghost}
       />
     );
   }
@@ -41,6 +45,7 @@ class ActionFlowGroup extends React.Component {
           ...coordinates,
           id: reducer.id,
         }}
+        ghost={reducer.ghost}
       />
     );
   }
@@ -61,9 +66,10 @@ class ActionFlowGroup extends React.Component {
       const actions = (actionsGroupByModels[model.id] || []).sort();
       actions.forEach((action, i) => {
         const relation = actionRelations[action];
+        const effectAction = isOnlyFromEffectNotExist(relation);
         if (relation.input.length) {
           actionNodes.push(this.getActionNode(action, {
-            x: x + indent * (isOnlyFromEffect(relation) ? 1.5 : 0),
+            x: x + indent * (effectAction ? 1.5 : 0),
             y: __y + rowHeight * i,
           }));
         }
@@ -71,7 +77,7 @@ class ActionFlowGroup extends React.Component {
         const { toEffect, toReducer } = relation;
         if (toEffect) {
           effectNodes.push(this.getEffectNode(toEffect, {
-            x: x + indent * 1,
+            x: x + indent * (effectAction ? 2 : 1),
             y: __y + rowHeight * i,
           }));
         }

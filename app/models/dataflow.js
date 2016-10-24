@@ -13,6 +13,19 @@ export default {
         payload,
       });
     },
+    *'fetch'({ payload }, { put }) {
+      if (true) {
+        yield put({
+          type: 'dataflow/fetch/success',
+          payload,
+        });
+      } else {
+        yield put({
+          type: 'dataflow/fetch/fail',
+          payload,
+        });
+      }
+    },
   },
   reducers: {
     ['lalalalala']: state => state,

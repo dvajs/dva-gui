@@ -6,7 +6,7 @@ import {
   modelsSelector,
   componentsSelector,
   actionsGroupByModelsSelector,
-  actionRelationsSelector,
+  ghostedActionRelationsSelector,
 } from '../selectors/dva';
 
 import Paper from '../components/Geometry/Paper';
@@ -51,9 +51,9 @@ class DataFlowDetailPanel extends React.Component {
   }
   calcConnections() {
     const connections = [];
-    const { actionRelations, models } = this.props;
-    Object.keys(actionRelations).forEach(action => {
-      const relation = actionRelations[action];
+    const { ghostedActionRelations, models } = this.props;
+    Object.keys(ghostedActionRelations).forEach(action => {
+      const relation = ghostedActionRelations[action];
       if (relation.fromSubscription) {
         connections.push({
           from: { id: relation.fromSubscription.id, point: 'l' },
@@ -111,13 +111,18 @@ class DataFlowDetailPanel extends React.Component {
     if (!this.Paper) {
       this.Paper = createContainer({
         width: 1200,
-        height: 1000,
+        height: 2000,
       })(Paper);
     }
     return this.Paper;
   }
   render() {
-    const { models, routeComponents, actionsGroupByModels, actionRelations } = this.props;
+    const {
+      models,
+      routeComponents,
+      actionsGroupByModels,
+      ghostedActionRelations,
+    } = this.props;
     if (!models) return null;
 
     const DataFlowDetailPaper = this.drawPaper();
@@ -147,7 +152,7 @@ class DataFlowDetailPanel extends React.Component {
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}
             models={models}
-            actionRelations={actionRelations}
+            actionRelations={ghostedActionRelations}
             actionsGroupByModels={actionsGroupByModels}
           />
         </DataFlowDetailPaper>
@@ -159,8 +164,8 @@ class DataFlowDetailPanel extends React.Component {
 DataFlowDetailPanel.propTypes = {
   models: PropTypes.array,
   routeComponents: PropTypes.array,
-  actionRelations: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
+  ghostedActionRelations: PropTypes.object,
 };
 
 DataFlowDetailPanel.contextTypes = {
@@ -172,6 +177,6 @@ export default connect(
     models: modelsSelector(state),
     routeComponents: componentsSelector(state),
     actionsGroupByModels: actionsGroupByModelsSelector(state),
-    actionRelations: actionRelationsSelector(state),
+    ghostedActionRelations: ghostedActionRelationsSelector(state),
   })
 )(DataFlowDetailPanel);

@@ -1,4 +1,6 @@
 export default {
   namespace: 'dva.models',
-  state: {},
+  state: {
+    data: [],
+  },
 };
