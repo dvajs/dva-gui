@@ -50,6 +50,7 @@ module.exports = {
           ipc.push('replaceState', combine.default(projects[sourcePath]));
           break;
         case 'routeComponents.create':
+        case 'routeComponents.addDispatch':
           mergeProject(sourcePath, { [filePath]: result });
           ipc.push('replaceState', combine.default(projects[sourcePath]));
           break;

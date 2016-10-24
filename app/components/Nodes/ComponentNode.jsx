@@ -29,7 +29,7 @@ class ComponentNode extends React.Component {
           { this.props.children }
           <div className="node-icons">
             <Tooltip placement="top" title={'dispatch a new action'}>
-              <Icon type="right-square-o" />
+              <Icon type="right-square-o" onClick={this.props.showComponentDispatchModal} />
             </Tooltip>
             <Tooltip placement="top" title={'source code'}>
               <Icon type="code-o" />
@@ -57,6 +57,7 @@ class ComponentNode extends React.Component {
 ComponentNode.propTypes = {
   data: PropTypes.object.isRequired,
   removeComponent: PropTypes.func,
+  showComponentDispatchModal: PropTypes.func,
 };
 ComponentNode.contextTypes = {
   router: PropTypes.object.isRequired,

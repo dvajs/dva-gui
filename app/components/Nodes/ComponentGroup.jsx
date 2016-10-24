@@ -44,10 +44,15 @@ class ComponentGroup extends React.Component {
       const data = {
         id: comp.id,
         x: coordinates.x,
-        y: coordinates.y + 36 + i * 35,
+        y: coordinates.y + 36 + (i * 35),
       };
       return (
-        <ComponentNode key={comp.id} data={data} removeComponent={this.props.removeComponent} >
+        <ComponentNode
+          key={comp.id}
+          data={data}
+          removeComponent={this.props.removeComponent}
+          showComponentDispatchModal={this.props.showComponentDispatchModal}
+        >
           {comp.name}
         </ComponentNode>
       );
@@ -76,5 +81,6 @@ ComponentGroup.propTypes = {
   components: PropTypes.array,
   removeComponent: PropTypes.func,
   showComponentCreateModal: PropTypes.func,
+  showComponentDispatchModal: PropTypes.func,
 };
 export default ComponentGroup;
