@@ -29,7 +29,7 @@ class DataFlowPanel extends React.Component {
     });
   }
   calcCoordinates() {
-    const width = 1000;
+    const width = 800;
     const stateCoordinates = {
       x: width / 2.5,
       y: 0,

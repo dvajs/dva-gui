@@ -21,7 +21,7 @@ class DataFlowDetailPanel extends React.Component {
       components => actions flow => models
     */
     const opts = {
-      top: 0,
+      top: 30,
       left: 50,
       indent: 250,
       rowHeight: 60,
