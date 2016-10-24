@@ -29,10 +29,10 @@ module.exports = function getConfig() {
     // Tooltip
     // ---
     'tooltip-color': '#fff',
-    'tooltip-bg': 'rgb(12, 126, 187)',
+    'tooltip-bg': '#084667',
 
     // Popover
     // ---
-    'popover-bg': 'rgb(12, 126, 187)',
+    'popover-bg': '#084667',
   };
 };
