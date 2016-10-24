@@ -1,8 +1,8 @@
 const { app } = require('electron');
 const electronDebug = require('electron-debug');
-const { setupEnviroment, setupApplication, setupCommonder } = require('./main/node-base/enviroment');
-const commonder = require('./main/commond-register');
-const ipcHelper = require('./main/ipc-helper')('node');
+const { setupEnviroment, setupApplication, setupCommonder } = require('./app/node-base/enviroment');
+const commonder = require('./app/commond-register');
+const ipcHelper = require('./app/ipc-helper')('node');
 
 setupCommonder();
 setupEnviroment();
