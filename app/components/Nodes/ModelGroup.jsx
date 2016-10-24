@@ -21,16 +21,33 @@ class ModelGroup extends React.Component {
     }
     return this.label;
   }
+  drawCreateLink() {
+    const { coordinates } = this.props;
+    if (!this.createLink) {
+      this.createLink = createNode(
+        () => ({
+          getNodeData: () => ({
+            id: 'ModelGroup.createLink',
+            x: coordinates.x + 80,
+            y: coordinates.y,
+          }),
+          canDrag: () => false,
+          canSelect: () => false,
+        })
+      )(Label);
+    }
+    return this.createLink;
+  }
   drawModelList() {
     const { coordinates, models } = this.props;
     return models.map((m, i) => {
       const data = {
         id: m.id,
         x: coordinates.x,
-        y: coordinates.y + 36 + i * 35,
+        y: coordinates.y + 36 + (i * 35),
       };
       return (
-        <ModelNode key={m.id} data={data}>
+        <ModelNode key={m.id} data={data} removeModel={this.props.removeModel}>
           {m.namespace}
         </ModelNode>
       );
@@ -41,9 +58,13 @@ class ModelGroup extends React.Component {
     if (!coordinates) return null;
 
     const ModelLabel = this.drawLabel();
+    const ModelCreateLink = this.drawCreateLink();
     return (
       <div>
         <ModelLabel>MODELS</ModelLabel>
+        <ModelCreateLink>
+          <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
+        </ModelCreateLink>
         { this.drawModelList() }
       </div>
     );
@@ -53,5 +74,7 @@ class ModelGroup extends React.Component {
 ModelGroup.propTypes = {
   coordinates: PropTypes.object,
   models: PropTypes.array,
+  showModelCreateModal: PropTypes.func,
+  removeModel: PropTypes.func,
 };
 export default ModelGroup;
