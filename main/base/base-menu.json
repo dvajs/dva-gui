@@ -1,36 +1,16 @@
 [
   {
-    "label": "Cygnus",
+    "label": "Dva GUI",
     "submenu": [
       {
-        "label": "Quit",
-        "accelerator": "CmdOrCtrl+Q",
-        "commond": "application:quit"
-      }
-    ]
-  },
-  {
-    "label": "File",
-    "submenu": [
-      {
-        "label": "Open",
+        "label": "Open...",
         "accelerator": "CmdOrCtrl+O",
         "commond": "application:open-file"
       },
       {
-        "label": "Save",
-        "accelerator": "CmdOrCtrl+S",
-        "commond": "application:save-file"
-      }
-    ]
-  },
-  {
-    "label": "Window",
-    "submenu": [
-      { 
-        "label": "New",
-        "accelerator": "CmdOrCtrl+N",
-        "commod": "application:new-window"
+        "label": "Quit",
+        "accelerator": "CmdOrCtrl+Q",
+        "commond": "application:quit"
       }
     ]
   },
