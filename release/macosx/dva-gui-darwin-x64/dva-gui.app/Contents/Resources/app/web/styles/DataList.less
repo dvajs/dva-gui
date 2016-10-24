@@ -1,0 +1,47 @@
+@import "./theme.less";
+
+.datalist {
+  color: #fff;
+
+  .dataobject {
+    display: flex;
+
+    .dataobject-left,
+    .dataobject-right {
+      i {
+        font-size: 14px;
+        color: @graph-primary-color;
+        cursor: pointer;
+      }
+    }
+
+    .dataobject-right {
+      i {
+        visibility: hidden;
+      }
+    }
+
+    .dataobject-content {
+      padding: 0 5px;
+      width: 100%;
+
+      .object-value {
+        display: none;
+      }
+
+      &-open {
+        .object-value {
+          display: block;
+        }
+      }
+    }
+
+    &:hover {
+      .dataobject-right {
+        i {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}

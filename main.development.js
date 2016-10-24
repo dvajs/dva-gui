@@ -1,14 +1,14 @@
 const { app, ipcMain: ipc } = require('electron');
-const window = require('electron-window');
 const { join, resolve } = require('path');
-const { api, combine } = require('dva-ast');
 const electronDebug = require('electron-debug');
-const { setupEnviroment, setupApplication, setupCommonder } = require('./main/node-base/enviroment');
-const commonder = require('./main/commond-register');
-const ipcHelper = require('./main/ipc-helper')('node');
-process.env.HOME = __dirname;
+const path = require('path');
+const { api, combine } = require('dva-ast');
+const { setupEnviroment, setupApplication, setupCommonder } = require('./app/node-base/enviroment');
+const commonder = require('./app/commond-register');
+const ipcHelper = require('./app/ipc-helper')('node');
 const CHANNEL = 'dva-ast-api';
 const projects = {};
+const home = path.resolve('.');
 function mergeProject(sourcePath, data, isReplace) {
   if (isReplace) {
     projects[sourcePath] = data;
@@ -29,7 +29,7 @@ if (process.env.env === 'dev') {
 }
 
 function createWindow() {
-  commonder.dispatch('application:new-window', `file://${process.env.HOME}/main/base/index.html`);
+  commonder.dispatch('application:new-window', `file://${__dirname}/dist/index.html`);
 }
 
 app.on('ready', () => {
@@ -49,51 +49,7 @@ app.on('quit', () => {
 
 app.on('activate', () => {
   if (cygnus.application.context.sizeOfWindows > 0) return;
-  commonder.dispatch('application:new-window', `file://${process.env.HOME}/main/base/index.html`);
+  commonder.dispatch('application:new-window', `file://${__dirname}/dist/index.html`);
 });
 
 ipcHelper.onCommonder();
-
-/*
-ipc.on(CHANNEL, (event, type, payload) => {
-  console.info(`[INFO][${CHANNEL}] received ${type} ${payload}`);
-  try {
-    const { sourcePath, filePath } = payload;
-    const result = api.default(type, payload);
-    console.log(sourcePath, filePath);
-
-    switch (type) {
-      case 'project.loadAll':
-        mergeProject(sourcePath, result, true);
-        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
-        break;
-      case 'models.create':
-      case 'models.updateNamespace':
-      case 'models.updateState':
-      case 'models.addReducer':
-      case 'models.updateReducer':
-      case 'models.removeReducer':
-      case 'models.addEffect':
-      case 'models.updateEffect':
-      case 'models.removeEffect':
-      case 'models.addSubscription':
-      case 'models.updateSubscription':
-      case 'models.removeSubscription':
-        mergeProject(sourcePath, { [filePath]: result });
-        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
-        break;
-      case 'models.remove':
-        removeAstFromProject(sourcePath, filePath);
-        event.sender.send(CHANNEL, 'replaceState', combine.default(projects[sourcePath]));
-        break;
-      default:
-        console.error(`[ERROR][${CHANNEL}] uncaught type ${type}`);
-        break;
-    }
-  } catch(e) {
-    console.error(`[ERROR] ${e.message}`);
-    console.log(e.stack);
-    event.sender.send(CHANNEL, 'error', e.message);
-  }
-});
-*/

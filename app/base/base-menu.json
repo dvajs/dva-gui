@@ -1,0 +1,25 @@
+[
+  {
+    "label": "Cygnus",
+    "submenu": [
+      {
+        "label": "Open",
+        "accelerator": "CmdOrCtrl+O",
+        "commond": "application:open-file"
+      },
+      {
+        "label": "Quit",
+        "accelerator": "CmdOrCtrl+Q",
+        "commond": "application:quit"
+      }
+    ]
+  },
+  {
+    "label": "Help",
+    "submenu": [
+      {
+        "label": "Learn dva"
+      }
+    ]
+  }
+]
