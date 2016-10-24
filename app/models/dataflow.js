@@ -40,29 +40,17 @@ export default {
     ['hideReducerModal']: (state) => (
       { ...state, showReducerModal: false }
     ),
-
     ['testssss']: (state) => {
       console.log('===');
       return state;
     },
-
-    ['showActionFlow']: (state) => {
-      console.info('=====');
-      return { ...state, showActionFlow: true };
-    },
-
-    hideActionFlow: (state) => {
-      console.info('=====');
-      return { ...state, showActionFlow: false };
-    },
-
-    showComponentCreateModal: (state) => {
-      return { ...state, showComponentCreateModal: true }
-    },
-
-    hideComponentCreateModal: (state) => ({ ...state, showComponentCreateModal: false }),
-
+    showActionFlow: state => ({ ...state, showActionFlow: true }),
+    hideActionFlow: state => ({ ...state, showActionFlow: false }),
+    showComponentCreateModal: state => ({ ...state, showComponentCreateModal: true }),
+    hideComponentCreateModal: state => ({ ...state, showComponentCreateModal: false }),
     showModelCreateModal: state => ({ ...state, showModelCreateModal: true }),
     hideModelCreateModal: state => ({ ...state, showModelCreateModal: false }),
+    showComponentDispatchModal: state => ({ ...state, showComponentDispatchModal: true }),
+    hideComponentDispatchModal: state => ({ ...state, showComponentDispatchModal: false }),
   },
 };

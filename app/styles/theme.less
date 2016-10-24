@@ -29,15 +29,33 @@ body {
   }
 }
 
-.ant-dropdown-menu {
+.ant-dropdown-menu,
+.ant-select-dropdown {
   background-color: rgb(12, 126, 187);
 }
-.ant-dropdown-menu-item {
+.ant-dropdown-menu-item,
+.ant-select-dropdown-menu-item {
   color: #fff;
   &:hover {
+    color: #fff;
     background-color: #2db7f5;
   }
+  &-active {
+    background-color: #2db7f5;
+  }
+  &-selected {
+    background-color: #2db7f5;
+  }
+  &-disabled {
+    color: #ccc;
+    &:hover {
+      color: #ccc;
+      background-color: transparent;
+    }
+  }
 }
+.ant-select-dropdown
+
 .ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
   color: #fff;
 }
@@ -66,4 +84,9 @@ body {
       border-color: @graph-primary-color;
     }
   }
+}
+
+.ant-select-selection {
+  color: #fff;
+  background-color: rgba(12, 126, 187, 0.2);
 }

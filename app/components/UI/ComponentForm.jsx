@@ -6,7 +6,6 @@ import DispatchFormModal from './DispatchFormModal';
 
 class ComponentForm extends React.Component {
   onDeleteComponent = () => {
-    /*
     const { component } = this.props;
     this.props.dispatch({
       type: 'ipc',
@@ -15,7 +14,11 @@ class ComponentForm extends React.Component {
         filePath: component.filePath,
       },
     });
-    */
+  }
+  showComponentDispatchModal = () => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentDispatchModal',
+    });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -45,7 +48,13 @@ class ComponentForm extends React.Component {
             </Form.Item>
           </div>
           <div className="block">
-            <a className="operation">+ Create</a>
+            <a
+              href={null}
+              className="operation"
+              onClick={this.showComponentDispatchModal}
+            >
+              + Create
+            </a>
             <Form.Item label="Dispatches">
               <DataList
                 source={component.dispatches}
