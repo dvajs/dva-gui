@@ -8,7 +8,6 @@ import {
 } from '../selectors/dva';
 
 import Paper from '../components/Geometry/Paper';
-import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
@@ -64,8 +63,8 @@ class DataFlowPanel extends React.Component {
     });
 
     const { modelsGroupByComponents } = this.props;
-    Object.keys(modelsGroupByComponents).forEach(componentId => {
-      modelsGroupByComponents[componentId].forEach(modelId => {
+    Object.keys(modelsGroupByComponents).forEach((componentId) => {
+      modelsGroupByComponents[componentId].forEach((modelId) => {
         connections.push({
           from: { id: componentId, point: 'r' },
           to: { id: modelId, point: 'l' },
@@ -134,7 +133,7 @@ class DataFlowPanel extends React.Component {
     });
   }
   render() {
-    const { models, routeComponents, dataflow, modelByIds, componentByIds } = this.props;
+    const { models, routeComponents, modelByIds, componentByIds } = this.props;
     if (!models.data) return null; // TODO: 这段判断不合理
     const { activeNode = {} } = this.state;
     const coordinates = this.calcCoordinates();
@@ -185,7 +184,6 @@ class DataFlowPanel extends React.Component {
 
 DataFlowPanel.propTypes = {
   dispatch: PropTypes.func,
-  dataflow: PropTypes.object,
   models: PropTypes.object.isRequired,
   modelByIds: PropTypes.object,
   routeComponents: PropTypes.array.isRequired,
@@ -195,7 +193,6 @@ DataFlowPanel.propTypes = {
 
 export default connect(
   state => ({
-    dataflow: state.dataflow,
     models: state['dva.models'],
     modelByIds: modelByIdsSelector(state),
     routeComponents: state['dva.routeComponents'],
