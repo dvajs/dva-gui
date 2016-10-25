@@ -71,7 +71,7 @@ app.start(document.getElementById('__reactComponent'));
 window.__app = app;
 
 ipc.on(CHANNEL, (event, { action, payload }) => {
-  console.info(action)
+  console.info(action);
   switch (action) {
     case 'replaceState':
       app._store.dispatch({ type: action, payload });

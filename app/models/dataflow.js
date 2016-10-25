@@ -1,6 +1,6 @@
 export default {
   namespace: 'dataflow',
-  state: {"hello":123, "loading": true},
+  state: { hello: 123, loading: true },
   subscriptions: {},
   effects: {
     *'showSubscriptionModal'({ payload }, { put }) {
