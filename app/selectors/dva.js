@@ -80,22 +80,20 @@ export const ghostedActionRelationsSelector = createSelector(
       map[action] = {
         ...relation[action],
       };
-      const modeId = relation[action].modelId;
+      const modelId = relation[action].modelId;
       if (map[action].input && map[action].input.length) {
         if (!map[action].toEffect) {
           map[action].toEffect = {
             ghost: true,
-            modeId,
-            action,
-            id: `Effect${ID_SEP}ghosted${ID_SEP}${modeId}${ID_SEP}${action}`,
+            name: action,
+            id: `Effect${ID_SEP}ghosted${ID_SEP}${modelId}${ID_SEP}${action}`,
           };
         }
         if (!map[action].toReducer) {
           map[action].toReducer = {
             ghost: true,
-            modeId,
-            action,
-            id: `Reducer${ID_SEP}ghosted${ID_SEP}${modeId}${ID_SEP}${action}`,
+            name: action,
+            id: `Reducer${ID_SEP}ghosted${ID_SEP}${modelId}${ID_SEP}${action}`,
           };
         }
       }

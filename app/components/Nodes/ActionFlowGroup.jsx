@@ -23,29 +23,33 @@ class ActionFlowGroup extends React.Component {
       />
     );
   }
-  getEffectNode(effect, coordinates) {
+  getEffectNode(effect, coordinates, model) {
+    const onSave = (effect.ghost ? this.props.createEffect : this.props.updateEffect);
     return (
       <EffectNode
-        id={effect.id}
+        { ...effect }
         key={effect.id}
         data={{
           ...coordinates,
           id: effect.id,
         }}
-        ghost={effect.ghost}
+        namespace={model.namespace}
+        onSave={(values) => onSave(values, model)}
       />
     );
   }
-  getReducerNode(reducer, coordinates) {
+  getReducerNode(reducer, coordinates, model) {
+    const onSave = reducer.ghost ? this.props.createReducer : this.props.updateReducer;
     return (
       <ReducerNode
-        id={reducer.id}
+        { ...reducer }
         key={reducer.id}
         data={{
           ...coordinates,
           id: reducer.id,
         }}
-        ghost={reducer.ghost}
+        namespace={model.namespace}
+        onSave={(values) => onSave(values, model)}
       />
     );
   }
@@ -79,14 +83,14 @@ class ActionFlowGroup extends React.Component {
           effectNodes.push(this.getEffectNode(toEffect, {
             x: x + indent * (effectAction ? 2 : 1),
             y: __y + rowHeight * i,
-          }));
+          }, model));
         }
 
         if (toReducer) {
           reducerNodes.push(this.getReducerNode(toReducer, {
             x: x + indent * 2.5,
             y: __y + rowHeight * i,
-          }));
+          }, model));
         }
       });
       __y = __y + actions.length * rowHeight;

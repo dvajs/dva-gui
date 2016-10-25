@@ -15,6 +15,58 @@ import ComponentGroup from '../components/Nodes/ComponentGroup';
 import ActionFlowGroup from '../components/Nodes/ActionFlowGroup';
 
 class DataFlowDetailPanel extends React.Component {
+  createEffect = (effect, model) => {
+    console.log('create effect', effect, model);
+    const { namespace, filePath } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.addEffect',
+      payload: {
+        ...effect,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  updateEffect = (effect, model) => {
+    console.log('update effect', effect, model);
+    const { filePath, namespace } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.updateEffect',
+      payload: {
+        ...effect,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  createReducer = (reducer, model) => {
+    console.log('create reducer', reducer, model);
+    const { namespace, filePath } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.addReducer',
+      payload: {
+        ...reducer,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  updateReducer = (reducer, model) => {
+    console.log('update reducer', reducer, model);    
+    const { filePath, namespace } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.updateReducer',
+      payload: {
+        ...reducer,
+        namespace,
+        filePath,
+      },
+    });
+  }
   calcCoordinates() {
     /*
       from left to right
@@ -123,6 +175,12 @@ class DataFlowDetailPanel extends React.Component {
       actionsGroupByModels,
       ghostedActionRelations,
     } = this.props;
+    const {
+      createEffect,
+      createReducer,
+      updateEffect,
+      updateReducer,
+    } = this;
     if (!models) return null;
 
     const DataFlowDetailPaper = this.drawPaper();
@@ -154,6 +212,10 @@ class DataFlowDetailPanel extends React.Component {
             models={models}
             actionRelations={ghostedActionRelations}
             actionsGroupByModels={actionsGroupByModels}
+            createEffect={createEffect}
+            createReducer={createReducer}
+            updateEffect={updateEffect}
+            updateReducer={updateReducer}
           />
         </DataFlowDetailPaper>
       </div>
