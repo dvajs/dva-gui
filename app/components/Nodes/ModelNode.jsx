@@ -11,7 +11,7 @@ class ModelNode extends React.Component {
     if (!this.node) {
       this.node = createNode(
         () => ({
-          getNodeData: () => data,
+          getNodeData: () => ({ ...data, type: 'Model' }),
           canDrag: () => false,
         })
       )(Rect);

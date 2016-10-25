@@ -10,7 +10,7 @@ class ComponentNode extends React.Component {
     if (!this.node) {
       this.node = createNode(
         () => ({
-          getNodeData: () => data,
+          getNodeData: () => ({ ...data, type: 'Component' }),
           canDrag: () => false,
         })
       )(Rect);
