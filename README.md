@@ -3,46 +3,37 @@ A gui tool for dva.
 
 > Under Development
 
-## Getting Started
+## Development
 
-First, clone dva-gui.
-
+Install Dependencies
 ```
 $ git clone github/repo/of/dva-gui
 $ cd dva-gui
-```
-
-Get into `web` and install node modules.
-```
+$ npm run install
 $ cd web
 $ npm install
-```
-
-Then start dev or build.
-```
-$ npm run dev
-$ npm run build
-```
-
-Get into `app` and install node modules.
-```
-$ cd app
+$ cd ../app
 $ npm install
 ```
 
-Then start dev or build. You can just run the application under development.
+Run
 ```
+$ cd web
 $ npm run dev
-$ npm run build
+$ cd ../app
+$ npm run dev
 ```
 
-After you start build both `web` and `app`. Get back to the root of your dva-gui.
+## Build
 ```
-$ npm install
+$ cd web
+$ npm run build
+$ cd ../app
+$ npm run build
+$ cd ..
 $ npm run package
 ```
 
-Under the `release` directory, you can find the application and just run it as you wish.
 
 ## LICENSE
 
