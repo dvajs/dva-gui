@@ -51,7 +51,7 @@ class RouteForm extends React.Component {
         </div>
         <Form vertical>
           <div className="block">
-            <Form.Item label="Type">
+            <Form.Item>
               {
                 getFieldDecorator('type', { initialValue: route.type })(
                   <Select>
