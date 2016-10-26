@@ -2,55 +2,14 @@
   "name": "dva-gui",
   "version": "0.1.0",
   "description": "A gui tool for dva",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "hot:dora": "cross-env env=dev dora --plugins webpack?config=webpack.config.renderer.js,webpack-hmr,livereload",
-    "hot:start": "cross-env env=dev electron -r babel-register -r babel-polyfill ./main.development.js",
-    "dev": "concurrently --kill-others \"npm run hot:dora\" \"npm run hot:start\"",
-    "build": "npm run build:renderer && npm run build:main",
-    "build:renderer": "cross-env env=pro atool-build --config webpack.config.renderer.js",
-    "build:main": "cross-env env=pro atool-build --config webpack.config.main.js",
-    "start": "cross-env env=pro electron ./",
-    "lint": "eslint app",
-    "test": "npm run lint",
-    "package": "cross-env env=pro node -r babel-register -r babel-polyfill package.js"
-  },
-  "dependencies": {
-    "antd": "^2.1.0",
-    "babel-runtime": "^6.11.6",
-    "classnames": "^2.2.5",
-    "dva": "^1.0.0",
-    "dva-ast": "*",
-    "electron": "^1.3.4",
-    "electron-debug": "^1.0.1",
-    "rc-fringing": "0.x",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
-    "react-router": "^2.6.1",
-    "reselect": "^2.5.4"
+    "start": "cross-env env=pro electron ./dist",
+    "package": "cp ./app/src/base/package.json ./dist/package.json && cross-env env=pro node ./scripts/package.js"
   },
   "devDependencies": {
-    "atool-build": "^0.8.0",
-    "babel-eslint": "^6.0.4",
-    "babel-plugin-antd": "^0.5.0",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-plugin-transform-runtime": "^6.12.0",
-    "babel-polyfill": "^6.16.0",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-react": "^6.5.0",
-    "babel-preset-stage-0": "^6.5.0",
-    "babel-register": "^6.14.0",
-    "concurrently": "^2.2.0",
-    "cross-env": "^2.0.0",
-    "dora": "^0.4.3",
-    "dora-plugin-livereload": "^0.5.2",
-    "dora-plugin-webpack": "^0.8.1",
-    "dora-plugin-webpack-hmr": "^0.2.1",
-    "eslint": "^2.0.0",
-    "eslint-config-airbnb": "^7.0.0",
-    "eslint-plugin-jsx-a11y": "^0.6.2",
-    "eslint-plugin-react": "~4.3.0",
-    "pre-commit": "^1.1.3"
+    "electron": "^1.3.4",
+    "electron-packager": "^8.1.0"
   },
   "repository": {
     "type": "git",
@@ -63,8 +22,7 @@
   ],
   "author": "ChenCheng <sorrycc@gmail.com>",
   "license": "MIT",
-  "theme": "./antd.config.js",
-  "pre-commit": [
-    "lint"
-  ]
+  "dependencies": {
+    "cross-env": "^3.1.3"
+  }
 }
