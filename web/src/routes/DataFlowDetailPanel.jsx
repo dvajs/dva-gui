@@ -55,7 +55,7 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   updateReducer = (reducer, model) => {
-    console.log('update reducer', reducer, model);    
+    console.log('update reducer', reducer, model);
     const { filePath, namespace } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -88,14 +88,14 @@ class DataFlowDetailPanel extends React.Component {
 
     // actionFlowGroup next to componentGroup
     coordinates.actionFlowGroup = {
-      x: opts.left + opts.indent * 1,
+      x: opts.left + (opts.indent * 1),
       y: opts.top + 100,
       indent: opts.indent,
       rowHeight: opts.rowHeight,
     };
 
     coordinates.modelGroup = {
-      x: opts.left + opts.indent * 4,
+      x: opts.left + (opts.indent * 4),
       y: opts.top,
     };
 
@@ -104,7 +104,7 @@ class DataFlowDetailPanel extends React.Component {
   calcConnections() {
     const connections = [];
     const { ghostedActionRelations, models } = this.props;
-    Object.keys(ghostedActionRelations).forEach(action => {
+    Object.keys(ghostedActionRelations).forEach((action) => {
       const relation = ghostedActionRelations[action];
       if (relation.fromSubscription) {
         connections.push({
@@ -149,8 +149,8 @@ class DataFlowDetailPanel extends React.Component {
       }
     });
 
-    models.forEach(model => {
-      model.reducers.forEach(reducer => {
+    models.forEach((model) => {
+      model.reducers.forEach((reducer) => {
         connections.push({
           from: { id: reducer, point: 'r' },
           to: { id: model.id, point: 'l' },
@@ -228,6 +228,7 @@ DataFlowDetailPanel.propTypes = {
   routeComponents: PropTypes.array,
   actionsGroupByModels: PropTypes.object,
   ghostedActionRelations: PropTypes.object,
+  dispatch: PropTypes.func,
 };
 
 DataFlowDetailPanel.contextTypes = {
@@ -235,7 +236,7 @@ DataFlowDetailPanel.contextTypes = {
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     models: modelsSelector(state),
     routeComponents: componentsSelector(state),
     actionsGroupByModels: actionsGroupByModelsSelector(state),
