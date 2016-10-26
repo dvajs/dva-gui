@@ -38,6 +38,7 @@ $ npm run build
 
 After you start build both `web` and `app`. Get back to the root of your dva-gui.
 ```
+$ npm install
 $ npm run package
 ```
 
