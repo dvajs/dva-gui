@@ -7,6 +7,7 @@ import { getRouteConnections, getRouteNodesLDR } from '../utils/router';
 import Paper from '../components/Geometry/Paper';
 import RouteNode from '../components/Nodes/RouteNode';
 import Sidebar from '../components/UI/Sidebar';
+import RouteForm from '../components/UI/RouteForm';
 
 class RoutesPanel extends Component {
   constructor(...arg) {
@@ -44,6 +45,17 @@ class RoutesPanel extends Component {
       relativeLevel: value,
     });
   }
+  removeRoute = (id) => {
+    const { router } = this.props;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'router.remove',
+      payload: {
+        id,
+        filePath: router.filePath,
+      },
+    });
+  }
   render() {
     const { router } = this.props;
     if (!router.filePath) return null;
@@ -77,7 +89,11 @@ class RoutesPanel extends Component {
           </div>
         </RoutesPaper>
         <Sidebar visible={!!activeNode.id}>
-          Routes Sidebar
+          {
+            activeNode.id ?
+              <RouteForm route={router.routeByIds[activeNode.id]} onRemove={this.removeRoute} /> :
+              null
+          }
         </Sidebar>
       </div>
     );
