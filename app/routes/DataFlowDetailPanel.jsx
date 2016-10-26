@@ -6,7 +6,7 @@ import {
   modelsSelector,
   componentsSelector,
   actionsGroupByModelsSelector,
-  actionRelationsSelector,
+  ghostedActionRelationsSelector,
 } from '../selectors/dva';
 
 import Paper from '../components/Geometry/Paper';
@@ -15,6 +15,58 @@ import ComponentGroup from '../components/Nodes/ComponentGroup';
 import ActionFlowGroup from '../components/Nodes/ActionFlowGroup';
 
 class DataFlowDetailPanel extends React.Component {
+  createEffect = (effect, model) => {
+    console.log('create effect', effect, model);
+    const { namespace, filePath } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.addEffect',
+      payload: {
+        ...effect,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  updateEffect = (effect, model) => {
+    console.log('update effect', effect, model);
+    const { filePath, namespace } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.updateEffect',
+      payload: {
+        ...effect,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  createReducer = (reducer, model) => {
+    console.log('create reducer', reducer, model);
+    const { namespace, filePath } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.addReducer',
+      payload: {
+        ...reducer,
+        namespace,
+        filePath,
+      },
+    });
+  }
+  updateReducer = (reducer, model) => {
+    console.log('update reducer', reducer, model);    
+    const { filePath, namespace } = model;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'models.updateReducer',
+      payload: {
+        ...reducer,
+        namespace,
+        filePath,
+      },
+    });
+  }
   calcCoordinates() {
     /*
       from left to right
@@ -51,9 +103,9 @@ class DataFlowDetailPanel extends React.Component {
   }
   calcConnections() {
     const connections = [];
-    const { actionRelations, models } = this.props;
-    Object.keys(actionRelations).forEach(action => {
-      const relation = actionRelations[action];
+    const { ghostedActionRelations, models } = this.props;
+    Object.keys(ghostedActionRelations).forEach(action => {
+      const relation = ghostedActionRelations[action];
       if (relation.fromSubscription) {
         connections.push({
           from: { id: relation.fromSubscription.id, point: 'l' },
@@ -111,13 +163,24 @@ class DataFlowDetailPanel extends React.Component {
     if (!this.Paper) {
       this.Paper = createContainer({
         width: 1200,
-        height: 1000,
+        height: 2000,
       })(Paper);
     }
     return this.Paper;
   }
   render() {
-    const { models, routeComponents, actionsGroupByModels, actionRelations } = this.props;
+    const {
+      models,
+      routeComponents,
+      actionsGroupByModels,
+      ghostedActionRelations,
+    } = this.props;
+    const {
+      createEffect,
+      createReducer,
+      updateEffect,
+      updateReducer,
+    } = this;
     if (!models) return null;
 
     const DataFlowDetailPaper = this.drawPaper();
@@ -147,8 +210,12 @@ class DataFlowDetailPanel extends React.Component {
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}
             models={models}
-            actionRelations={actionRelations}
+            actionRelations={ghostedActionRelations}
             actionsGroupByModels={actionsGroupByModels}
+            createEffect={createEffect}
+            createReducer={createReducer}
+            updateEffect={updateEffect}
+            updateReducer={updateReducer}
           />
         </DataFlowDetailPaper>
       </div>
@@ -159,8 +226,8 @@ class DataFlowDetailPanel extends React.Component {
 DataFlowDetailPanel.propTypes = {
   models: PropTypes.array,
   routeComponents: PropTypes.array,
-  actionRelations: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
+  ghostedActionRelations: PropTypes.object,
 };
 
 DataFlowDetailPanel.contextTypes = {
@@ -172,6 +239,6 @@ export default connect(
     models: modelsSelector(state),
     routeComponents: componentsSelector(state),
     actionsGroupByModels: actionsGroupByModelsSelector(state),
-    actionRelations: actionRelationsSelector(state),
+    ghostedActionRelations: ghostedActionRelationsSelector(state),
   })
 )(DataFlowDetailPanel);

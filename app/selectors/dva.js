@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+const ID_SEP = '^^';
 
 export const modelsSelector = state => (state['dva.models'].data || []);
 export const dispatchesSelector = state => state['dva.dispatches'];
@@ -68,6 +69,37 @@ export const actionRelationsSelector = createSelector(
     });
     return map;
   },
+);
+
+
+export const ghostedActionRelationsSelector = createSelector(
+  [actionRelationsSelector], relation => {
+    const map = {};
+    const actions = Object.keys(relation);
+    actions.forEach(action => {
+      map[action] = {
+        ...relation[action],
+      };
+      const modelId = relation[action].modelId;
+      if (map[action].input && map[action].input.length) {
+        if (!map[action].toEffect) {
+          map[action].toEffect = {
+            ghost: true,
+            name: action,
+            id: `Effect${ID_SEP}ghosted${ID_SEP}${modelId}${ID_SEP}${action}`,
+          };
+        }
+        if (!map[action].toReducer) {
+          map[action].toReducer = {
+            ghost: true,
+            name: action,
+            id: `Reducer${ID_SEP}ghosted${ID_SEP}${modelId}${ID_SEP}${action}`,
+          };
+        }
+      }
+    });
+    return map;
+  }
 );
 
 /*
