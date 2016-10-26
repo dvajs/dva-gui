@@ -63,7 +63,6 @@ class RoutesPanel extends Component {
     const { activeNode = {} } = this.state;
     const { routeByIds = {}, tree } = router;
     const data = getRouteNodesLDR(tree);
-
     const connections = getRouteConnections(router.tree);
     const RoutesPaper = this.drawPaper();
     return (
@@ -74,17 +73,21 @@ class RoutesPanel extends Component {
         >
           <div className="view view-routerlayout">
             {
-              data.map((route, i) =>
-                <RouteNode
-                  key={route.id}
-                  data={{
-                    id: route.id,
-                    x: routeByIds[route.id].depth * 200,
-                    y: i * 40,
-                  }}
-                  route={routeByIds[route.id]}
-                />
-              )
+              data.map((route, i) => {
+                const depth = routeByIds[route.id].depth;
+                const gap = depth > 2 ? 200 : 100;
+                return (
+                  <RouteNode
+                    key={route.id}
+                    data={{
+                      id: route.id,
+                      x: depth * gap,
+                      y: i * 40,
+                    }}
+                    route={routeByIds[route.id]}
+                  />
+                );
+              })
             }
           </div>
         </RoutesPaper>
