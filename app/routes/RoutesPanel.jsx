@@ -6,12 +6,14 @@ import { getRouteConnections, getRouteNodesLDR } from '../utils/router';
 
 import Paper from '../components/Geometry/Paper';
 import RouteNode from '../components/Nodes/RouteNode';
+import Sidebar from '../components/UI/Sidebar';
+import RouteForm from '../components/UI/RouteForm';
 
 class RoutesPanel extends Component {
   constructor(...arg) {
     super(...arg);
     this.state = {
-      activeNodes: [],
+      activeNode: {},
     };
   }
   onSave(id, result) {
@@ -23,6 +25,12 @@ class RoutesPanel extends Component {
       },
     });
   }
+  onActiveNodesChange = (nodes) => {
+    const activeNode = nodes.length ? nodes[0] : null;
+    this.setState({
+      activeNode,
+    });
+  }
   drawPaper() {
     if (!this.Paper) {
       this.Paper = createContainer({
@@ -32,22 +40,27 @@ class RoutesPanel extends Component {
     }
     return this.Paper;
   }
-  handleActiveNodesChange(nodes) {
-    const values = nodes.map(n => n.id);
-    if (values.sort().toString() !== this.state.activeNodes.sort().toString()) {
-      this.setState({
-        activeNodes: nodes.map(n => n.id),
-      });
-    }
-  }
   handleReletiveLevelChange(value) {
     this.setState({
       relativeLevel: value,
     });
   }
+  removeRoute = (id) => {
+    const { router } = this.props;
+    this.props.dispatch({
+      type: 'ipc',
+      method: 'router.remove',
+      payload: {
+        id,
+        filePath: router.filePath,
+      },
+    });
+  }
   render() {
     const { router } = this.props;
     if (!router.filePath) return null;
+
+    const { activeNode = {} } = this.state;
     const { routeByIds = {}, tree } = router;
     const data = getRouteNodesLDR(tree);
 
@@ -57,7 +70,7 @@ class RoutesPanel extends Component {
       <div className="view view-graph">
         <RoutesPaper
           connections={connections}
-          onActiveNodesChange={this:: this.handleActiveNodesChange}
+          onActiveNodesChange={this.onActiveNodesChange}
         >
           <div className="view view-routerlayout">
             {
@@ -75,6 +88,13 @@ class RoutesPanel extends Component {
             }
           </div>
         </RoutesPaper>
+        <Sidebar visible={!!activeNode.id}>
+          {
+            activeNode.id ?
+              <RouteForm route={router.routeByIds[activeNode.id]} onRemove={this.removeRoute} /> :
+              null
+          }
+        </Sidebar>
       </div>
     );
   }

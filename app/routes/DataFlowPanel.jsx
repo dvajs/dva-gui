@@ -8,13 +8,15 @@ import {
 } from '../selectors/dva';
 
 import Paper from '../components/Geometry/Paper';
-import DataFlowSideBar from '../components/UI/DataFlowSideBar';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
 import ComponentCreateModal from '../components/UI/ComponentCreateModal';
 import ComponentDispatchModal from '../components/UI/ComponentDispatchModal';
 import ModelCreateModal from '../components/UI/ModelCreateModal';
+import Sidebar from '../components/UI/Sidebar';
+import ComponentForm from '../components/UI/ComponentForm';
+import ModelForm from '../components/UI/ModelForm';
 
 
 class DataFlowPanel extends React.Component {
@@ -24,9 +26,9 @@ class DataFlowPanel extends React.Component {
   }
   componentDidMount() {}
   onActiveNodesChange = (nodes) => {
-    const activeNodeId = nodes.length ? nodes[0].id : null;
+    const activeNode = nodes.length ? nodes[0] : null;
     this.setState({
-      activeNodeId,
+      activeNode,
     });
   }
   calcCoordinates() {
@@ -61,8 +63,8 @@ class DataFlowPanel extends React.Component {
     });
 
     const { modelsGroupByComponents } = this.props;
-    Object.keys(modelsGroupByComponents).forEach(componentId => {
-      modelsGroupByComponents[componentId].forEach(modelId => {
+    Object.keys(modelsGroupByComponents).forEach((componentId) => {
+      modelsGroupByComponents[componentId].forEach((modelId) => {
         connections.push({
           from: { id: componentId, point: 'r' },
           to: { id: modelId, point: 'l' },
@@ -131,8 +133,9 @@ class DataFlowPanel extends React.Component {
     });
   }
   render() {
-    const { models, routeComponents, dataflow } = this.props;
+    const { models, routeComponents, modelByIds, componentByIds } = this.props;
     if (!models.data) return null; // TODO: 这段判断不合理
+    const { activeNode = {} } = this.state;
     const coordinates = this.calcCoordinates();
     const connections = this.analyzeConnections();
     const DataFlowPaper = this.drawPaper();
@@ -157,13 +160,22 @@ class DataFlowPanel extends React.Component {
             showComponentDispatchModal={this.showComponentDispatchModal}
           />
         </DataFlowPaper>
-        <DataFlowSideBar
-          activeNodeId={this.state.activeNodeId}
-          models={models}
-          routeComponents={routeComponents}
-        />
+        <Sidebar visible={!!activeNode.id}>
+          {
+            activeNode.type === 'Component' ?
+              <ComponentForm component={componentByIds[activeNode.id]} /> :
+              null
+          }
+          {
+            activeNode.type === 'Model' ?
+              <ModelForm model={modelByIds[activeNode.id]} models={models} /> :
+              null
+          }
+        </Sidebar>
         <ComponentCreateModal />
-        <ComponentDispatchModal activeNodeId={this.state.activeNodeId} />
+        <ComponentDispatchModal
+          activeNodeId={this.state.activeNode ? this.state.activeNode.id : null}
+        />
         <ModelCreateModal />
       </div>
     );
@@ -172,7 +184,6 @@ class DataFlowPanel extends React.Component {
 
 DataFlowPanel.propTypes = {
   dispatch: PropTypes.func,
-  dataflow: PropTypes.object,
   models: PropTypes.object.isRequired,
   modelByIds: PropTypes.object,
   routeComponents: PropTypes.array.isRequired,
@@ -182,7 +193,6 @@ DataFlowPanel.propTypes = {
 
 export default connect(
   state => ({
-    dataflow: state.dataflow,
     models: state['dva.models'],
     modelByIds: modelByIdsSelector(state),
     routeComponents: state['dva.routeComponents'],
