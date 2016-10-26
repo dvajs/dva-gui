@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createNode } from 'rc-fringing';
-import { Form, Row, Col } from 'antd';
+import { Form, Row, Col, Icon } from 'antd';
 
 class RouterNode extends Component {
   render() {
@@ -27,9 +27,9 @@ class RouterNode extends Component {
         break;
       case 'Redirect':
         result = (<Row type="flex">
-          <Col className="node-router-primary">{attributes.from}</Col>
-          <Col className="node-router-primary">=></Col>
-          <Col className="node-router-primary">{attributes.to}</Col>
+          <Col className="node-router-primary">
+            {attributes.from} <Icon type="arrow-right" /> {attributes.to}
+          </Col>
         </Row>);
         break;
       default:
