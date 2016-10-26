@@ -25,6 +25,15 @@
     }
   }
 
+  .node-router {
+    .node-router-primary {
+      background: @graph-primary-color;
+    }
+    .node-router-normal {
+      background: @graph-primary-color;
+    }
+  }
+
   // a bit hacky here
   .controller-point {
     display: none;
@@ -127,12 +136,17 @@
 
   &-router {
     &-primary {
-      background-color: #077dbb;
+      background: rgba(17, 83, 167, .48);
       color: #fff;
+      border-right: 1px solid rgba(17, 83, 167, .48);
       .node-content-wrapper();
     }
     &-normal {
+      background: transparent;
       .node-content-wrapper();
+    }
+    &:hover *{
+      background: @graph-primary-color;
     }
   }
 }
