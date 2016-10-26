@@ -1,8 +1,8 @@
 const { app } = require('electron');
 const electronDebug = require('electron-debug');
-const { setupEnviroment, setupApplication, setupCommonder } = require('./main/node-base/enviroment');
-const commonder = require('./main/commond-register');
-const ipcHelper = require('./main/ipc-helper')('node');
+const { setupEnviroment, setupApplication, setupCommonder } = require('./src/node-base/enviroment');
+const commonder = require('./src/commond-register');
+const ipcHelper = require('./src/ipc-helper')('node');
 
 process.env.HOME = __dirname;
 
@@ -15,7 +15,7 @@ if (process.env.env === 'dev') {
 }
 
 function createWindow() {
-  commonder.dispatch('application:new-window', `file://${process.env.HOME}/main/base/index.html`);
+  commonder.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
 }
 
 app.on('ready', () => {
@@ -35,7 +35,7 @@ app.on('quit', () => {
 
 app.on('activate', () => {
   if (cygnus.application.context.sizeOfWindows > 0) return;
-  commonder.dispatch('application:new-window', `file://${process.env.HOME}/main/base/index.html`);
+  commonder.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
 });
 
 ipcHelper.onCommonder();

@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Dva GUI</title>
+    <title>Hello World!</title>
     <script>
       (function() {
         const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = typeof process !== 'undefined' && process.env.env === 'dev' ? 'http://localhost:8000/index.css' : '../dist/index.css';
+        link.rel = 'stylesheet';         
+        link.href = typeof process !== 'undefined' && process.env.env === 'dev' ? 'http://localhost:8000/index.css' : './index.css';
         document.write(link.outerHTML);
       }());
     </script>
   </head>
-
+  
   <body>
     <div style="height:100%;" id="__reactComponent"></div>
   </body>
@@ -21,7 +21,7 @@
     (function() {
       ['common.js', 'index.js'].forEach(file => {
         const script = document.createElement('script');
-        script.src = typeof process !== 'undefined' && process.env.env === 'dev' ? `http://localhost:8000/${file}` : `../dist/${file}`;
+        script.src = typeof process !== 'undefined' && process.env.env === 'dev' ? `http://localhost:8000/${file}` : `./${file}`;
         document.write(script.outerHTML);
       })
     }());

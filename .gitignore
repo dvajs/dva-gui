@@ -8,3 +8,9 @@ dist
 .DS_Store
 app.config.json
 main.js
+release
+app/node_modules
+app/dist
+app/app.config.json
+app/main.js
+web/node_modules

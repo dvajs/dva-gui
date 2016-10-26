@@ -20,6 +20,7 @@ class CommondRegisterMain {
     try {
       const action = commondName.split(':');
       const service = this.services[commondName];
+      console.log(this.services);
       if (!service) {
         ipcHelper.push('error', `${commondName} is not defined.`);
         return;

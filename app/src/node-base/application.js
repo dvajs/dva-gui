@@ -50,7 +50,7 @@ module.exports = {
       dialog.showOpenDialog({
         properties: ['openFile', 'openDirectory'],
       }, (dir) => {
-        dispatch('project.loadAll', { payload: { sourcePath: dir[0] } });
+        dispatch('dva-ast-api', { payload: { method: 'project.loadAll' ,sourcePath: dir[0] } });
       });
     },
   },

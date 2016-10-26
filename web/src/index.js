@@ -3,7 +3,7 @@ import path from 'path';
 
 const CHANNEL = 'request';
 const projectInfos = {};
-const ipcHelper = require('../main/ipc-helper')('');
+const ipcHelper = require('./utils/ipc-helper')('');
 
 import dva from 'dva';
 import project from './models/project';
@@ -15,6 +15,7 @@ import dataflow from './models/dataflow';
 import router from './router.jsx';
 import { message, notification } from 'antd';
 import './index.less';
+import './index.html';
 
 function assert(check, msg) {
   if (!check) {
@@ -88,7 +89,7 @@ ipc.on(CHANNEL, (event, { action, payload }) => {
 });
 
 if (process.env.env === 'dev') {
-  const appLocation = './examples/count';            // ./examples/count
+  const appLocation = '../web/examples/count';            // ./examples/count
   projectInfos.sourcePath = path.resolve(appLocation);
 
   app._store.dispatch({ type: 'project/sync', payload: projectInfos });

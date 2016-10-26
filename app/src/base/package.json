@@ -1,0 +1,17 @@
+{
+  "name": "dva-gui",
+  "version": "0.1.0",
+  "description": "A gui tool for dva",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dvajs/dva-gui"
+  },
+  "homepage": "https://github.com/dvajs/dva-gui",
+  "keywords": [
+    "dva",
+    "gui"
+  ],
+  "author": "ChenCheng <sorrycc@gmail.com>",
+  "license": "MIT"
+}

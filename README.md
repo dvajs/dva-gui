@@ -1,34 +1,48 @@
 # dva-gui
-
 A gui tool for dva.
 
-> Under development.
+> Under Development
 
 ## Getting Started
 
-First, clone dva-ast.
+First, clone dva-gui.
 
-```bash
-$ git clone github/repo/of/dva-ast
-$ cd dva-ast
+```
+$ git clone github/repo/of/dva-gui
+$ cd dva-gui
+```
+
+Get into `web` and install node modules.
+```
+$ cd web
 $ npm install
-$ npm run dev
 ```
 
-Then, go to dva-gui, install dependencies, `npm link` dva-ast and run build in watch mode.
+Then start dev or build.
+```
+$ npm run dev
+$ npm run build
+```
 
-```bash
-$ cd path/to/dva-gui
+Get into `app` and install node modules.
+```
+$ cd app
 $ npm install
-$ npm link path/to/dva-ast
 ```
 
-Finally, open another terminal tab and run:
-
-```bash
-$ cd path/to/dva-gui
+Then start dev or build. You can just run the application under development.
+```
 $ npm run dev
+$ npm run build
 ```
+
+After you start build both `web` and `app`. Get back to the root of your dva-gui.
+```
+$ npm install
+$ npm run package
+```
+
+Under the `release` directory, you can find the application and just run it as you wish.
 
 ## LICENSE
 

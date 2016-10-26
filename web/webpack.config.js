@@ -1,4 +1,5 @@
 const webpack = require('atool-build/lib/webpack');
+const path = require('path');
 
 module.exports = function (webpackConfig) {
   webpackConfig.plugins.push(new webpack.DefinePlugin({
@@ -16,7 +17,11 @@ module.exports = function (webpackConfig) {
 
   return Object.assign({}, webpackConfig, {
     entry: {
-      index: './app/index.js',
+      index: './src/index.js',
+    },
+    output: {
+      path: path.join(process.cwd(), '../dist/'),
+      filename: "[name].js",
     },
     externals: {
       canvas: 'canvas',
