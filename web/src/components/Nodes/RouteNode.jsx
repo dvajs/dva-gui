@@ -11,7 +11,11 @@ class RouterNode extends Component {
     switch (route.type) {
       case 'Route':
         result = (<Row type="flex">
-          <Col className="node-router-primary">{attributes.path}</Col>
+          {
+            attributes.path ?
+              <Col className="node-router-primary">{attributes.path}</Col> :
+              null
+          }
           <Col className="node-router-normal">{attributes.component}</Col>
         </Row>);
         break;
@@ -46,6 +50,6 @@ RouterNode.propTypes = {
 };
 
 export default createNode(() => ({
-  getNodeData: (props) => props.data,
+  getNodeData: props => props.data,
   canDrag: () => false,
 }))(Form.create()(RouterNode));
