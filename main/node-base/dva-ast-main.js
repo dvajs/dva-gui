@@ -23,12 +23,12 @@ module.exports = {
       const { sourcePath, filePath } = payload;
       console.log(payload);
       console.log(sourcePath, filePath);
-      const result = api.default(method, payload);
+      const result = api(method, payload);
 
       switch (method) {
         case 'project.loadAll':
           mergeProject(sourcePath, result, true);
-          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          ipc.push('replaceState', combine(projects[sourcePath]));
           break;
         case 'models.create':
         case 'models.updateNamespace':
@@ -43,20 +43,20 @@ module.exports = {
         case 'models.updateSubscription':
         case 'models.removeSubscription':
           mergeProject(sourcePath, { [filePath]: result });
-          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          ipc.push('replaceState', combine(projects[sourcePath]));
           break;
         case 'models.remove':
           removeAstFromProject(sourcePath, filePath);
-          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          ipc.push('replaceState', combine(projects[sourcePath]));
           break;
         case 'routeComponents.create':
         case 'routeComponents.addDispatch':
           mergeProject(sourcePath, { [filePath]: result });
-          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          ipc.push('replaceState', combine(projects[sourcePath]));
           break;
         case 'routeComponents.remove':
           removeAstFromProject(sourcePath, filePath);
-          ipc.push('replaceState', combine.default(projects[sourcePath]));
+          ipc.push('replaceState', combine(projects[sourcePath]));
           break;
         default:
           console.error(`[ERROR][dva-ast-api service] uncaught method ${method}`);

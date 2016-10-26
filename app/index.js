@@ -88,7 +88,7 @@ ipc.on(CHANNEL, (event, { action, payload }) => {
 });
 
 if (process.env.env === 'dev') {
-  const appLocation = './app';            // ./examples/count
+  const appLocation = './examples/count';            // ./examples/count
   projectInfos.sourcePath = path.resolve(appLocation);
 
   app._store.dispatch({ type: 'project/sync', payload: projectInfos });
