@@ -23,6 +23,7 @@ class ModelNode extends React.Component {
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
+    console.debug('Model Node Render');
     const MNode = this.drawNode();
     return (
       <MNode className="node-model">

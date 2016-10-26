@@ -4,6 +4,12 @@ import ComponentNode from './ComponentNode';
 import Label from '../Geometry/Label';
 
 class ComponentGroup extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.components !== this.props.components ||
+      nextProps.coordinates !== this.props.coordinates
+    );
+  }
   drawLabel() {
     const { coordinates } = this.props;
     if (!this.label) {
@@ -61,7 +67,7 @@ class ComponentGroup extends React.Component {
   render() {
     const { coordinates } = this.props;
     if (!coordinates) return null;
-
+    console.debug('ComponentGroup Render');
     const ComponentLabel = this.drawLabel();
     const ComponentCreateLink = this.drawCreateLink();
     return (

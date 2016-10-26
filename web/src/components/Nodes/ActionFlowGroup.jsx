@@ -11,6 +11,14 @@ const isOnlyFromEffectNotExist = (relation = {}) =>
     && relation.toEffect.ghost;
 
 class ActionFlowGroup extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.actionRelations !== this.props.actionRelations ||
+      nextProps.actionsGroupByModels !== this.props.actionsGroupByModels ||
+      nextProps.models !== this.props.models ||
+      nextProps.coordinates !== this.props.coordinates
+    );
+  }
   getActionNode(action, coordinates) {
     return (
       <ActionNode
@@ -63,7 +71,7 @@ class ActionFlowGroup extends React.Component {
     const actionNodes = [];
     const effectNodes = [];
     const reducerNodes = [];
-
+    console.debug('Action Flow Render');
     const { indent, rowHeight, x, y } = coordinates;
     let __y = y;
     models.forEach(model => {
