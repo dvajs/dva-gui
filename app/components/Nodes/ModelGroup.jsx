@@ -4,6 +4,12 @@ import ModelNode from './ModelNode';
 import Label from '../Geometry/Label';
 
 class ModelGroup extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return (
+      nextProps.models !== this.props.models ||
+      nextProps.coordinates !== this.props.coordinates
+    );
+  }
   drawLabel() {
     const { coordinates } = this.props;
     if (!this.label) {
@@ -56,7 +62,7 @@ class ModelGroup extends React.Component {
   render() {
     const { coordinates } = this.props;
     if (!coordinates) return null;
-
+    console.debug('Model Render');
     const ModelLabel = this.drawLabel();
     const ModelCreateLink = this.drawCreateLink();
     return (

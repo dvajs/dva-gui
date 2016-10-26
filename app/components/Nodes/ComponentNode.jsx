@@ -23,6 +23,7 @@ class ComponentNode extends React.Component {
   }
   render() {
     const CNode = this.drawNode();
+    console.debug('Component Node Render');
     return (
       <div>
         <CNode className="node-component">
