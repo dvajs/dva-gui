@@ -59,9 +59,19 @@ export const actionRelationsSelector = createSelector(
         }
       });
       input.forEach((id) => {
-        map[action].fromSubscription = subscriptionByIds[id];
-        map[action].fromEffect = effectByIds[id];
-        map[action].fromComponent = componentByIds[id];
+        if (subscriptionByIds[id]) {
+          map[action].fromSubscription = map[action].fromSubscription || [];
+          map[action].fromSubscription.push(subscriptionByIds[id]);
+        }
+        if (effectByIds[id]) {
+          map[action].fromEffect = map[action].fromEffect || [];
+          map[action].fromEffect.push(effectByIds[id]);
+        }
+        if (componentByIds[id]) {
+          map[action].fromComponent = map[action].fromComponent || [];
+          map[action].fromComponent.push(componentByIds[id]);
+        }
+
         const { modelId } = effectByIds[id] || subscriptionByIds[id] || {};
         if (modelId) {
           map[action].modelId = modelId;
