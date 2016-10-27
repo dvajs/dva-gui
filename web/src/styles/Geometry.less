@@ -88,24 +88,25 @@
     &.ghost {
       border-style: dashed;
       color: white;
-      transform: rotate(45deg);
       &:before {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
+        transform: translate(-50%, -50%);
         content: '+';
       }
     }
   }
   &-reducer {
     &.ghost:before {
-      color: orange;
+      color: @graph-primary-color;
     }
   }
   &-effect {
+    transform: rotate(45deg);
     &.ghost:before {
-      color: red;
+      color: @graph-primary-color;
+      transform: translate(-50%, -50%) rotate(-45deg)
     }
   }
   &-action, {
