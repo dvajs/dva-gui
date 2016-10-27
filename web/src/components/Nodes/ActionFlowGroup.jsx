@@ -35,14 +35,14 @@ class ActionFlowGroup extends React.Component {
     const onSave = (effect.ghost ? this.props.createEffect : this.props.updateEffect);
     return (
       <EffectNode
-        { ...effect }
+        {...effect}
         key={effect.id}
         data={{
           ...coordinates,
           id: effect.id,
         }}
         namespace={model.namespace}
-        onSave={(values) => onSave(values, model)}
+        onSave={values => onSave(values, model)}
       />
     );
   }
@@ -50,14 +50,14 @@ class ActionFlowGroup extends React.Component {
     const onSave = reducer.ghost ? this.props.createReducer : this.props.updateReducer;
     return (
       <ReducerNode
-        { ...reducer }
+        {...reducer}
         key={reducer.id}
         data={{
           ...coordinates,
           id: reducer.id,
         }}
         namespace={model.namespace}
-        onSave={(values) => onSave(values, model)}
+        onSave={values => onSave(values, model)}
       />
     );
   }
@@ -71,37 +71,37 @@ class ActionFlowGroup extends React.Component {
     const actionNodes = [];
     const effectNodes = [];
     const reducerNodes = [];
-    console.debug('Action Flow Render');
+
     const { indent, rowHeight, x, y } = coordinates;
-    let __y = y;
-    models.forEach(model => {
+    let tempY = y;
+    models.forEach((model) => {
       const actions = (actionsGroupByModels[model.id] || []).sort();
       actions.forEach((action, i) => {
         const relation = actionRelations[action];
         const effectAction = isOnlyFromEffectNotExist(relation);
         if (relation.input.length) {
           actionNodes.push(this.getActionNode(action, {
-            x: x + indent * (effectAction ? 1.5 : 0),
-            y: __y + rowHeight * i,
+            x: x + (indent * (effectAction ? 1.5 : 0)),
+            y: tempY + (rowHeight * i),
           }));
         }
 
         const { toEffect, toReducer } = relation;
         if (toEffect) {
           effectNodes.push(this.getEffectNode(toEffect, {
-            x: x + indent * (effectAction ? 2 : 1),
-            y: __y + rowHeight * i,
+            x: x + (indent * (effectAction ? 2 : 1)),
+            y: tempY + (rowHeight * i),
           }, model));
         }
 
         if (toReducer) {
           reducerNodes.push(this.getReducerNode(toReducer, {
-            x: x + indent * 2.5,
-            y: __y + rowHeight * i,
+            x: x + (indent * 2.5),
+            y: tempY + (rowHeight * i),
           }, model));
         }
       });
-      __y = __y + actions.length * rowHeight;
+      tempY += (actions.length * rowHeight);
     });
 
     return actionNodes.concat(effectNodes).concat(reducerNodes);
@@ -120,5 +120,9 @@ ActionFlowGroup.propTypes = {
   models: PropTypes.array,
   actionRelations: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
+  createEffect: PropTypes.func,
+  updateEffect: PropTypes.func,
+  createReducer: PropTypes.func,
+  updateReducer: PropTypes.func,
 };
 export default ActionFlowGroup;
