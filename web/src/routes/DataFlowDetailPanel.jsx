@@ -198,7 +198,7 @@ class DataFlowDetailPanel extends React.Component {
       filteredModels = [modelByIds[activeNode]];
 
       const filteredComponentsObject = {};
-      actionsGroupByModels[activeNode].forEach((action) => {
+      (actionsGroupByModels[activeNode] || []).forEach((action) => {
         (ghostedActionRelations[action].fromComponent || []).forEach((comp) => {
           filteredComponentsObject[comp.id] = comp;
         });
