@@ -19,7 +19,6 @@ import ActionFlowGroup from '../components/Nodes/ActionFlowGroup';
 
 class DataFlowDetailPanel extends React.Component {
   createEffect = (effect, model) => {
-    console.log('create effect', effect, model);
     const { namespace, filePath } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -32,7 +31,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   updateEffect = (effect, model) => {
-    console.log('update effect', effect, model);
     const { filePath, namespace } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -45,7 +43,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   createReducer = (reducer, model) => {
-    console.log('create reducer', reducer, model);
     const { namespace, filePath } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -58,7 +55,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   updateReducer = (reducer, model) => {
-    console.log('update reducer', reducer, model);
     const { filePath, namespace } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -234,10 +230,12 @@ class DataFlowDetailPanel extends React.Component {
           <ModelGroup
             coordinates={coordinates.modelGroup}
             models={filteredModels}
+            noCreateLink
           />
           <ComponentGroup
             coordinates={coordinates.componentGroup}
             components={filteredComponents}
+            noCreateLink
           />
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}

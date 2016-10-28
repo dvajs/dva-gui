@@ -65,17 +65,23 @@ class ComponentGroup extends React.Component {
     });
   }
   render() {
-    const { coordinates } = this.props;
+    const { coordinates, noCreateLink } = this.props;
     if (!coordinates) return null;
-    console.debug('ComponentGroup Render');
     const ComponentLabel = this.drawLabel();
-    const ComponentCreateLink = this.drawCreateLink();
+    let ComponentCreateLink;
+    if (!noCreateLink) {
+      ComponentCreateLink = this.drawCreateLink();
+    }
     return (
       <div>
         <ComponentLabel>COMPONENTS</ComponentLabel>
-        <ComponentCreateLink>
-          <a href={null} onClick={this.props.showComponentCreateModal}>+ Create</a>
-        </ComponentCreateLink>
+        {
+          noCreateLink ?
+            null :
+              <ComponentCreateLink>
+                <a href={null} onClick={this.props.showComponentCreateModal}>+ Create</a>
+              </ComponentCreateLink>
+        }
         { this.drawComponentList() }
       </div>
     );
@@ -88,5 +94,6 @@ ComponentGroup.propTypes = {
   removeComponent: PropTypes.func,
   showComponentCreateModal: PropTypes.func,
   showComponentDispatchModal: PropTypes.func,
+  noCreateLink: PropTypes.bool,
 };
 export default ComponentGroup;

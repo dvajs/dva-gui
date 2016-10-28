@@ -60,17 +60,23 @@ class ModelGroup extends React.Component {
     });
   }
   render() {
-    const { coordinates } = this.props;
+    const { coordinates, noCreateLink } = this.props;
     if (!coordinates) return null;
-    console.debug('Model Render');
     const ModelLabel = this.drawLabel();
-    const ModelCreateLink = this.drawCreateLink();
+    let ModelCreateLink;
+    if (!noCreateLink) {
+      ModelCreateLink = this.drawCreateLink();
+    }
     return (
       <div>
         <ModelLabel>MODELS</ModelLabel>
-        <ModelCreateLink>
-          <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
-        </ModelCreateLink>
+        {
+          noCreateLink ?
+            null :
+              <ModelCreateLink>
+                <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
+              </ModelCreateLink>
+        }
         { this.drawModelList() }
       </div>
     );
@@ -82,5 +88,6 @@ ModelGroup.propTypes = {
   models: PropTypes.array,
   showModelCreateModal: PropTypes.func,
   removeModel: PropTypes.func,
+  noCreateLink: PropTypes.bool,
 };
 export default ModelGroup;
