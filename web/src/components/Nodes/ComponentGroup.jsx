@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { createNode } from 'rc-fringing';
 import ComponentNode from './ComponentNode';
 import Label from '../Geometry/Label';
 
@@ -10,42 +9,8 @@ class ComponentGroup extends React.Component {
       nextProps.coordinates !== this.props.coordinates
     );
   }
-  drawLabel() {
-    const { coordinates } = this.props;
-    if (!this.label) {
-      this.label = createNode(
-        () => ({
-          getNodeData: () => ({
-            id: 'ComponentGroup.Label',
-            x: coordinates.x,
-            y: coordinates.y,
-          }),
-          canDrag: () => false,
-          canSelect: () => false,
-        })
-      )(Label);
-    }
-    return this.label;
-  }
-  drawCreateLink() {
-    const { coordinates } = this.props;
-    if (!this.createLink) {
-      this.createLink = createNode(
-        () => ({
-          getNodeData: () => ({
-            id: 'ComponentGroup.createLink',
-            x: coordinates.x + 100,
-            y: coordinates.y,
-          }),
-          canDrag: () => false,
-          canSelect: () => false,
-        })
-      )(Label);
-    }
-    return this.createLink;
-  }
   drawComponentList() {
-    const { coordinates, components } = this.props;
+    const { coordinates, components, noDetailLink } = this.props;
     return components.map((comp, i) => {
       const data = {
         id: comp.id,
@@ -58,6 +23,7 @@ class ComponentGroup extends React.Component {
           data={data}
           removeComponent={this.props.removeComponent}
           showComponentDispatchModal={this.props.showComponentDispatchModal}
+          noDetailLink={noDetailLink}
         >
           {comp.name}
         </ComponentNode>
@@ -65,17 +31,32 @@ class ComponentGroup extends React.Component {
     });
   }
   render() {
-    const { coordinates } = this.props;
+    const { coordinates, noCreateLink } = this.props;
     if (!coordinates) return null;
-    console.debug('ComponentGroup Render');
-    const ComponentLabel = this.drawLabel();
-    const ComponentCreateLink = this.drawCreateLink();
     return (
       <div>
-        <ComponentLabel>COMPONENTS</ComponentLabel>
-        <ComponentCreateLink>
-          <a href={null} onClick={this.props.showComponentCreateModal}>+ Create</a>
-        </ComponentCreateLink>
+        <Label
+          data={{
+            id: 'ComponentGroup.Label',
+            x: coordinates.x,
+            y: coordinates.y,
+          }}
+        >
+          COMPONENTS
+        </Label>
+        {
+          noCreateLink ?
+            null :
+              <Label
+                data={{
+                  id: 'ComponentGroup.createLink',
+                  x: coordinates.x + 100,
+                  y: coordinates.y,
+                }}
+              >
+                <a href={null} onClick={this.props.showComponentCreateModal}>+ Create</a>
+              </Label>
+        }
         { this.drawComponentList() }
       </div>
     );
@@ -88,5 +69,7 @@ ComponentGroup.propTypes = {
   removeComponent: PropTypes.func,
   showComponentCreateModal: PropTypes.func,
   showComponentDispatchModal: PropTypes.func,
+  noCreateLink: PropTypes.bool,
+  noDetailLink: PropTypes.bool,
 };
 export default ComponentGroup;

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 const ID_SEP = '^^';
 
 export const modelsSelector = state => (state['dva.models'].data || []);
@@ -45,11 +46,11 @@ export const actionRelationsSelector = createSelector(
   (dispatches, models, effectByIds, reducerByIds, subscriptionByIds, componentByIds) => {
     const map = {};
     const actions = Object.keys(dispatches);
-    actions.forEach(action => {
+    actions.forEach((action) => {
       const { input = [], output = [] } = dispatches[action];
       map[action] = map[action] || { input, output };
 
-      output.forEach(id => {
+      output.forEach((id) => {
         map[action].toEffect = effectByIds[id];
         map[action].toReducer = reducerByIds[id];
         const { modelId } = effectByIds[id] || reducerByIds[id] || {};
@@ -57,10 +58,20 @@ export const actionRelationsSelector = createSelector(
           map[action].modelId = modelId;
         }
       });
-      input.forEach(id => {
-        map[action].fromSubscription = subscriptionByIds[id];
-        map[action].fromEffect = effectByIds[id];
-        map[action].fromComponent = componentByIds[id];
+      input.forEach((id) => {
+        if (subscriptionByIds[id]) {
+          map[action].fromSubscription = map[action].fromSubscription || [];
+          map[action].fromSubscription.push(subscriptionByIds[id]);
+        }
+        if (effectByIds[id]) {
+          map[action].fromEffect = map[action].fromEffect || [];
+          map[action].fromEffect.push(effectByIds[id]);
+        }
+        if (componentByIds[id]) {
+          map[action].fromComponent = map[action].fromComponent || [];
+          map[action].fromComponent.push(componentByIds[id]);
+        }
+
         const { modelId } = effectByIds[id] || subscriptionByIds[id] || {};
         if (modelId) {
           map[action].modelId = modelId;
@@ -73,10 +84,10 @@ export const actionRelationsSelector = createSelector(
 
 
 export const ghostedActionRelationsSelector = createSelector(
-  [actionRelationsSelector], relation => {
+  [actionRelationsSelector], (relation) => {
     const map = {};
     const actions = Object.keys(relation);
-    actions.forEach(action => {
+    actions.forEach((action) => {
       map[action] = {
         ...relation[action],
       };
@@ -117,7 +128,7 @@ export const actionsGroupByModelsSelector = createSelector(
   (dispatches, actionsWithModelId) => {
     const map = {};
     const actions = Object.keys(dispatches);
-    actions.forEach(action => {
+    actions.forEach((action) => {
       const { modelId } = actionsWithModelId[action] || {};
       if (modelId) {
         map[modelId] = map[modelId] || [];
@@ -132,10 +143,10 @@ export const actionsGroupByModelsSelector = createSelector(
 // models groupBy components
 export const modelsGroupByComponentsSelector = createSelector(
   [componentsSelector, actionRelationsSelector],
-  (components = [], actionsWithModelId) => components.map(comp => {
+  (components = [], actionsWithModelId) => components.map((comp) => {
     const { dispatches, id } = comp;
     const map = {};
-    dispatches.forEach(action => {
+    dispatches.forEach((action) => {
       const { modelId } = actionsWithModelId[action] || {};
       if (modelId) {
         map[modelId] = true;

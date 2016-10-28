@@ -75,14 +75,17 @@ body {
 .ant-input-group-addon {
   background: transparent;
 }
+.ant-input[disabled] {
+  color: #fff;
+  background-color: transparent;
+}
+.ant-btn-ghost {
+  border-color: #fff;
+}
 
 .ant-popover-buttons {
-  .ant-btn-ghost {
-    border-color: #fff;
-
-    &:hover {
-      border-color: @graph-primary-color;
-    }
+  &:hover {
+    border-color: @graph-primary-color;
   }
 }
 .ant-popover-message > .anticon {

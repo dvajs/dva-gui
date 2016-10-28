@@ -22,18 +22,18 @@ class EffectForm extends Component {
           fill = (<Input
             type="textarea"
             autosize={{ minRows: 2, maxRows: 6 }}
-            { ...current.config }
+            {...current.config}
           />);
           break;
         case 'select':
-          fill = (<Select size="large" { ...current.config } >
+          fill = (<Select size="large" {...current.config} >
             { current.options.map(option =>
-              <Option value={option.value} key={option.value}>{option.label}</Option>)
+              <Select.Option value={option.value} key={option.value}>{option.label}</Select.Option>)
             }
           </Select>);
           break;
         default:
-          fill = <Input type="text" { ...current.config } />;
+          fill = <Input type="text" {...current.config} disabled />;
           break;
       }
       return (<Form.Item label={current.label || key} key={key}>
@@ -49,7 +49,7 @@ class EffectForm extends Component {
       { items }
       { operation && <div className="effect-form-operation">
         <Button type="primary" onClick={this.handleSave}>Save</Button>
-        <Button onClick={this.handleCancel}>Cancel</Button>
+        <Button type="ghost" onClick={this.handleCancel}>Cancel</Button>
       </div> }
     </Form>);
   }

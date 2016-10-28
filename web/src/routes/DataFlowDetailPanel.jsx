@@ -4,9 +4,12 @@ import { createContainer } from 'rc-fringing';
 import { connect } from 'dva';
 import {
   modelsSelector,
+  modelByIdsSelector,
   componentsSelector,
+  componentByIdsSelector,
   actionsGroupByModelsSelector,
   ghostedActionRelationsSelector,
+  modelsGroupByComponentsSelector,
 } from '../selectors/dva';
 
 import Paper from '../components/Geometry/Paper';
@@ -16,7 +19,6 @@ import ActionFlowGroup from '../components/Nodes/ActionFlowGroup';
 
 class DataFlowDetailPanel extends React.Component {
   createEffect = (effect, model) => {
-    console.log('create effect', effect, model);
     const { namespace, filePath } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -29,7 +31,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   updateEffect = (effect, model) => {
-    console.log('update effect', effect, model);
     const { filePath, namespace } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -42,7 +43,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   createReducer = (reducer, model) => {
-    console.log('create reducer', reducer, model);
     const { namespace, filePath } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -55,7 +55,6 @@ class DataFlowDetailPanel extends React.Component {
     });
   }
   updateReducer = (reducer, model) => {
-    console.log('update reducer', reducer, model);    
     const { filePath, namespace } = model;
     this.props.dispatch({
       type: 'ipc',
@@ -88,14 +87,14 @@ class DataFlowDetailPanel extends React.Component {
 
     // actionFlowGroup next to componentGroup
     coordinates.actionFlowGroup = {
-      x: opts.left + opts.indent * 1,
+      x: opts.left + (opts.indent * 1),
       y: opts.top + 100,
       indent: opts.indent,
       rowHeight: opts.rowHeight,
     };
 
     coordinates.modelGroup = {
-      x: opts.left + opts.indent * 4,
+      x: opts.left + (opts.indent * 4),
       y: opts.top,
     };
 
@@ -104,26 +103,32 @@ class DataFlowDetailPanel extends React.Component {
   calcConnections() {
     const connections = [];
     const { ghostedActionRelations, models } = this.props;
-    Object.keys(ghostedActionRelations).forEach(action => {
+    Object.keys(ghostedActionRelations).forEach((action) => {
       const relation = ghostedActionRelations[action];
       if (relation.fromSubscription) {
-        connections.push({
-          from: { id: relation.fromSubscription.id, point: 'l' },
-          to: { id: action, point: 't' },
+        relation.fromSubscription.forEach((sub) => {
+          connections.push({
+            from: { id: sub.id, point: 'l' },
+            to: { id: action, point: 't' },
+          });
         });
       }
 
       if (relation.fromComponent) {
-        connections.push({
-          from: { id: relation.fromComponent.id, point: 'r' },
-          to: { id: action, point: 'l' },
+        relation.fromComponent.forEach((comp) => {
+          connections.push({
+            from: { id: comp.id, point: 'r' },
+            to: { id: action, point: 'l' },
+          });
         });
       }
 
       if (relation.fromEffect) {
-        connections.push({
-          from: { id: relation.fromEffect.id, point: 'r' },
-          to: { id: action, point: 'l' },
+        relation.fromEffect.forEach((eff) => {
+          connections.push({
+            from: { id: eff.id, point: 'r' },
+            to: { id: action, point: 'l' },
+          });
         });
       }
 
@@ -149,8 +154,8 @@ class DataFlowDetailPanel extends React.Component {
       }
     });
 
-    models.forEach(model => {
-      model.reducers.forEach(reducer => {
+    models.forEach((model) => {
+      model.reducers.forEach((reducer) => {
         connections.push({
           from: { id: reducer, point: 'r' },
           to: { id: model.id, point: 'l' },
@@ -171,9 +176,12 @@ class DataFlowDetailPanel extends React.Component {
   render() {
     const {
       models,
+      modelByIds,
       routeComponents,
+      componentByIds,
       actionsGroupByModels,
       ghostedActionRelations,
+      modelsGroupByComponents,
     } = this.props;
     const {
       createEffect,
@@ -181,7 +189,27 @@ class DataFlowDetailPanel extends React.Component {
       updateEffect,
       updateReducer,
     } = this;
-    if (!models) return null;
+    const { activeNode } = this.props.params;
+
+    let filteredModels = models;
+    let filteredComponents = routeComponents;
+    // let filteredComponents = routeComponents;
+    if (modelByIds[activeNode]) {
+      filteredModels = [modelByIds[activeNode]];
+
+      const filteredComponentsObject = {};
+      (actionsGroupByModels[activeNode] || []).forEach((action) => {
+        (ghostedActionRelations[action].fromComponent || []).forEach((comp) => {
+          filteredComponentsObject[comp.id] = comp;
+        });
+      });
+
+      filteredComponents = Object.keys(filteredComponentsObject)
+        .map(key => filteredComponentsObject[key]);
+    } else if (componentByIds[activeNode]) {
+      filteredComponents = [componentByIds[activeNode]];
+      filteredModels = modelsGroupByComponents[activeNode].map(modelId => modelByIds[modelId]);
+    }
 
     const DataFlowDetailPaper = this.drawPaper();
     const coordinates = this.calcCoordinates();
@@ -191,7 +219,7 @@ class DataFlowDetailPanel extends React.Component {
         <Button
           type="ghost"
           className="btn-primary-ghost"
-          style={{ position: 'fixed', top: 40, zIndex: 1000 }}
+          style={{ position: 'fixed', top: 60, zIndex: 1000 }}
           onClick={() => { this.context.router.push('/graph/dataflow/'); }}
         >
           <Icon type="left" /> Back
@@ -201,15 +229,19 @@ class DataFlowDetailPanel extends React.Component {
         >
           <ModelGroup
             coordinates={coordinates.modelGroup}
-            models={models}
+            models={filteredModels}
+            noCreateLink
+            noDetailLink
           />
           <ComponentGroup
             coordinates={coordinates.componentGroup}
-            components={routeComponents}
+            components={filteredComponents}
+            noCreateLink
+            noDetailLink
           />
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}
-            models={models}
+            models={filteredModels}
             actionRelations={ghostedActionRelations}
             actionsGroupByModels={actionsGroupByModels}
             createEffect={createEffect}
@@ -224,10 +256,16 @@ class DataFlowDetailPanel extends React.Component {
 }
 
 DataFlowDetailPanel.propTypes = {
+  params: PropTypes.object,
   models: PropTypes.array,
+  modelByIds: PropTypes.object,
   routeComponents: PropTypes.array,
+  componentByIds: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
   ghostedActionRelations: PropTypes.object,
+  modelsGroupByComponents: PropTypes.object,
+
+  dispatch: PropTypes.func,
 };
 
 DataFlowDetailPanel.contextTypes = {
@@ -235,10 +273,13 @@ DataFlowDetailPanel.contextTypes = {
 };
 
 export default connect(
-  (state) => ({
+  state => ({
     models: modelsSelector(state),
+    modelByIds: modelByIdsSelector(state),
     routeComponents: componentsSelector(state),
+    componentByIds: componentByIdsSelector(state),
     actionsGroupByModels: actionsGroupByModelsSelector(state),
     ghostedActionRelations: ghostedActionRelationsSelector(state),
+    modelsGroupByComponents: modelsGroupByComponentsSelector(state),
   })
 )(DataFlowDetailPanel);
