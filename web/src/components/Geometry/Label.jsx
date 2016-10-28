@@ -13,5 +13,6 @@ class Label extends React.Component {
 
 export default createNode(() => ({
   getNodeData: props => props.data,
-  canDrag: () => false,
+  canDrag: props => (typeof props.data.canDrag !== 'undefined' ? props.data.canDrag : false),
+  canSelect: props => (typeof props.data.canSelect !== 'undefined' ? props.data.canDrag : false),
 }))(Label);
