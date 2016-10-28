@@ -45,7 +45,7 @@ class ComponentGroup extends React.Component {
     return this.createLink;
   }
   drawComponentList() {
-    const { coordinates, components } = this.props;
+    const { coordinates, components, noDetailLink } = this.props;
     return components.map((comp, i) => {
       const data = {
         id: comp.id,
@@ -58,6 +58,7 @@ class ComponentGroup extends React.Component {
           data={data}
           removeComponent={this.props.removeComponent}
           showComponentDispatchModal={this.props.showComponentDispatchModal}
+          noDetailLink={noDetailLink}
         >
           {comp.name}
         </ComponentNode>
@@ -95,5 +96,6 @@ ComponentGroup.propTypes = {
   showComponentCreateModal: PropTypes.func,
   showComponentDispatchModal: PropTypes.func,
   noCreateLink: PropTypes.bool,
+  noDetailLink: PropTypes.bool,
 };
 export default ComponentGroup;

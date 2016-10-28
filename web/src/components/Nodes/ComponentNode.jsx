@@ -22,8 +22,8 @@ class ComponentNode extends React.Component {
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
+    const { noDetailLink } = this.props;
     const CNode = this.drawNode();
-    console.debug('Component Node Render');
     return (
       <div>
         <CNode className="node-component">
@@ -35,9 +35,13 @@ class ComponentNode extends React.Component {
             <Tooltip placement="top" title={'source code'}>
               <Icon type="code-o" />
             </Tooltip>
-            <Tooltip placement="top" title={'show detail action flow'}>
-              <Icon type="folder" onClick={this.showActionFlow} />
-            </Tooltip>
+            {
+              noDetailLink ?
+                null :
+                  <Tooltip placement="top" title={'show detail action flow'}>
+                    <Icon type="folder" onClick={this.showActionFlow} />
+                  </Tooltip>
+            }
             <Popconfirm
               placement="right"
               title="Are you sure to delete this component?"
@@ -59,6 +63,7 @@ ComponentNode.propTypes = {
   data: PropTypes.object.isRequired,
   removeComponent: PropTypes.func,
   showComponentDispatchModal: PropTypes.func,
+  noDetailLink: PropTypes.bool,
 };
 ComponentNode.contextTypes = {
   router: PropTypes.object.isRequired,

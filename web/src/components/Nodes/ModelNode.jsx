@@ -23,15 +23,19 @@ class ModelNode extends React.Component {
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
-    console.debug('Model Node Render');
+    const { noDetailLink } = this.props;
     const MNode = this.drawNode();
     return (
       <MNode className="node-model">
         { this.props.children }
         <div className="node-icons">
-          <Tooltip placement="top" title={'show detail action flow'}>
-            <Icon type="folder" onClick={this.showActionFlow} />
-          </Tooltip>
+          {
+            noDetailLink ?
+              null :
+                <Tooltip placement="top" title={'show detail action flow'}>
+                  <Icon type="folder" onClick={this.showActionFlow} />
+                </Tooltip>
+          }
           <Popconfirm
             placement="right"
             title="Are you sure to delete this component?"
@@ -52,6 +56,7 @@ ModelNode.propTypes = {
   data: PropTypes.object,
   children: PropTypes.any,
   removeModel: PropTypes.func,
+  noDetailLink: PropTypes.bool,
 };
 
 ModelNode.contextTypes = {
