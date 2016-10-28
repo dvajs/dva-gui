@@ -26,7 +26,6 @@ const GraphTabs = (props, context) => {
   const tabList = [
     { to: '/graph/router', title: 'Routes' },
     { to: '/graph/dataflow', title: 'Data Flow' },
-    { to: '/graph/view', title: 'View' },
   ];
   const router = context.router;
   const tabs = tabList.map((tab) => {

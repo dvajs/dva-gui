@@ -15,9 +15,6 @@ export default ({ history }) => (
         <Route path="router" component={RoutesPanel} />
         <Route path="dataflow" breadcrumbName="dataflow" component={DataFlowPanel} />
         <Route path="dataflow/:activeNode" breadcrumbName="actionflow" component={DataFlowDetailPanel} />
-
-        {/* for testing */}
-        <Route path="view" component={DataFlowDetailPanel} />
       </Route>
     </Route>
   </Router>
