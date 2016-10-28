@@ -1,32 +1,18 @@
 import React, { PropTypes } from 'react';
 import { Icon, Tooltip, Popconfirm } from 'antd';
-import { createNode } from 'rc-fringing';
 import Rect from '../Geometry/Rect';
 
 
 class ComponentNode extends React.Component {
-  drawNode() {
-    const { data } = this.props;
-    if (!this.node) {
-      this.node = createNode(
-        () => ({
-          getNodeData: () => ({ ...data, type: 'Component' }),
-          canDrag: () => false,
-        })
-      )(Rect);
-    }
-    return this.node;
-  }
   showActionFlow = () => {
     const nodeId = encodeURIComponent(this.props.data.id);
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
     const { noDetailLink } = this.props;
-    const CNode = this.drawNode();
     return (
       <div>
-        <CNode className="node-component">
+        <Rect className="node-component" data={{ ...this.props.data, type: 'Component' }}>
           { this.props.children }
           <div className="node-icons">
             <Tooltip placement="top" title={'dispatch a new action'}>
@@ -53,7 +39,7 @@ class ComponentNode extends React.Component {
               </Tooltip>
             </Popconfirm>
           </div>
-        </CNode>
+        </Rect>
       </div>
     );
   }

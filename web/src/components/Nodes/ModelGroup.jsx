@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { createNode } from 'rc-fringing';
 import ModelNode from './ModelNode';
 import Label from '../Geometry/Label';
 
@@ -9,40 +8,6 @@ class ModelGroup extends React.Component {
       nextProps.models !== this.props.models ||
       nextProps.coordinates !== this.props.coordinates
     );
-  }
-  drawLabel() {
-    const { coordinates } = this.props;
-    if (!this.label) {
-      this.label = createNode(
-        () => ({
-          getNodeData: () => ({
-            id: 'ModelGroup.Label',
-            x: coordinates.x,
-            y: coordinates.y,
-          }),
-          canDrag: () => false,
-          canSelect: () => false,
-        })
-      )(Label);
-    }
-    return this.label;
-  }
-  drawCreateLink() {
-    const { coordinates } = this.props;
-    if (!this.createLink) {
-      this.createLink = createNode(
-        () => ({
-          getNodeData: () => ({
-            id: 'ModelGroup.createLink',
-            x: coordinates.x + 80,
-            y: coordinates.y,
-          }),
-          canDrag: () => false,
-          canSelect: () => false,
-        })
-      )(Label);
-    }
-    return this.createLink;
   }
   drawModelList() {
     const { coordinates, models, noDetailLink } = this.props;
@@ -67,20 +32,29 @@ class ModelGroup extends React.Component {
   render() {
     const { coordinates, noCreateLink } = this.props;
     if (!coordinates) return null;
-    const ModelLabel = this.drawLabel();
-    let ModelCreateLink;
-    if (!noCreateLink) {
-      ModelCreateLink = this.drawCreateLink();
-    }
     return (
       <div>
-        <ModelLabel>MODELS</ModelLabel>
+        <Label
+          data={{
+            id: 'ModelGroup.Label',
+            x: coordinates.x,
+            y: coordinates.y,
+          }}
+        >
+          MODELS
+        </Label>
         {
           noCreateLink ?
             null :
-              <ModelCreateLink>
+              <Label
+                data={{
+                  id: 'ModelGroup.createLink',
+                  x: coordinates.x + 100,
+                  y: coordinates.y,
+                }}
+              >
                 <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
-              </ModelCreateLink>
+              </Label>
         }
         { this.drawModelList() }
       </div>

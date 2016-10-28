@@ -1,32 +1,18 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'dva';
-import { createNode } from 'rc-fringing';
 import { Icon, Tooltip, Popconfirm } from 'antd';
 import Rect from '../Geometry/Rect';
 
 
 class ModelNode extends React.Component {
-  drawNode() {
-    const { data } = this.props;
-    if (!this.node) {
-      this.node = createNode(
-        () => ({
-          getNodeData: () => ({ ...data, type: 'Model' }),
-          canDrag: () => false,
-        })
-      )(Rect);
-    }
-    return this.node;
-  }
   showActionFlow = () => {
     const nodeId = encodeURIComponent(this.props.data.id);
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
-    const { noDetailLink } = this.props;
-    const MNode = this.drawNode();
+    const { noDetailLink, data } = this.props;
     return (
-      <MNode className="node-model">
+      <Rect className="node-model" data={{ ...data, type: 'Model' }}>
         { this.props.children }
         <div className="node-icons">
           {
@@ -47,7 +33,7 @@ class ModelNode extends React.Component {
             </Tooltip>
           </Popconfirm>
         </div>
-      </MNode>
+      </Rect>
     );
   }
 }

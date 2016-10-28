@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { createNode } from 'rc-fringing';
 
 class Label extends React.Component {
   render() {
@@ -10,4 +11,7 @@ class Label extends React.Component {
   }
 }
 
-export default Label;
+export default createNode(() => ({
+  getNodeData: props => props.data,
+  canDrag: () => false,
+}))(Label);
