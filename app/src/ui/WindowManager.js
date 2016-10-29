@@ -1,7 +1,7 @@
 const { BrowserWindow } = require('electron');
 const { EventEmitter } = require('events');
 
-class CygnusWindow extends EventEmitter {
+class WindowManager extends EventEmitter {
   constructor(ctx, options) {
     super();
 
@@ -74,4 +74,4 @@ class CygnusWindow extends EventEmitter {
   }
 }
 
-module.exports = CygnusWindow;
+module.exports = WindowManager;

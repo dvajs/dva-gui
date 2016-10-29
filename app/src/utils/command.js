@@ -1,6 +1,6 @@
 const ipcHelper = require('./ipc-helper')('node');
 
-class CommondRegisterMain {
+class CommandRegisterMain {
   constructor() {
     this.store = {};
     this.services = {};
@@ -16,13 +16,13 @@ class CommondRegisterMain {
     target.initialize(target.context);
   }
 
-  dispatch(commondName, payload) {
+  dispatch(commandName, payload) {
     try {
-      const action = commondName.split(':');
-      const service = this.services[commondName];
+      const action = commandName.split(':');
+      const service = this.services[commandName];
       console.log(this.services);
       if (!service) {
-        ipcHelper.push('error', `${commondName} is not defined.`);
+        ipcHelper.push('error', `${commandName} is not defined.`);
         return;
       }
       service({
@@ -31,12 +31,12 @@ class CommondRegisterMain {
         ctx: this.store[action[0]],
       }, payload);
     } catch (e) {
-      console.error('[Error] from: ', commondName);
+      console.error('[Error] from: ', commandName);
       console.error(e);
       ipcHelper.push('error', e.message);
     }
   }
 }
 
-const commondRegisterMain = new CommondRegisterMain();
-module.exports = commondRegisterMain;
+const command = new CommandRegisterMain();
+module.exports = command;

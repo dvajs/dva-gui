@@ -1,8 +1,8 @@
-const CygnusWindow = require('./window');
-const { app, Menu, dialog } = require('electron');
-const ApplicationMenu = require('./application-menu');
-const baseMenu = require('../base/base-menu');
 const fs = require('fs');
+const { app, Menu, dialog } = require('electron');
+const WindowManager = require('../ui/WindowManager');
+const MenuManager = require('../ui/MenuManager');
+const menuConfig = require('../ui/menu.config');
 
 module.exports = {
   namespace: 'application',
@@ -13,7 +13,7 @@ module.exports = {
     sizeOfWindows: 0,
   },
   initialize: (ctx) => {
-    const menu = new ApplicationMenu(baseMenu);
+    const menu = new MenuManager(menuConfig);
     ctx.menus['default'] = menu;
     try {
       ctx.config = require('../../app.config.json');
@@ -30,12 +30,12 @@ module.exports = {
         const loadSetting = Object.assign({}, ctx.config.window);
         loadSetting.path = options;
         ctx.sizeOfWindows++;
-        return new CygnusWindow(ctx, loadSetting);
+        return new WindowManager(ctx, loadSetting);
       }
-      return new CygnusWindow(ctx, options);
+      return new WindowManager(ctx, options);
     },
     'application:push-menu-by-name': ({ ctx }, { name, template }) => {
-      const menu = new ApplicationMenu(template);
+      const menu = new MenuManager(template);
       ctx.menus[name] = menu;
     },
     'application:update-menu': ({ ctx }, name) => {

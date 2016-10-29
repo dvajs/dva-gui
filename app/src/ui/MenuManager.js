@@ -1,6 +1,6 @@
 const { Menu } = require('electron');
 
-class ApplicationMenu {
+class MenuManager {
   constructor(template) {
     this.parsed = this.filter.bind(this)(template);
     this.builded = Menu.buildFromTemplate(this.parsed);
@@ -23,17 +23,17 @@ class ApplicationMenu {
 
   filterSubmenu(subTemplate) {
     return subTemplate.map((item) => {
-      if (item.commond) {
-        const { commonder } = cygnus;
-        const { commond } = item;
+      if (item.command) {
+        const { commands } = cygnus;
+        const { command } = item;
         item.click = (menuItem, browserWindow, event) => {
-          commonder.dispatch(commond, { event, payload: { browserWindow } });
+          commands.dispatch(command, { event, payload: { browserWindow } });
         };
-        delete item.commond;
+        delete item.command;
       }
       return item;
     });
   }
 }
 
-module.exports = ApplicationMenu;
+module.exports = MenuManager;

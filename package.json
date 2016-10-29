@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "cross-env env=pro electron ./dist",
-    "package": "cp ./app/src/base/package.json ./dist/package.json && cross-env env=pro node ./scripts/package.js"
+    "package": "cp ./scripts/package.json ./dist/package.json && cross-env env=pro node ./scripts/package.js"
   },
   "devDependencies": {
     "electron": "^1.3.4",

@@ -5,12 +5,12 @@
       {
         "label": "Open...",
         "accelerator": "CmdOrCtrl+O",
-        "commond": "application:open-file"
+        "command": "application:open-file"
       },
       {
         "label": "Quit",
         "accelerator": "CmdOrCtrl+Q",
-        "commond": "application:quit"
+        "command": "application:quit"
       }
     ]
   },

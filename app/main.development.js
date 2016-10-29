@@ -1,41 +1,40 @@
 const { app } = require('electron');
-const electronDebug = require('electron-debug');
-const { setupEnviroment, setupApplication, setupCommonder } = require('./src/node-base/enviroment');
-const commonder = require('./src/commond-register');
-const ipcHelper = require('./src/ipc-helper')('node');
+const ipcHelper = require('./src/utils/ipc-helper')('node');
+const { bootstrap } = require('./src/enviroment');
+
+// bootstrap enviroment settings
+bootstrap();
 
 process.env.HOME = __dirname;
-
-setupCommonder();
-setupEnviroment();
-setupApplication();
-
 if (process.env.env === 'dev') {
-  electronDebug();
+  require('electron-debug')();
 }
 
+const { cygnus } = global;
+const { commands } = cygnus;
+
 function createWindow() {
-  commonder.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
+  commands.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
 }
 
 app.on('ready', () => {
-  commonder.dispatch('application:update-menu', 'default');
+  commands.dispatch('application:update-menu', 'default');
   createWindow();
 });
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    commonder.dispatch('application:quit');
+    commands.dispatch('application:quit');
   }
 });
 
 app.on('quit', () => {
-  commonder.dispatch('application:save-config');
+  commands.dispatch('application:save-config');
 });
 
 app.on('activate', () => {
   if (cygnus.application.context.sizeOfWindows > 0) return;
-  commonder.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
+  commands.dispatch('application:new-window', process.env.env === 'dev' ? `file://${__dirname}/../web/src/index.html` : `file://${__dirname}/index.html`);
 });
 
-ipcHelper.onCommonder();
+ipcHelper.onCommand();

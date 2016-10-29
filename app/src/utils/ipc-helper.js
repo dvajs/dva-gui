@@ -4,7 +4,7 @@ class IpcHelper {
   constructor(type) {
     if (type === 'node') {
       this.ipc = require('electron').ipcMain;
-      this.onCommonder = this.onCommonder.bind(this);
+      this.onCommand = this.onCommand.bind(this);
       this.push = this.push.bind(this);
     } else {
       this.ipc = require('electron').ipcRenderer;
@@ -13,10 +13,10 @@ class IpcHelper {
     }
   }
 
-  onCommonder() {
-    const { commonder } = cygnus;
+  onCommand() {
+    const { commands } = cygnus;
     this.ipc.on('request', (event, { action, payload }) => {
-      commonder.dispatch(action, { event, payload });
+      commands.dispatch(action, { event, payload });
     });
   }
 
