@@ -3,13 +3,20 @@ import { connect } from 'dva';
 import Welcome from '../components/UI/Welcome';
 
 class RootPanel extends React.Component {
+  onOpen = () => {
+    this.props.dispatch({
+      type: 'ipc-application',
+      method: 'application:open-file',
+      payload: {},
+    });
+  }
   render() {
-    const { project, dispatch } = this.props;
+    const { project } = this.props;
     return (
       <div className="RootPanel" style={{ height: '100%' }}>
         {
           !project.sourcePath ?
-            <Welcome dispatch={dispatch} /> :
+            <Welcome onOpen={this.onOpen} /> :
             this.props.children
         }
       </div>

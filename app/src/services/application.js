@@ -46,11 +46,13 @@ module.exports = {
         fs.writeFile(`${process.env.HOME}/app.config.json`, JSON.stringify(ctx.config));
       }
     },
-    'application:open-file': ({ dispatch }) => {
+    'application:open-file': ({ ipc, dispatch }) => {
       dialog.showOpenDialog({
         properties: ['openFile', 'openDirectory'],
       }, (dir) => {
-        dispatch('dva-ast-api', { payload: { method: 'project.loadAll' ,sourcePath: dir[0] } });
+        const sourcePath = dir[0];
+        ipc.push('project/sync', { sourcePath });
+        dispatch('dva-ast-api', { payload: { method: 'project.loadAll', sourcePath } });
       });
     },
   },
