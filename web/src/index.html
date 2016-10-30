@@ -2,17 +2,17 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Dva GUI</title>
     <script>
       (function() {
         const link = document.createElement('link');
-        link.rel = 'stylesheet';         
+        link.rel = 'stylesheet';
         link.href = typeof process !== 'undefined' && process.env.env === 'dev' ? 'http://localhost:8000/index.css' : './index.css';
         document.write(link.outerHTML);
       }());
     </script>
   </head>
-  
+
   <body>
     <div style="height:100%;" id="__reactComponent"></div>
   </body>
