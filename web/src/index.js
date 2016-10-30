@@ -1,21 +1,22 @@
 import { ipcRenderer as ipc } from 'electron';
 import path from 'path';
-
-const CHANNEL = 'request';
-const projectInfos = {};
-const ipcHelper = require('./utils/ipc-helper')('');
-
 import dva from 'dva';
+import { message, notification } from 'antd';
 import project from './models/project';
 import dvaDispatches from './models/dva.dispatches';
 import dvaModels from './models/dva.models';
 import dvaRouteComponents from './models/dva.routeComponents';
 import dvaRouter from './models/dva.router';
 import dataflow from './models/dataflow';
-import router from './router.jsx';
-import { message, notification } from 'antd';
+import router from './router';
 import './index.less';
 import './index.html';
+
+
+const CHANNEL = 'request';
+const projectInfos = {};
+const ipcHelper = require('./utils/ipc-helper')('');
+
 
 function assert(check, msg) {
   if (!check) {
@@ -45,10 +46,10 @@ function repalceStateReducerEnhancer(reducer) {
       return {
         ...state,
         ...{
-          ['dva.dispatches']: action.payload.dispatches,
-          ['dva.models']: action.payload.models,
-          ['dva.routeComponents']: action.payload.routeComponents,
-          ['dva.router']: action.payload.router,
+          'dva.dispatches': action.payload.dispatches,
+          'dva.models': action.payload.models,
+          'dva.routeComponents': action.payload.routeComponents,
+          'dva.router': action.payload.router,
         },
       };
     }
@@ -69,7 +70,6 @@ app.model(dvaRouter);
 app.model(dataflow);
 app.router(router);
 app.start(document.getElementById('__reactComponent'));
-window.__app = app;
 
 ipc.on(CHANNEL, (event, { action, payload }) => {
   console.info(action);
