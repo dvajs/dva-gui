@@ -25,6 +25,9 @@ class RouterNode extends Component {
       case 'Router':
         result = (<div className="node-router-normal">Root</div>);
         break;
+      case 'IndexRoute':
+        result = (<div className="node-router-normal">IndexRoute for {attributes.component}</div>);
+        break;
       case 'Redirect':
         result = (<Row type="flex">
           <Col className="node-router-primary">

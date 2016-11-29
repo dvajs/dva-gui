@@ -45,7 +45,9 @@ class ModelCreateModal extends React.Component {
           <Form.Item label="File Path">
             start with {`"${project.sourcePath}/"`}
             {
-              getFieldDecorator('filePath')(
+              getFieldDecorator('filePath', {
+                initialValue: 'models',
+              })(
                 <Input
                   addonAfter={namespaceInputVal}
                 />
