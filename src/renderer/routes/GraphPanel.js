@@ -6,7 +6,6 @@ class GraphPanel extends React.Component {
   render() {
     return (
       <div>
-        <div>Tabs Here</div>
         {this.props.children}
       </div>
     );

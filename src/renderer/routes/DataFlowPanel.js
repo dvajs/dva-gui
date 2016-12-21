@@ -160,7 +160,12 @@ class DataFlowPanel extends React.Component {
             showComponentDispatchModal={this.showComponentDispatchModal}
           />
         </DataFlowPaper>
-        <Sidebar visible={!!activeNode.id}>
+        <Sidebar
+          visible={
+            !!activeNode.id &&
+            (activeNode.type === 'Component' || activeNode.type === 'Model')
+          }
+        >
           {
             activeNode.type === 'Component' ?
               <ComponentForm component={componentByIds[activeNode.id]} /> :

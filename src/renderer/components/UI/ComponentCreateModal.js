@@ -15,17 +15,14 @@ class ComponentCreateModal extends React.Component {
       method: 'routeComponents.create',
       payload: {
         componentName: values.componentName,
-        filePath: `${values.filePath}/${values.componentName}.jsx`,
+        filePath: `${values.filePath}`,
       },
     });
     this.handelCancel();
   }
   render() {
     const { dataflow, project, form } = this.props;
-    const { getFieldDecorator, getFieldValue } = form;
-    const componentNameInputVal = getFieldValue('componentName') ?
-      `/${getFieldValue('componentName')}.jsx` :
-      '/(ComponentName).jsx';
+    const { getFieldDecorator } = form;
 
     return (
       <Modal
@@ -43,11 +40,10 @@ class ComponentCreateModal extends React.Component {
             }
           </Form.Item>
           <Form.Item label="File Path">
-            start with {`"${project.sourcePath}/"`}
             {
               getFieldDecorator('filePath')(
                 <Input
-                  addonAfter={componentNameInputVal}
+                  addonBefore={`${project.rootDir}/`}
                 />
               )
             }

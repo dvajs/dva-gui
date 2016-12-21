@@ -15,18 +15,14 @@ class ModelCreateModal extends React.Component {
       method: 'models.create',
       payload: {
         namespace: values.namespace,
-        filePath: `${values.filePath}/${values.namespace}.js`,
+        filePath: `${values.filePath}`,
       },
     });
     this.handelCancel();
   }
   render() {
     const { dataflow, project, form } = this.props;
-    const { getFieldDecorator, getFieldValue } = form;
-    const namespaceInputVal = getFieldValue('namespace') ?
-      `/${getFieldValue('namespace')}.js` :
-      '/(namespace).js';
-
+    const { getFieldDecorator } = form;
     return (
       <Modal
         title="Create a Model"
@@ -43,13 +39,10 @@ class ModelCreateModal extends React.Component {
             }
           </Form.Item>
           <Form.Item label="File Path">
-            start with {`"${project.sourcePath}/"`}
             {
-              getFieldDecorator('filePath', {
-                initialValue: 'models',
-              })(
+              getFieldDecorator('filePath')(
                 <Input
-                  addonAfter={namespaceInputVal}
+                  addonBefore={`${project.rootDir}/`}
                 />
               )
             }

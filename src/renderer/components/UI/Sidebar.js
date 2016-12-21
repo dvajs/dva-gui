@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import './Sidebar.less';
 
 const style = {
   display: 'none',
