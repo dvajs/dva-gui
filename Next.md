@@ -5,13 +5,14 @@
 - [ ] welcome page
 - [ ] monaco editor
 - action flow graph
-  - [ ] create component
+  - [x] create component
   - [ ] show detail action flows
   - [ ] show source code
   - [ ] dispatch a new action
-  - [ ]
+  - [x] create model
+  - [ ] delete model
   - sidebar
-    - [ ] toggle sidebar
+    - [ ] toggle sidebar https://github.com/RaoHai/fringing/issues/9
     - [ ] delete component/model
     - [ ] update initial state
     - [ ] create/update/delete subscriptions
@@ -27,3 +28,6 @@
   - [ ] delete models
   - [ ] show source code of models
   - [ ] graph layout enhancement
+- refactor
+  - [ ] using css modules
+  - [ ] create component/model enhancement(path should be more obvious)
