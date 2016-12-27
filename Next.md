@@ -4,20 +4,22 @@
 
 - [ ] welcome page
 - [ ] monaco editor
+- [ ] refresh button
 - action flow graph
   - [x] create component
-  - [ ] show detail action flows
+  - [x] delete component
+  - [x] show detail action flows
   - [ ] show source code
-  - [ ] dispatch a new action
+  - [x] dispatch a new action
   - [x] create model
-  - [ ] delete model
+  - [x] delete model
   - sidebar
     - [ ] toggle sidebar https://github.com/RaoHai/fringing/issues/9
-    - [ ] delete component/model
-    - [ ] update initial state
-    - [ ] create/update/delete subscriptions
-    - [ ] create/update/delete effects
-    - [ ] create/update/delete reducers
+    - [x] delete component/model
+    - [x] update initial state
+    - [x] create/update/delete subscriptions
+    - [x] create/update/delete effects
+    - [x] create/update/delete reducers
 - action flow detail graph
   - [ ] create/update/delete effects
   - [ ] create/update/delete reducers
@@ -28,6 +30,8 @@
   - [ ] delete models
   - [ ] show source code of models
   - [ ] graph layout enhancement
+- [ ] file watchers
 - refactor
   - [ ] using css modules
   - [ ] create component/model enhancement(path should be more obvious)
+  - [ ] dva-ast code operate beatify
