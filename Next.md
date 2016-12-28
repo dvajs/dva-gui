@@ -5,6 +5,8 @@
 - [ ] welcome page
 - [ ] monaco editor
 - [ ] refresh button
+- [x] menu
+- [ ] about DvaGUI dialog
 - action flow graph
   - [x] create component
   - [x] delete component

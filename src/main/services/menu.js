@@ -1,16 +1,35 @@
 import { Menu } from 'electron';
 import log from 'electron-log';
+import { openProjectByDialog, syncProjectInfo } from './application';
 
 function getTemplate() {
   return [
     {
-      label: 'MyApp',
+      label: 'DvaGUI',
       submenu: [
+        {
+          label: 'About DvaGUI',
+          click: () => {
+          },
+        },
+        { type: 'separator' },
         { role: 'hide' },
         { role: 'hideothers' },
         { role: 'unhide' },
         { type: 'separator' },
         { role: 'quit' },
+      ],
+    },
+    {
+      label: 'File',
+      submenu: [
+        {
+          label: 'Open...',
+          click: () => {
+            openProjectByDialog()
+              .then(syncProjectInfo);
+          },
+        },
       ],
     },
     {

@@ -13,6 +13,15 @@ export function openProject(projectPath) {
   callDavAstAPI({ method: 'project.loadAll', sourcePath: projectPath }, win.webContents);
 }
 
+export function syncProjectInfo(sourcePath) {
+  win.webContents.send('request', {
+    action: 'project/sync',
+    payload: {
+      sourcePath,
+    },
+  });
+}
+
 export function openProjectByDialog() {
   return new Promise((resolve, reject) => {
     dialog.showOpenDialog({
