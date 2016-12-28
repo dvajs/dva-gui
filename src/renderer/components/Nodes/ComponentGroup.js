@@ -10,7 +10,7 @@ class ComponentGroup extends React.Component {
     );
   }
   drawComponentList() {
-    const { coordinates, components, noDetailLink } = this.props;
+    const { coordinates, components, noDetailLink, noRemoveLink } = this.props;
     return components.map((comp, i) => {
       const data = {
         id: comp.id,
@@ -24,6 +24,7 @@ class ComponentGroup extends React.Component {
           removeComponent={this.props.removeComponent}
           showComponentDispatchModal={this.props.showComponentDispatchModal}
           noDetailLink={noDetailLink}
+          noRemoveLink={noRemoveLink}
         >
           {comp.name}
         </ComponentNode>

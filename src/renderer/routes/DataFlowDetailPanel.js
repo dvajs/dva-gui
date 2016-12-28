@@ -239,6 +239,7 @@ class DataFlowDetailPanel extends React.Component {
             components={filteredComponents}
             noCreateLink
             noDetailLink
+            noRemoveLink
           />
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}
