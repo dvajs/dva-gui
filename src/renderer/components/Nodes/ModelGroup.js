@@ -10,7 +10,7 @@ class ModelGroup extends React.Component {
     );
   }
   drawModelList() {
-    const { coordinates, models, noDetailLink } = this.props;
+    const { coordinates, models, noDetailLink, noRemoveLink } = this.props;
     return models.map((m, i) => {
       const data = {
         id: m.id,
@@ -23,6 +23,7 @@ class ModelGroup extends React.Component {
           data={data}
           removeModel={this.props.removeModel}
           noDetailLink={noDetailLink}
+          noRemoveLink={noRemoveLink}
         >
           {m.namespace}
         </ModelNode>
@@ -46,15 +47,15 @@ class ModelGroup extends React.Component {
         {
           noCreateLink ?
             null :
-              <Label
-                data={{
-                  id: 'ModelGroup.createLink',
-                  x: coordinates.x + 100,
-                  y: coordinates.y,
-                }}
-              >
-                <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
-              </Label>
+            <Label
+              data={{
+                id: 'ModelGroup.createLink',
+                x: coordinates.x + 100,
+                y: coordinates.y,
+              }}
+            >
+              <a href={null} onClick={this.props.showModelCreateModal}>+ Create</a>
+            </Label>
         }
         { this.drawModelList() }
       </div>

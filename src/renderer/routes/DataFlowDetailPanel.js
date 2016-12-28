@@ -219,7 +219,7 @@ class DataFlowDetailPanel extends React.Component {
         <Button
           type="ghost"
           className="btn-primary-ghost"
-          style={{ position: 'fixed', top: 60, zIndex: 1000 }}
+          style={{ position: 'fixed', top: 10, zIndex: 1000 }}
           onClick={() => { this.context.router.push('/graph/dataflow/'); }}
         >
           <Icon type="left" /> Back
@@ -232,6 +232,7 @@ class DataFlowDetailPanel extends React.Component {
             models={filteredModels}
             noCreateLink
             noDetailLink
+            noRemoveLink
           />
           <ComponentGroup
             coordinates={coordinates.componentGroup}

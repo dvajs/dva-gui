@@ -10,7 +10,7 @@ class ModelNode extends React.Component {
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
-    const { noDetailLink, data } = this.props;
+    const { noDetailLink, noRemoveLink, data } = this.props;
     return (
       <Rect className="node-model" data={{ ...data, type: 'Model' }}>
         { this.props.children }
@@ -18,20 +18,24 @@ class ModelNode extends React.Component {
           {
             noDetailLink ?
               null :
-                <Tooltip placement="top" title={'show detail action flow'}>
-                  <Icon type="folder" onClick={this.showActionFlow} />
-                </Tooltip>
+              <Tooltip placement="top" title={'show detail action flow'}>
+                <Icon type="folder" onClick={this.showActionFlow} />
+              </Tooltip>
           }
-          <Popconfirm
-            placement="right"
-            title="Are you sure to delete this component?"
-            onConfirm={() => { this.props.removeModel(this.props.data.id); }}
-            okText="Yes" cancelText="No"
-          >
-            <Tooltip placement="top" title={'delete'}>
-              <Icon type="delete" />
-            </Tooltip>
-          </Popconfirm>
+          {
+            noRemoveLink ?
+              null :
+              <Popconfirm
+                placement="right"
+                title="Are you sure to delete this component?"
+                onConfirm={() => { this.props.removeModel(this.props.data.id); }}
+                okText="Yes" cancelText="No"
+              >
+                <Tooltip placement="top" title={'delete'}>
+                  <Icon type="delete" />
+                </Tooltip>
+              </Popconfirm>
+          }
         </div>
       </Rect>
     );
