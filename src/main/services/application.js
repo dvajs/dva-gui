@@ -5,7 +5,7 @@ import { callDavAstAPI } from './dva-ast';
 
 let win;
 export function init() {
-  win = create({ width: 800, height: 600 });
+  win = create({ width: 800, height: 600, title: 'DvaGUI' });
   win.loadURL(`file://${join($dirname, '..', 'pages')}/main.html`);
 }
 

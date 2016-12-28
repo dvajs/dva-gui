@@ -10,7 +10,11 @@ export default {
     parentDir: '',
     sourcePath: null,
   },
-  subscriptions: {},
+  subscriptions: {
+    init() {
+      document.title = 'DvaGUI';
+    },
+  },
   effects: {
     * open({ payload }, { call, put }) {
       const sourcePath = yield call(() => { return openProjectByDialog(); });
