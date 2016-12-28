@@ -5,7 +5,7 @@ import './Welcome.less';
 const Welcome = props =>
   <div className="welcome">
     <div className="welcome-title">
-      Welcome to Cygnus.
+      Welcome to DvaGUI.
     </div>
     <Button type="ghost" onClick={props.onOpen}>
       Open a Dva Project
