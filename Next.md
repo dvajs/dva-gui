@@ -27,9 +27,7 @@
   - [ ] create/update/delete reducers
   - [ ] draw subscriptions
   - [ ] create/update/delete subscriptions
-  - [ ] delete components
   - [ ] show source code of components
-  - [ ] delete models
   - [ ] show source code of models
   - [ ] graph layout enhancement
 - [ ] file watchers
