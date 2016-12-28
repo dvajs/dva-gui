@@ -87,8 +87,8 @@ ipc.on(CHANNEL, (event, { action, payload }) => {
   }
 });
 
-const projectInfos = {};
-projectInfos.sourcePath = '/Users/Chris/Cosmos/dva-gui/examples/count';
+// const projectInfos = {};
+// projectInfos.sourcePath = '/Users/Chris/Cosmos/dva-gui/examples/count';
 
-app._store.dispatch({ type: 'project/sync', payload: projectInfos });
-app._store.dispatch({ type: 'ipc', method: 'project.loadAll' });
+// app._store.dispatch({ type: 'project/sync', payload: projectInfos });
+// app._store.dispatch({ type: 'ipc', method: 'project.loadAll' });

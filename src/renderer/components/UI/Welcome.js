@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'antd';
+import './Welcome.less';
 
 const Welcome = props =>
   <div className="welcome">

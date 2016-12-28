@@ -1,6 +1,7 @@
 import { remote } from 'electron';
 
 const { normalize, sep } = remote.require('path');
+const { openProjectByDialog } = remote.getGlobal('services').application;
 
 export default {
   namespace: 'project',
@@ -10,6 +11,17 @@ export default {
     sourcePath: null,
   },
   subscriptions: {},
+  effects: {
+    * open({ payload }, { call, put }) {
+      const sourcePath = yield call(() => { return openProjectByDialog(); });
+      yield put({
+        type: 'sync',
+        payload: {
+          sourcePath,
+        },
+      });
+    },
+  },
   reducers: {
     sync(state, { payload }) {
       let rootDir = '';
