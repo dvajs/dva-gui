@@ -43,7 +43,7 @@ class EffectNode extends Component {
         />
       </div>
     );
-    return (<Popover content={popContent} trigger="click">
+    return (<Popover content={popContent} trigger="click" visible={this.state.visible} onVisibleChange={this.setVisible}>
       <div className={cls}>
         { this.props.children }
       </div>
