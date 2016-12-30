@@ -1,40 +1,33 @@
-# dva-gui
-A gui tool for dva.
+# Dva-GUI
 
-> Under Development
+a static analysis GUI tool for dva/redux project.
 
-## Development
+## Dev
 
-Install Dependencies
-```
-$ git clone github/repo/of/dva-gui
-$ cd dva-gui
-$ npm run install
-$ cd web
-$ npm install
-$ cd ../app
+Install dependencies.
+
+```bash
 $ npm install
 ```
 
-Run
+Start webpack and watch.
+
+```bash
+$ npm run dev
 ```
-$ cd web
-$ npm run dev
-$ cd ../app
-$ npm run dev
+
+Then open another terminal, and run start.
+
+```bash
+$ npm start
 ```
 
 ## Build
-```
-$ cd web
-$ npm run build
-$ cd ../app
-$ npm run build
-$ cd ..
-$ npm run package
+
+```bash
+$ npm run pack
 ```
 
-
-## LICENSE
+## License
 
 MIT
