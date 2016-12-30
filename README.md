@@ -1,6 +1,9 @@
 # Dva-GUI
 
-a static analysis GUI tool for dva/redux project.
+Dva-GUI is a static analysis GUI tool for dva projects. It gives you a clear picture of your application's data flows.
+
+![screen shot 2016-12-30 at 5 04 28 pm](https://cloud.githubusercontent.com/assets/897640/21562513/5d495142-ceb4-11e6-92b8-51713b97ea50.png)
+![screen shot 2016-12-30 at 5 04 54 pm](https://cloud.githubusercontent.com/assets/897640/21562512/5d48b138-ceb4-11e6-9af3-645081cd4b48.png)
 
 ## Dev
 
