@@ -8,7 +8,7 @@ import {
   componentsSelector,
   componentByIdsSelector,
   actionsGroupByModelsSelector,
-  ghostedActionRelationsSelector,
+  actionRelationsSelector,
   modelsGroupByComponentsSelector,
 } from '../selectors/dva';
 
@@ -102,9 +102,9 @@ class DataFlowDetailPanel extends React.Component {
   }
   calcConnections() {
     const connections = [];
-    const { ghostedActionRelations, models } = this.props;
-    Object.keys(ghostedActionRelations).forEach((action) => {
-      const relation = ghostedActionRelations[action];
+    const { actionRelations, models } = this.props;
+    Object.keys(actionRelations).forEach((action) => {
+      const relation = actionRelations[action];
       if (relation.fromSubscription) {
         relation.fromSubscription.forEach((sub) => {
           connections.push({
@@ -180,7 +180,7 @@ class DataFlowDetailPanel extends React.Component {
       routeComponents,
       componentByIds,
       actionsGroupByModels,
-      ghostedActionRelations,
+      actionRelations,
       modelsGroupByComponents,
     } = this.props;
     const {
@@ -199,7 +199,7 @@ class DataFlowDetailPanel extends React.Component {
 
       const filteredComponentsObject = {};
       (actionsGroupByModels[activeNode] || []).forEach((action) => {
-        (ghostedActionRelations[action].fromComponent || []).forEach((comp) => {
+        (actionRelations[action].fromComponent || []).forEach((comp) => {
           filteredComponentsObject[comp.id] = comp;
         });
       });
@@ -244,7 +244,7 @@ class DataFlowDetailPanel extends React.Component {
           <ActionFlowGroup
             coordinates={coordinates.actionFlowGroup}
             models={filteredModels}
-            actionRelations={ghostedActionRelations}
+            actionRelations={actionRelations}
             actionsGroupByModels={actionsGroupByModels}
             createEffect={createEffect}
             createReducer={createReducer}
@@ -264,7 +264,7 @@ DataFlowDetailPanel.propTypes = {
   routeComponents: PropTypes.array,
   componentByIds: PropTypes.object,
   actionsGroupByModels: PropTypes.object,
-  ghostedActionRelations: PropTypes.object,
+  actionRelations: PropTypes.object,
   modelsGroupByComponents: PropTypes.object,
 
   dispatch: PropTypes.func,
@@ -281,7 +281,7 @@ export default connect(
     routeComponents: componentsSelector(state),
     componentByIds: componentByIdsSelector(state),
     actionsGroupByModels: actionsGroupByModelsSelector(state),
-    ghostedActionRelations: ghostedActionRelationsSelector(state),
+    actionRelations: actionRelationsSelector(state),
     modelsGroupByComponents: modelsGroupByComponentsSelector(state),
   })
 )(DataFlowDetailPanel);
