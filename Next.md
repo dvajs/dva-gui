@@ -2,8 +2,8 @@
 
 > Next Milestone will make all the main features work, and cut all the incomplete features
 
-- [ ] welcome page
-- [ ] monaco editor
+- [x] welcome page
+- [x] monaco editor
 - [ ] refresh button
 - [x] menu
 - [ ] about DvaGUI dialog
@@ -11,7 +11,8 @@
   - [x] create component
   - [x] delete component
   - [x] show detail action flows
-  - [ ] show source code
+  - [x] show component source code
+  - [ ] show model source code
   - [x] dispatch a new action
   - [x] create model
   - [x] delete model
@@ -27,7 +28,7 @@
   - [ ] create/update/delete reducers
   - [ ] draw subscriptions
   - [ ] create/update/delete subscriptions
-  - [ ] show source code of components
+  - [x] show source code of components
   - [ ] show source code of models
   - [ ] graph layout enhancement
 - [ ] file watchers
