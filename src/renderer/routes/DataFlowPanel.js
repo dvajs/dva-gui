@@ -12,6 +12,7 @@ import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
 import StateGroup from '../components/Nodes/StateGroup';
 import ComponentCreateModal from '../components/UI/ComponentCreateModal';
+import ComponentSourceModal from '../components/UI/ComponentSourceModal';
 import ComponentDispatchModal from '../components/UI/ComponentDispatchModal';
 import ModelCreateModal from '../components/UI/ModelCreateModal';
 import Sidebar from '../components/UI/Sidebar';
@@ -116,6 +117,12 @@ class DataFlowPanel extends React.Component {
       payload: {},
     });
   }
+  showComponentSource = (comp) => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentSource',
+      payload: comp,
+    });
+  }
   showModelCreateModal = () => {
     this.props.dispatch({
       type: 'dataflow/showModelCreateModal',
@@ -158,6 +165,7 @@ class DataFlowPanel extends React.Component {
             removeComponent={this.removeComponent}
             showComponentCreateModal={this.showComponentCreateModal}
             showComponentDispatchModal={this.showComponentDispatchModal}
+            showComponentSource={this.showComponentSource}
           />
         </DataFlowPaper>
         <Sidebar
@@ -178,6 +186,7 @@ class DataFlowPanel extends React.Component {
           }
         </Sidebar>
         <ComponentCreateModal />
+        <ComponentSourceModal />
         <ComponentDispatchModal
           activeNodeId={this.state.activeNode ? this.state.activeNode.id : null}
         />

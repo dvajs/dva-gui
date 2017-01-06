@@ -21,8 +21,10 @@ class ComponentGroup extends React.Component {
         <ComponentNode
           key={comp.id}
           data={data}
+          comp={comp}
           removeComponent={this.props.removeComponent}
           showComponentDispatchModal={this.props.showComponentDispatchModal}
+          showComponentSource={this.props.showComponentSource}
           noDetailLink={noDetailLink}
           noRemoveLink={noRemoveLink}
         >

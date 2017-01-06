@@ -15,9 +15,16 @@ import {
 import Paper from '../components/Geometry/Paper';
 import ModelGroup from '../components/Nodes/ModelGroup';
 import ComponentGroup from '../components/Nodes/ComponentGroup';
+import ComponentSourceModal from '../components/UI/ComponentSourceModal';
 import ActionFlowGroup from '../components/Nodes/ActionFlowGroup';
 
 class DataFlowDetailPanel extends React.Component {
+  showComponentSource = (comp) => {
+    this.props.dispatch({
+      type: 'dataflow/showComponentSource',
+      payload: comp,
+    });
+  }
   createEffect = (effect, model) => {
     const { namespace, filePath } = model;
     this.props.dispatch({
@@ -237,6 +244,7 @@ class DataFlowDetailPanel extends React.Component {
           <ComponentGroup
             coordinates={coordinates.componentGroup}
             components={filteredComponents}
+            showComponentSource={this.showComponentSource}
             noCreateLink
             noDetailLink
             noRemoveLink
@@ -252,6 +260,7 @@ class DataFlowDetailPanel extends React.Component {
             updateReducer={updateReducer}
           />
         </DataFlowDetailPaper>
+        <ComponentSourceModal />
       </div>
     );
   }

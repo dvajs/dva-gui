@@ -56,6 +56,7 @@ export function callDavAstAPI(payload, sender) {
       sendReplateStateAction();
       break;
     case 'routeComponents.create':
+    case 'routeComponents.update':
     case 'routeComponents.addDispatch':
       mergeProject(sourcePath, { [filePath]: result });
       sendReplateStateAction();

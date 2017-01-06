@@ -50,6 +50,9 @@ class Editor extends Component {
     if (nextProps.customeEditorOpts !== this.props.customeEditorOpts) {
       this.editor.updateOptions(nextProps.customeEditorOpts);
     }
+    if (nextProps.content !== this.props.content) {
+      this.editor.setValue(nextProps.content);
+    }
   }
 
   shouldComponentUpdate() {

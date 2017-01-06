@@ -9,7 +9,7 @@ class ComponentNode extends React.Component {
     this.context.router.push(`/graph/dataflow/${nodeId}`);
   }
   render() {
-    const { noDetailLink, noRemoveLink } = this.props;
+    const { noDetailLink, noRemoveLink, comp } = this.props;
     return (
       <div>
         <Rect className="node-component" data={{ ...this.props.data, type: 'Component' }}>
@@ -19,28 +19,28 @@ class ComponentNode extends React.Component {
               <Icon type="right-square-o" onClick={this.props.showComponentDispatchModal} />
             </Tooltip>
             <Tooltip placement="top" title={'source code'}>
-              <Icon type="code-o" />
+              <Icon type="code-o" onClick={() => { this.props.showComponentSource(comp); }} />
             </Tooltip>
             {
               noDetailLink ?
                 null :
-                <Tooltip placement="top" title={'show detail action flow'}>
-                  <Icon type="folder" onClick={this.showActionFlow} />
-                </Tooltip>
+                  <Tooltip placement="top" title={'show detail action flow'}>
+                    <Icon type="folder" onClick={this.showActionFlow} />
+                  </Tooltip>
             }
             {
               noRemoveLink ?
                 null :
-                <Popconfirm
-                  placement="right"
-                  title="Are you sure to delete this component?"
-                  onConfirm={() => { this.props.removeComponent(this.props.data.id); }}
-                  okText="Yes" cancelText="No"
-                >
-                  <Tooltip placement="top" title={'delete'}>
-                    <Icon type="delete" />
-                  </Tooltip>
-                </Popconfirm>
+                  <Popconfirm
+                    placement="right"
+                    title="Are you sure to delete this component?"
+                    onConfirm={() => { this.props.removeComponent(this.props.data.id); }}
+                    okText="Yes" cancelText="No"
+                  >
+                    <Tooltip placement="top" title={'delete'}>
+                      <Icon type="delete" />
+                    </Tooltip>
+                  </Popconfirm>
             }
           </div>
         </Rect>
