@@ -50,9 +50,6 @@ class DataObject extends React.Component {
               content={objectValue}
               language="javascript"
               onBlur={this.onBlur}
-              customeEditorOpts={{
-                lineNumbers: false,
-              }}
             />
           </div>
           {
