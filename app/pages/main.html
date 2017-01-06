@@ -26,6 +26,9 @@
       me.setAttribute('src', 'http://localhost:35729/livereload.js');
       document.body.appendChild(me);
     }
+
+    // Workaround monaco-typescript not understanding the environment
+    self.process.browser = true;
   </script>
 
 </body>
