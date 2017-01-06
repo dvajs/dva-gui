@@ -6,13 +6,18 @@ const RESIZE_EVENT = 'resize';
 
 class Editor extends Component {
   componentDidMount() {
-    const { content, customeEditorOpts, language = null, onBlur } = this.props;
-    create(this.container, content, language, customeEditorOpts)
+    const { content, value, customeEditorOpts, language = null, onBlur, onChange } = this.props;
+    create(this.container, content || value, language, customeEditorOpts)
       .then((editor) => {
         this.editor = editor;
         if (onBlur) {
           this.editor.onDidBlurEditorText(() => {
             onBlur(this.editor.getValue());
+          });
+        }
+        if (onChange) {
+          this.editor.onDidChangeModelContent(() => {
+            onChange(this.editor.getValue());
           });
         }
 

@@ -1,6 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { Input, Button, Form, Select } from 'antd';
+import Editor from '../UI/Editor';
 
+const editorWrapperStyle = { display: 'flex', height: 160 };
 class EffectForm extends Component {
   handleSave = () => {
     const values = this.props.form.getFieldsValue();
@@ -19,11 +21,12 @@ class EffectForm extends Component {
       let fill;
       switch (current.type) {
         case 'textarea':
-          fill = (<Input
-            type="textarea"
-            autosize={{ minRows: 2, maxRows: 6 }}
-            {...current.config}
-          />);
+          fill = (
+            <Editor
+              content=""
+              language="javascript"
+            />
+          );
           break;
         case 'select':
           fill = (<Select size="large" {...current.config} >
@@ -37,11 +40,13 @@ class EffectForm extends Component {
           break;
       }
       return (<Form.Item label={current.label || key} key={key}>
-        {
-          getFieldDecorator(key, {
-            initialValue: this.props[key],
-          })(fill)
-        }
+        <div style={current.type === 'textarea' ? editorWrapperStyle : {}}>
+          {
+            getFieldDecorator(key, {
+              initialValue: this.props[key],
+            })(fill)
+          }
+        </div>
       </Form.Item>);
     });
 

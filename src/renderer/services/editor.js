@@ -16,6 +16,7 @@ export const defaultEditorOpts = {
     "Liberation Mono", "Source Code Pro", Menlo, Consolas, Courier, monospace
   `,
   fontSize: 12,
+  lineNumbers: false,
 };
 
 // TODO: Support 多示例同时初始化，也就是有 pending 状态的情况
