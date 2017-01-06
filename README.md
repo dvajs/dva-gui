@@ -1,9 +1,16 @@
+> Dva-GUI currently is not ready for Production.
+
 # Dva-GUI
 
 Dva-GUI is a static analysis GUI tool for dva projects. It gives you a clear picture of your application's data flows.
 
 ![screen shot 2016-12-30 at 5 04 28 pm](https://cloud.githubusercontent.com/assets/897640/21562513/5d495142-ceb4-11e6-92b8-51713b97ea50.png)
 ![screen shot 2016-12-30 at 5 04 54 pm](https://cloud.githubusercontent.com/assets/897640/21562512/5d48b138-ceb4-11e6-9af3-645081cd4b48.png)
+
+## Downloads
+
+- [macOs](http://p.tb.cn/rmsportal_71_Dva_20GUI-0.1.0.dmg)
+- windows is coming soon.
 
 ## Dev
 
