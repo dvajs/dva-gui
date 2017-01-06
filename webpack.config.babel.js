@@ -4,6 +4,7 @@ import LiveReloadPlugin from 'webpack-livereload-plugin';
 import cssImport from 'postcss-import';
 import cssNested from 'postcss-nested';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const outputPath = path.join(__dirname, 'app', 'dist');
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -81,6 +82,18 @@ export default [
         allChunks: true,
       }),
       new LiveReloadPlugin(),
+      new CopyWebpackPlugin([
+        {
+          from: 'node_modules/monaco-editor/min/vs',
+          to: 'vs',
+          transform(content) {
+            return content.toString().replace(
+              /"object"==typeof module&&"object"==typeof module.exports/gm,
+              'false',
+            );
+          },
+        },
+      ]),
     ],
   },
   {

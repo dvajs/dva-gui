@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Modal, Form, Input } from 'antd';
+import Editor from './Editor';
 
 class ModelReducerForm extends React.Component {
   handleOk = () => {
@@ -29,11 +30,16 @@ class ModelReducerForm extends React.Component {
             }
           </Form.Item>
           <Form.Item>
-            {
-              getFieldDecorator('source')(
-                <Input type="textarea" placeholder="Reducer Function" rows="5" />
-              )
-            }
+            <div style={{ display: 'flex', height: 160 }}>
+              {
+                getFieldDecorator('source')(
+                  <Editor
+                    content=""
+                    language="javascript"
+                  />
+                )
+              }
+            </div>
           </Form.Item>
         </Form>
       </Modal>

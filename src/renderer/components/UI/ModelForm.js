@@ -6,6 +6,7 @@ import ModelEffectForm from './ModelEffectForm';
 import ModelReducerForm from './ModelReducerForm';
 import DataList from './DataList';
 import DataObject from './DataObject';
+import Editor from './Editor';
 
 class ModelForm extends React.Component {
   onDeleteModel = () => {
@@ -18,8 +19,7 @@ class ModelForm extends React.Component {
       },
     });
   }
-  updateState = (e) => {
-    const _state = e.target.value;
+  updateState = (_state) => {
     if (_state === JSON.stringify(this.props.model.state)) return;
 
     const { filePath, namespace } = this.props.model;
@@ -206,13 +206,13 @@ class ModelForm extends React.Component {
         <Form vertical>
           <div className="block">
             <Form.Item label="Initial State">
-              <Input
-                key={stateString}
-                type="textarea"
-                defaultValue={stateString}
-                onBlur={this.updateState}
-                autosize
-              />
+              <div style={{ display: 'flex', height: 80 }}>
+                <Editor
+                  content={stateString}
+                  language="javascript"
+                  onBlur={this.updateState}
+                />
+              </div>
             </Form.Item>
           </div>
 
