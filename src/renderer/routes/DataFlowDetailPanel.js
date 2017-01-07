@@ -153,12 +153,13 @@ class DataFlowDetailPanel extends React.Component {
         });
       }
 
-      if (relation.fromEffect && !relation.toReducer) {
-        connections.push({
-          from: { id: action, point: 'r' },
-          to: { id: relation.modelId, point: 'l' },
-        });
-      }
+      // 这段代码会导致多余的从 effect 到 model 的连线
+      // if (relation.fromEffect && !relation.toReducer) {
+      //   connections.push({
+      //     from: { id: action, point: 'r' },
+      //     to: { id: relation.modelId, point: 'l' },
+      //   });
+      // }
     });
 
     models.forEach((model) => {
