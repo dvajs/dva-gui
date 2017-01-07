@@ -7,8 +7,8 @@ import ReducerNode from './ReducerNode';
 const isOnlyFromEffectNotExist = (relation = {}) =>
   relation.fromEffect
     && !relation.fromComponent
-    && !relation.fromSubscription
-    && relation.toEffect.ghost;
+    && !relation.fromSubscription;
+    // && relation.toEffect.ghost;
 
 class ActionFlowGroup extends React.Component {
   shouldComponentUpdate(nextProps) {
